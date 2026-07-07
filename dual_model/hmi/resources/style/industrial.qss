@@ -1,0 +1,324 @@
+/*============================================================================
+ * industrial.qss — Dark industrial theme for Battery SOH Assessment HMI
+ *============================================================================*/
+
+/* ── Application-wide ── */
+QMainWindow {
+    background-color: #0d1117;
+}
+
+QWidget {
+    color: #c9d1d9;
+    font-family: "DejaVu Sans Mono", "Noto Sans SC", monospace;
+    font-size: 13px;
+}
+
+/* ── Panels ── */
+QFrame#panel, QWidget#panel {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+QFrame#panelTitle {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+}
+
+/* ── Labels ── */
+QLabel {
+    color: #c9d1d9;
+    background: transparent;
+}
+
+QLabel#title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #e6edf3;
+}
+
+QLabel#value {
+    font-size: 22px;
+    font-weight: bold;
+    color: #58a6ff;
+}
+
+QLabel#valueLarge {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+QLabel#subtitle {
+    font-size: 14px;
+    color: #8b949e;
+}
+
+QLabel#warning {
+    color: #d29922;
+    font-weight: bold;
+}
+
+QLabel#critical {
+    color: #f85149;
+    font-weight: bold;
+}
+
+QLabel#healthy {
+    color: #3fb950;
+    font-weight: bold;
+}
+
+/* ── Progress Bars ── */
+QProgressBar {
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    text-align: center;
+    color: #c9d1d9;
+    font-size: 12px;
+    min-height: 18px;
+}
+
+QProgressBar::chunk {
+    border-radius: 3px;
+}
+
+/* Healthy green gradient */
+QProgressBar#healthyBar::chunk {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #1a7f37, stop:1 #3fb950);
+}
+
+/* Warning orange gradient */
+QProgressBar#warningBar::chunk {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #9a6700, stop:1 #d29922);
+}
+
+/* Critical red gradient */
+QProgressBar#criticalBar::chunk {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #8b1a1a, stop:1 #f85149);
+}
+
+/* Storage blue gradient */
+QProgressBar#storageBar::chunk {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #0c2d6b, stop:1 #1f6feb);
+}
+
+/* Cycle progress */
+QProgressBar#cycleBar::chunk {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #033a5e, stop:1 #00d4ff);
+}
+
+/* ── Buttons ── */
+QPushButton {
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 5px;
+    color: #c9d1d9;
+    padding: 6px 16px;
+    font-size: 13px;
+    min-height: 28px;
+}
+
+QPushButton:hover {
+    background-color: #30363d;
+    border-color: #58a6ff;
+}
+
+QPushButton:pressed {
+    background-color: #484f58;
+}
+
+QPushButton:disabled {
+    background-color: #1c2128;
+    color: #484f58;
+}
+
+QPushButton#primary {
+    background-color: #1f6feb;
+    border-color: #388bfd;
+    font-weight: bold;
+}
+
+QPushButton#primary:hover {
+    background-color: #388bfd;
+}
+
+QPushButton#danger {
+    background-color: #8b1a1a;
+    border-color: #f85149;
+}
+
+QPushButton#danger:hover {
+    background-color: #b62324;
+}
+
+QPushButton#acknowledge {
+    background-color: #1f6feb;
+    border-color: #388bfd;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 8px 24px;
+}
+
+QPushButton#flatButton {
+    background: transparent;
+    border: none;
+    color: #8b949e;
+    font-size: 18px;
+    padding: 2px 6px;
+}
+
+QPushButton#flatButton:hover {
+    color: #e6edf3;
+    background: #21262d;
+    border-radius: 4px;
+}
+
+/* ── Header ── */
+QWidget#headerBar {
+    background-color: #0a0a1a;
+    border-bottom: 2px solid #1f6feb;
+}
+
+/* ── Alarm Indicator (blinking red dot) ── */
+QWidget#alarmDot {
+    background-color: #f85149;
+    border-radius: 6px;
+}
+
+QWidget#alarmDotInactive {
+    background-color: #21262d;
+    border-radius: 6px;
+}
+
+/* ── Popup / Dialog ── */
+QDialog#alarmPopup {
+    background-color: #161b22;
+    border: 2px solid #f85149;
+    border-radius: 8px;
+}
+
+QDialog#alarmPopup QLabel#alarmTitle {
+    font-size: 18px;
+    font-weight: bold;
+    color: #f85149;
+}
+
+QDialog#alarmPopup QLabel#alarmDesc {
+    font-size: 14px;
+    color: #c9d1d9;
+    padding: 8px 0px;
+}
+
+/* ── Group Box ── */
+QGroupBox {
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    margin-top: 12px;
+    padding-top: 16px;
+    color: #8b949e;
+    font-size: 12px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 2px 8px;
+}
+
+/* ── Scroll Bar ── */
+QScrollBar:vertical {
+    background: #161b22;
+    width: 8px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical {
+    background: #30363d;
+    border-radius: 4px;
+    min-height: 20px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #484f58;
+}
+
+QScrollBar:horizontal {
+    background: #161b22;
+    height: 8px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #30363d;
+    border-radius: 4px;
+    min-width: 20px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: #484f58;
+}
+
+QScrollBar::add-line, QScrollBar::sub-line {
+    height: 0px;
+    width: 0px;
+}
+
+/* ── Tooltip ── */
+QToolTip {
+    background-color: #21262d;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* ── Status Bar ── */
+QStatusBar {
+    background-color: #0a0a1a;
+    color: #8b949e;
+    border-top: 1px solid #21262d;
+    font-size: 11px;
+}
+
+/* ── Line Edit (future config dialog) ── */
+QLineEdit {
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    color: #c9d1d9;
+    padding: 4px 8px;
+}
+
+QLineEdit:focus {
+    border-color: #58a6ff;
+}
+
+/* ── Combo Box ── */
+QComboBox {
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    color: #c9d1d9;
+    padding: 4px 8px;
+}
+
+QComboBox:hover {
+    border-color: #58a6ff;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    selection-background-color: #1f6feb;
+}

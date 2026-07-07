@@ -1,0 +1,23 @@
+{
+	"BUILD_DIR" : "/home/legion/yg2lx-work/dual_model/hmi/build-arm/battery_hmi_autogen",
+	"CMAKE_BINARY_DIR" : "/home/legion/yg2lx-work/dual_model/hmi/build-arm",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/legion/yg2lx-work/dual_model/hmi/build-arm",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/legion/yg2lx-work/dual_model/hmi",
+	"CMAKE_SOURCE_DIR" : "/home/legion/yg2lx-work/dual_model/hmi",
+	"INCLUDE_DIR" : "/home/legion/yg2lx-work/dual_model/hmi/build-arm/battery_hmi_autogen/include",
+	"INPUTS" : 
+	[
+		"/home/legion/yg2lx-work/dual_model/hmi/resources/style/industrial.qss",
+		"/home/legion/yg2lx-work/dual_model/hmi/translations/battery_hmi_zh_CN.qm"
+	],
+	"LOCK_FILE" : "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi_autogen.dir/AutoRcc_resources_3YJK5W5UP7_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "resources" ],
+	"OUTPUT_CHECKSUM" : "3YJK5W5UP7",
+	"OUTPUT_NAME" : "qrc_resources.cpp",
+	"RCC_EXECUTABLE" : "/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi_autogen.dir/AutoRcc_resources_3YJK5W5UP7_Used.txt",
+	"SOURCE" : "/home/legion/yg2lx-work/dual_model/hmi/resources/resources.qrc",
+	"VERBOSITY" : 0
+}

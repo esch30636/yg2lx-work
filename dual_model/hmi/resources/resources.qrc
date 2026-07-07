@@ -1,0 +1,9 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/style">
+        <file>style/industrial.qss</file>
+    </qresource>
+    <qresource prefix="/translations">
+        <file>../translations/battery_hmi_zh_CN.qm</file>
+    </qresource>
+</RCC>

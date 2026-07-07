@@ -1,0 +1,71 @@
+/*===========================================================================
+ * DataProvider.h — Abstract data source interface for Battery HMI
+ *
+ * Implementations:
+ *   DemoDataProvider  — synthetic battery data for development/testing
+ *   FileDataProvider  — binary file replay for verification
+ *   (future) SpiDataProvider — RA8 SPI real-time data
+ *===========================================================================*/
+#ifndef HMI_DATA_PROVIDER_H
+#define HMI_DATA_PROVIDER_H
+
+#include <cstdint>
+#include <QString>
+
+/* ── Single acquisition sample ── */
+struct BatterySample {
+    float ic_curve[128];         /* raw IC curve (dQ/dV on 128-point voltage grid) */
+    float features[132];         /* raw PINN feature vector (ic128 + temp + log_cycle + dV + cap) */
+    float temperature;           /* °C */
+    float voltage;               /* V */
+    float current;               /* A (positive=charge, negative=discharge) */
+    uint32_t cycle_count;        /* current cycle number */
+    float capacity_mah;          /* measured capacity in mAh */
+    float cell_swelling;         /* 0.0=normal, 1.0=severe swelling */
+    int64_t timestamp_ms;        /* monotonic timestamp */
+};
+
+/* ── Storage status snapshot ── */
+struct StorageInfo {
+    float usage_percent;         /* 0.0 - 100.0 */
+    uint64_t total_bytes;
+    uint64_t used_bytes;
+    uint64_t free_bytes;
+    uint32_t bad_blocks;
+    uint32_t total_blocks;
+};
+
+/* ── Alarm flags ── */
+struct AlarmState {
+    bool over_temp;
+    bool over_voltage;
+    bool over_current;
+    bool cell_swelling;
+    bool soh_critical;
+    bool soh_warning;
+    float over_temp_value;
+    float over_voltage_value;
+    float over_current_value;
+    float cell_swelling_value;
+    float soh_value;
+};
+
+/* ── Abstract data provider ── */
+class DataProvider {
+public:
+    virtual ~DataProvider() = default;
+
+    /** Read next sample. Returns true if data was available. */
+    virtual bool read(BatterySample &sample) = 0;
+
+    /** Read storage info. Called less frequently. */
+    virtual bool readStorage(StorageInfo &info) = 0;
+
+    /** Human-readable provider name for UI display */
+    virtual QString name() const = 0;
+
+    /** Reset provider to initial state */
+    virtual void reset() = 0;
+};
+
+#endif /* HMI_DATA_PROVIDER_H */

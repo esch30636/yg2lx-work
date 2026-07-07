@@ -1,0 +1,9 @@
+/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/install/strip.dir
+/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/install/local.dir
+/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/translations.dir
+/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir
+/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/rebuild_cache.dir
+/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/edit_cache.dir
+/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/list_install_components.dir
+/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/install.dir
+/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi_autogen.dir

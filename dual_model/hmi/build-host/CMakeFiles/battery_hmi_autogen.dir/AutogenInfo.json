@@ -1,0 +1,303 @@
+{
+	"BUILD_DIR" : "/home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen",
+	"CMAKE_BINARY_DIR" : "/home/legion/yg2lx-work/dual_model/hmi/build-host",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/legion/yg2lx-work/dual_model/hmi/build-host",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/legion/yg2lx-work/dual_model/hmi",
+	"CMAKE_EXECUTABLE" : "/usr/bin/cmake",
+	"CMAKE_LIST_FILES" : 
+	[
+		"/home/legion/yg2lx-work/dual_model/hmi/CMakeLists.txt",
+		"/home/legion/yg2lx-work/dual_model/hmi/build-host/CMakeFiles/3.28.3/CMakeSystem.cmake",
+		"/usr/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake",
+		"/usr/share/cmake-3.28/Modules/Platform/Linux-Initialize.cmake",
+		"/home/legion/yg2lx-work/dual_model/hmi/build-host/CMakeFiles/3.28.3/CMakeCCompiler.cmake",
+		"/home/legion/yg2lx-work/dual_model/hmi/build-host/CMakeFiles/3.28.3/CMakeCXXCompiler.cmake",
+		"/usr/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake",
+		"/usr/share/cmake-3.28/Modules/CMakeGenericSystem.cmake",
+		"/usr/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake",
+		"/usr/share/cmake-3.28/Modules/Platform/Linux.cmake",
+		"/usr/share/cmake-3.28/Modules/Platform/UnixPaths.cmake",
+		"/usr/share/cmake-3.28/Modules/CMakeCInformation.cmake",
+		"/usr/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake",
+		"/usr/share/cmake-3.28/Modules/Compiler/GNU-C.cmake",
+		"/usr/share/cmake-3.28/Modules/Compiler/GNU.cmake",
+		"/usr/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake",
+		"/usr/share/cmake-3.28/Modules/Platform/Linux-GNU-C.cmake",
+		"/usr/share/cmake-3.28/Modules/Platform/Linux-GNU.cmake",
+		"/usr/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake",
+		"/usr/share/cmake-3.28/Modules/CMakeCXXInformation.cmake",
+		"/usr/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake",
+		"/usr/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake",
+		"/usr/share/cmake-3.28/Modules/Compiler/GNU.cmake",
+		"/usr/share/cmake-3.28/Modules/Platform/Linux-GNU-CXX.cmake",
+		"/usr/share/cmake-3.28/Modules/Platform/Linux-GNU.cmake",
+		"/usr/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5/Qt5ConfigVersion.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5/Qt5Config.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5/Qt5ModuleLocation.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigVersion.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfig.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigExtras.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreMacros.cmake",
+		"/usr/share/cmake-3.28/Modules/CMakeParseArguments.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfig.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QComposePlatformInputContextPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSEmulatorIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSKmsEglDeviceIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSKmsGbmIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSX11IntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEvdevKeyboardPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEvdevMousePlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEvdevTabletPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEvdevTouchScreenPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QGifPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QICOPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QIbusPlatformInputContextPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QJpegPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QLibInputPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QLinuxFbIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QMinimalEglIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QMinimalIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QOffscreenIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QTuioTouchPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QVncIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QXcbEglIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QXcbGlxIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QXcbIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake",
+		"/usr/share/cmake-3.28/Modules/CMakeParseArguments.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Charts/Qt5ChartsConfigVersion.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Charts/Qt5ChartsConfig.cmake",
+		"/home/legion/yg2lx-work/dual_model/hmi/resources/resources.qrc"
+	],
+	"CMAKE_SOURCE_DIR" : "/home/legion/yg2lx-work/dual_model/hmi",
+	"DEP_FILE" : "/home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/deps",
+	"DEP_FILE_RULE_NAME" : "battery_hmi_autogen/timestamp",
+	"HEADERS" : 
+	[
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/data/DemoDataProvider.h",
+			"MU",
+			"QYFM2Z2WYQ/moc_DemoDataProvider.cpp",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/data/FileDataProvider.h",
+			"MU",
+			"QYFM2Z2WYQ/moc_FileDataProvider.cpp",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/data/SpiDataProvider.h",
+			"MU",
+			"QYFM2Z2WYQ/moc_SpiDataProvider.cpp",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/inference/CnnPreprocessor.h",
+			"MU",
+			"332VT2GGFB/moc_CnnPreprocessor.cpp",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/inference/InferenceEngine.h",
+			"MU",
+			"332VT2GGFB/moc_InferenceEngine.cpp",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/threads/InferenceWorker.h",
+			"MU",
+			"ZXH2KM5ODR/moc_InferenceWorker.cpp",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.h",
+			"MU",
+			"UYX5XTB5RZ/moc_AlarmIndicator.cpp",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmPopup.h",
+			"MU",
+			"UYX5XTB5RZ/moc_AlarmPopup.cpp",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/ChartWidget.h",
+			"MU",
+			"UYX5XTB5RZ/moc_ChartWidget.cpp",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/MainWindow.h",
+			"MU",
+			"UYX5XTB5RZ/moc_MainWindow.cpp",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/StatusPanel.h",
+			"MU",
+			"UYX5XTB5RZ/moc_StatusPanel.cpp",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/screens/InitScreen.h",
+			"MU",
+			"OF4FSJ2DWT/moc_InitScreen.cpp",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ModelSelectScreen.h",
+			"MU",
+			"OF4FSJ2DWT/moc_ModelSelectScreen.cpp",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.h",
+			"MU",
+			"OF4FSJ2DWT/moc_ResultScreen.cpp",
+			null
+		]
+	],
+	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
+	"INCLUDE_DIR" : "/home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/include",
+	"MOC_COMPILATION_FILE" : "/home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/mocs_compilation.cpp",
+	"MOC_DEFINITIONS" : [ "QT_CHARTS_LIB", "QT_CORE_LIB", "QT_GUI_LIB", "QT_WIDGETS_LIB" ],
+	"MOC_DEPEND_FILTERS" : 
+	[
+		[
+			"Q_PLUGIN_METADATA",
+			"[\n][ \t]*Q_PLUGIN_METADATA[ \t]*\\([^\\)]*FILE[ \t]*\"([^\"]+)\""
+		]
+	],
+	"MOC_INCLUDES" : 
+	[
+		"/home/legion/yg2lx-work/dual_model/include",
+		"/home/legion/yg2lx-work/dual_model/hmi",
+		"/usr/include/x86_64-linux-gnu/qt5",
+		"/usr/include/x86_64-linux-gnu/qt5/QtCore",
+		"/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++",
+		"/usr/include/x86_64-linux-gnu/qt5/QtGui",
+		"/usr/include/x86_64-linux-gnu/qt5/QtWidgets",
+		"/usr/include/x86_64-linux-gnu/qt5/QtCharts",
+		"/usr/include/c++/13",
+		"/usr/include/x86_64-linux-gnu/c++/13",
+		"/usr/include/c++/13/backward",
+		"/usr/lib/gcc/x86_64-linux-gnu/13/include",
+		"/usr/local/include",
+		"/usr/include/x86_64-linux-gnu",
+		"/usr/include"
+	],
+	"MOC_MACRO_NAMES" : [ "Q_OBJECT", "Q_GADGET", "Q_NAMESPACE", "Q_NAMESPACE_EXPORT" ],
+	"MOC_OPTIONS" : [],
+	"MOC_PATH_PREFIX" : false,
+	"MOC_PREDEFS_CMD" : 
+	[
+		"/usr/bin/c++",
+		"-std=gnu++17",
+		"-dM",
+		"-E",
+		"-c",
+		"/usr/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp"
+	],
+	"MOC_PREDEFS_FILE" : "/home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/moc_predefs.h",
+	"MOC_RELAXED_MODE" : false,
+	"MOC_SKIP" : [],
+	"MULTI_CONFIG" : false,
+	"PARALLEL" : 20,
+	"PARSE_CACHE_FILE" : "/home/legion/yg2lx-work/dual_model/hmi/build-host/CMakeFiles/battery_hmi_autogen.dir/ParseCache.txt",
+	"QT_MOC_EXECUTABLE" : "/usr/lib/qt5/bin/moc",
+	"QT_UIC_EXECUTABLE" : "/usr/lib/qt5/bin/uic",
+	"QT_VERSION_MAJOR" : 5,
+	"QT_VERSION_MINOR" : 15,
+	"SETTINGS_FILE" : "/home/legion/yg2lx-work/dual_model/hmi/build-host/CMakeFiles/battery_hmi_autogen.dir/AutogenUsed.txt",
+	"SOURCES" : 
+	[
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/data/DemoDataProvider.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/data/FileDataProvider.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/data/SpiDataProvider.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/inference/CnnPreprocessor.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/inference/InferenceEngine.cpp",
+			"MU",
+			null
+		],
+		[ "/home/legion/yg2lx-work/dual_model/hmi/main.cpp", "MU", null ],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/threads/InferenceWorker.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmPopup.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/ChartWidget.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/MainWindow.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/StatusPanel.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/screens/InitScreen.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ModelSelectScreen.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.cpp",
+			"MU",
+			null
+		],
+		[ "/home/legion/yg2lx-work/dual_model/src/cnn_inference.c", "MU", null ],
+		[ "/home/legion/yg2lx-work/dual_model/src/pinn_inference.c", "MU", null ]
+	],
+	"UIC_OPTIONS" : [],
+	"UIC_SEARCH_PATHS" : [],
+	"UIC_SKIP" : [],
+	"UIC_UI_FILES" : [],
+	"VERBOSITY" : 0
+}
