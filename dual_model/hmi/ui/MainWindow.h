@@ -35,6 +35,7 @@
 #include "screens/InitScreen.h"
 #include "screens/ModelSelectScreen.h"
 #include "screens/ResultScreen.h"
+#include "AlarmIndicator.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -68,6 +69,7 @@ private:
     void setupWorkerThread();
     void startAcquisition(int model);
     void stopAcquisition();
+    void checkAlarms(const BatterySample &sample);
     void applyTheme();
 
     /* Owned components */
@@ -86,6 +88,7 @@ private:
     /* Header widgets */
     QLabel             *m_headerTitle;
     QLabel             *m_headerClock;
+    AlarmIndicator     *m_alarmIndicator;
 
     /* Timers */
     QTimer *m_dataTimer;
@@ -95,11 +98,13 @@ private:
 
     /* State */
     BatterySample m_latestSample;
+    AlarmState    m_alarmState;
     double        m_elapsedSec;
     QElapsedTimer m_elapsedTimer;
     bool          m_running;
     int           m_selectedModel;   /* -1=none, 0=PINN, 1=CNN */
     bool          m_converged;
+    float         m_latestSoh;       /* cached for SOH-critical alarm */
 };
 
 #endif /* HMI_UI_MAIN_WINDOW_H */

@@ -3,6 +3,7 @@
  *===========================================================================*/
 #include "MainWindow.h"
 #include "config/AppConfig.h"
+#include "AlarmPopup.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QStatusBar>
@@ -34,8 +35,10 @@ MainWindow::MainWindow(DataProvider *provider, QWidget *parent)
     , m_running(false)
     , m_selectedModel(-1)
     , m_converged(false)
+    , m_latestSoh(0.0f)
 {
     std::memset(&m_latestSample, 0, sizeof(m_latestSample));
+    std::memset(&m_alarmState, 0, sizeof(m_alarmState));
 
     /* Initialize inference engine */
     try {
@@ -107,6 +110,10 @@ void MainWindow::setupUi()
     m_headerClock = new QLabel("00:00:00");
     m_headerClock->setStyleSheet(QString("color: %1; font-size: 13px;").arg(COLOR_TEXT_DIM));
     headerLayout->addWidget(m_headerClock);
+
+    /* Alarm indicator (red dot, blinks on alert) */
+    m_alarmIndicator = new AlarmIndicator();
+    headerLayout->addWidget(m_alarmIndicator);
 
     mainVBox->addWidget(header);
 
@@ -315,6 +322,11 @@ void MainWindow::onDataAcquisition()
     m_latestSample = sample;
     m_elapsedSec = m_elapsedTimer.elapsed() / 1000.0;
 
+    /* Ensure features[128..131] are consistent with scalar telemetry.
+     * This guarantees correctness regardless of RA8 firmware version
+     * or data source quirks. */
+    DataProvider::fixFeatures(m_latestSample, BATTERY_NOMINAL_V, BATTERY_NOMINAL_MAH);
+
     /* Heartbeat log every 1 second */
     static int heartbeatTick = 0;
     if (++heartbeatTick % 10 == 0) {
@@ -325,6 +337,9 @@ void MainWindow::onDataAcquisition()
                sample.cycle_count, sample.cell_swelling);
         fflush(stdout);
     }
+
+    /* ── Alarm checks (every tick = 10 Hz, with hysteresis) ── */
+    checkAlarms(sample);
 
     /* Update IC curve (always) */
     m_resultScreen->setIcCurve(sample.ic_curve);
@@ -358,6 +373,9 @@ void MainWindow::onPinnInference()
     /* Update result screen with accumulated stats */
     float displaySoh = stats.median;
     float ciHalf = stats.ci_95_half;
+
+    /* Cache for alarm checks */
+    m_latestSoh = displaySoh;
 
     m_resultScreen->setHealth(displaySoh, ciHalf);
 
@@ -412,6 +430,9 @@ void MainWindow::onCnnResult(int stage, QVector<float> probs, float rul)
 {
     if (!m_running) return;
 
+    /* Cache RUL as health metric for alarm checks */
+    m_latestSoh = rul;
+
     /* Update result screen health display with RUL */
     m_resultScreen->setHealth(rul, probs[stage]);  /* max stage prob as confidence */
 
@@ -441,6 +462,83 @@ void MainWindow::onCnnError(const QString &msg)
 void MainWindow::onClockUpdate()
 {
     m_headerClock->setText(QDateTime::currentDateTime().toString("HH:mm:ss"));
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ * Alarm checking (10 Hz, with hysteresis)
+ * ═══════════════════════════════════════════════════════════════════ */
+
+void MainWindow::checkAlarms(const BatterySample &sample)
+{
+    /* ── Over-temperature (>60°C) ── */
+    if (sample.temperature > ALARM_TEMP_MAX_C && !m_alarmState.over_temp) {
+        m_alarmState.over_temp = true;
+        m_alarmState.over_temp_value = sample.temperature;
+        m_alarmIndicator->triggerAlarm(
+            AlarmPopup::OverTemperature,
+            "Over-Temperature",
+            "Battery temperature exceeds safe limit!",
+            sample.temperature, ALARM_TEMP_MAX_C
+        );
+    } else if (sample.temperature <= ALARM_TEMP_MAX_C * 0.9f && m_alarmState.over_temp) {
+        m_alarmState.over_temp = false;
+    }
+
+    /* ── Over-voltage (>4.25V) ── */
+    if (sample.voltage > ALARM_VOLTAGE_MAX_V && !m_alarmState.over_voltage) {
+        m_alarmState.over_voltage = true;
+        m_alarmState.over_voltage_value = sample.voltage;
+        m_alarmIndicator->triggerAlarm(
+            AlarmPopup::OverVoltage,
+            "Over-Voltage",
+            "Battery voltage exceeds safe charging limit!",
+            sample.voltage, ALARM_VOLTAGE_MAX_V
+        );
+    } else if (sample.voltage <= ALARM_VOLTAGE_MAX_V * 0.95f && m_alarmState.over_voltage) {
+        m_alarmState.over_voltage = false;
+    }
+
+    /* ── Over-current (>100A magnitude) ── */
+    if (std::fabs(sample.current) > ALARM_CURRENT_MAX_A && !m_alarmState.over_current) {
+        m_alarmState.over_current = true;
+        m_alarmState.over_current_value = std::fabs(sample.current);
+        m_alarmIndicator->triggerAlarm(
+            AlarmPopup::OverCurrent,
+            "Over-Current",
+            "Charge/discharge current exceeds rated limit!",
+            std::fabs(sample.current), ALARM_CURRENT_MAX_A
+        );
+    } else if (std::fabs(sample.current) <= ALARM_CURRENT_MAX_A * 0.9f && m_alarmState.over_current) {
+        m_alarmState.over_current = false;
+    }
+
+    /* ── Cell swelling (>0.3) ── */
+    if (sample.cell_swelling > ALARM_SWELLING_THRESH && !m_alarmState.cell_swelling) {
+        m_alarmState.cell_swelling = true;
+        m_alarmState.cell_swelling_value = sample.cell_swelling;
+        m_alarmIndicator->triggerAlarm(
+            AlarmPopup::CellSwelling,
+            "Cell Swelling Detected",
+            "Battery cell deformation sensor triggered!",
+            sample.cell_swelling * 100.0f, ALARM_SWELLING_THRESH * 100.0f
+        );
+    } else if (sample.cell_swelling <= ALARM_SWELLING_THRESH * 0.5f && m_alarmState.cell_swelling) {
+        m_alarmState.cell_swelling = false;
+    }
+
+    /* ── SOH critical (<20%, PINN only) ── */
+    if (m_latestSoh < ALARM_SOH_CRITICAL && m_latestSoh > 0.0f && !m_alarmState.soh_critical) {
+        m_alarmState.soh_critical = true;
+        m_alarmState.soh_value = m_latestSoh;
+        m_alarmIndicator->triggerAlarm(
+            AlarmPopup::SohCritical,
+            "SOH Critical",
+            "Battery state of health critically low! Immediate replacement recommended.",
+            m_latestSoh, ALARM_SOH_CRITICAL
+        );
+    } else if (m_latestSoh >= ALARM_SOH_CRITICAL && m_alarmState.soh_critical) {
+        m_alarmState.soh_critical = false;
+    }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

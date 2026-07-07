@@ -4,6 +4,8 @@
   /home/legion/yg2lx-work/dual_model/hmi/inference/InferenceEngine.h \
   /home/legion/yg2lx-work/dual_model/hmi/inference/SohAccumulator.h \
   /home/legion/yg2lx-work/dual_model/hmi/threads/InferenceWorker.h \
+  /home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.h \
+  /home/legion/yg2lx-work/dual_model/hmi/ui/AlarmPopup.h \
   /home/legion/yg2lx-work/dual_model/hmi/ui/ChartWidget.h \
   /home/legion/yg2lx-work/dual_model/hmi/ui/screens/InitScreen.h \
   /home/legion/yg2lx-work/dual_model/hmi/ui/screens/ModelSelectScreen.h \
@@ -398,6 +400,7 @@
   /usr/include/x86_64-linux-gnu/qt5/QtGui/qtransform.h \
   /usr/include/x86_64-linux-gnu/qt5/QtGui/qvector2d.h \
   /usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QDialog \
   /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGraphicsView \
   /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGraphicsWidget \
   /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QLabel \
@@ -408,6 +411,7 @@
   /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget \
   /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractbutton.h \
   /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractscrollarea.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qdialog.h \
   /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qframe.h \
   /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsitem.h \
   /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicslayoutitem.h \

@@ -46,12 +46,16 @@ bool FileDataProvider::read(BatterySample &sample)
     std::memcpy(sample.ic_curve, frame.ic_curve, 128 * sizeof(float));
     std::memcpy(sample.features, frame.features, 132 * sizeof(float));
 
-    /* Synthesize scalar telemetry (not in file) */
-    sample.temperature    = 30.0f + (m_tick % 100) * 0.1f;
-    sample.voltage        = 3.2f;
-    sample.current        = 40.0f;
+    /* Synthesize scalar telemetry from features when available,
+     * fall back to sensible defaults for older file formats */
+    sample.temperature    = (frame.features[128] > -40.0f && frame.features[128] < 150.0f)
+                            ? frame.features[128] : 25.0f;
+    sample.voltage        = BATTERY_NOMINAL_V;
+    sample.current        = 0.0f;
     sample.cycle_count    = static_cast<uint32_t>(m_frameIndex);
-    sample.capacity_mah   = BATTERY_NOMINAL_MAH;
+    sample.capacity_mah   = (frame.features[131] > 0.0f)
+                            ? frame.features[131] * BATTERY_NOMINAL_MAH
+                            : BATTERY_NOMINAL_MAH;
     sample.cell_swelling  = 0.0f;
     sample.timestamp_ms   = static_cast<int64_t>(m_tick) * DATA_ACQUISITION_MS;
 

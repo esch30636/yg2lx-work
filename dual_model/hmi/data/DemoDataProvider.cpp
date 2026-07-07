@@ -57,19 +57,39 @@ void DemoDataProvider::generateSample()
         soh = m_simulatedSoh;
     }
 
-    /* ── IC curve: Gaussian peak + noise, modulated by SOH ── */
-    std::normal_distribution<float> noise(0.0f, 0.03f);
+    /* ── IC curve for 18650 LiFePO4 (LFP, 3.2V nominal) ──
+     *
+     * LFP has a very flat OCV plateau → dQ/dV peaks are exceptionally
+     * sharp (FWHM ~10-20 mV).  We model two characteristic peaks:
+     *
+     *   Main peak:  FePO₄ ↔ LiFePO₄ phase transition, ~3.40V (index 99)
+     *   Sec peak:   solid-solution region,              ~3.33V (index 92)
+     *
+     * On our 128-point grid [2.5, 3.65]V, step = 0.009055V/point.
+     * Peak sigma ~1.5 index units (~14 mV) for fresh cells,
+     * broadening to ~2.5 units (~23 mV) as the battery ages. */
+    std::normal_distribution<float> noise(0.0f, 0.04f);
     std::normal_distribution<float> tempWalk(0.0f, 0.05f);
 
-    float peakHeight = 2.8f * soh;
-    float peakPos = 64.0f + (1.0f - soh) * 8.0f;  /* peak drifts right as battery ages */
-    float peakWidth = 18.0f + (1.0f - soh) * 2.0f;
+    /* Main peak (FePO₄/LiFePO₄ transition) */
+    float mainHeight  = 9.0f * soh + 1.0f;
+    float mainSigma   = 1.5f + (1.0f - soh) * 2.0f;        /* sharp → broader */
+    float mainPos     = 99.0f + (1.0f - soh) * 3.0f;        /* drifts right ~27mV */
+
+    /* Secondary peak (solid-solution) */
+    float secHeight   = 2.5f * soh + 0.3f;
+    float secSigma    = 3.0f + (1.0f - soh) * 3.0f;
+    float secPos      = 92.0f + (1.0f - soh) * 3.0f;
 
     for (int i = 0; i < 128; i++) {
-        float x = (static_cast<float>(i) - peakPos) / peakWidth;
-        float ic_val = peakHeight * std::exp(-x * x * 0.5f)
-                     + 0.1f * std::sin(x * 4.0f)   /* minor oscillation */
-                     + noise(m_rng);
+        float dx_main = (static_cast<float>(i) - mainPos) / mainSigma;
+        float dx_sec  = (static_cast<float>(i) - secPos)  / secSigma;
+        float ic_val  = mainHeight * std::exp(-dx_main * dx_main * 0.5f)
+                      + secHeight  * std::exp(-dx_sec  * dx_sec  * 0.5f)
+                      + 0.08f * std::sin(static_cast<float>(i) * 0.25f)  /* ripple */
+                      + 0.05f                                               /* baseline */
+                      + noise(m_rng);
+        if (ic_val < 0.0f) ic_val = 0.0f;
         m_latest.ic_curve[i] = ic_val;
     }
 

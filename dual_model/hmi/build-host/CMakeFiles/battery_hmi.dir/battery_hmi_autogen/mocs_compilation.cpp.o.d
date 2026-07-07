@@ -387,10 +387,6 @@ CMakeFiles/battery_hmi.dir/battery_hmi_autogen/mocs_compilation.cpp.o: \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/QElapsedTimer \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qelapsedtimer.h \
  /home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/UYX5XTB5RZ/../../../ui/../data/DataProvider.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/QString \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h \
- /home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/UYX5XTB5RZ/../../../ui/../inference/InferenceEngine.h \
- /home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/UYX5XTB5RZ/../../../ui/../inference/SohAccumulator.h \
  /usr/include/c++/13/cmath /usr/include/math.h \
  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
@@ -413,6 +409,10 @@ CMakeFiles/battery_hmi.dir/battery_hmi_autogen/mocs_compilation.cpp.o: \
  /usr/include/c++/13/tr1/poly_hermite.tcc \
  /usr/include/c++/13/tr1/poly_laguerre.tcc \
  /usr/include/c++/13/tr1/riemann_zeta.tcc \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QString \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h \
+ /home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/UYX5XTB5RZ/../../../ui/../inference/InferenceEngine.h \
+ /home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/UYX5XTB5RZ/../../../ui/../inference/SohAccumulator.h \
  /home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/UYX5XTB5RZ/../../../ui/../threads/InferenceWorker.h \
  /home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/UYX5XTB5RZ/../../../ui/screens/InitScreen.h \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QProgressBar \
@@ -420,6 +420,7 @@ CMakeFiles/battery_hmi.dir/battery_hmi_autogen/mocs_compilation.cpp.o: \
  /home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/UYX5XTB5RZ/../../../ui/screens/ModelSelectScreen.h \
  /home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/UYX5XTB5RZ/../../../ui/screens/ResultScreen.h \
  /home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/UYX5XTB5RZ/../../../ui/screens/../ChartWidget.h \
+ /home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/UYX5XTB5RZ/../../../ui/AlarmIndicator.h \
  /home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/UYX5XTB5RZ/moc_StatusPanel.cpp \
  /home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/UYX5XTB5RZ/../../../ui/StatusPanel.h \
  /home/legion/yg2lx-work/dual_model/hmi/build-host/battery_hmi_autogen/OF4FSJ2DWT/moc_InitScreen.cpp \

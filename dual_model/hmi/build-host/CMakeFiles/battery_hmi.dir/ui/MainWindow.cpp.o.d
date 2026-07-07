@@ -307,13 +307,8 @@ CMakeFiles/battery_hmi.dir/ui/MainWindow.cpp.o: \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/QElapsedTimer \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qelapsedtimer.h \
  /home/legion/yg2lx-work/dual_model/hmi/ui/../data/DataProvider.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/QString \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h \
- /home/legion/yg2lx-work/dual_model/hmi/ui/../inference/InferenceEngine.h \
- /home/legion/yg2lx-work/dual_model/hmi/ui/../inference/SohAccumulator.h \
- /usr/include/c++/13/deque /usr/include/c++/13/bits/stl_deque.h \
- /usr/include/c++/13/bits/deque.tcc /usr/include/c++/13/cmath \
- /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ /usr/include/c++/13/cmath /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
@@ -334,6 +329,12 @@ CMakeFiles/battery_hmi.dir/ui/MainWindow.cpp.o: \
  /usr/include/c++/13/tr1/poly_hermite.tcc \
  /usr/include/c++/13/tr1/poly_laguerre.tcc \
  /usr/include/c++/13/tr1/riemann_zeta.tcc \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QString \
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h \
+ /home/legion/yg2lx-work/dual_model/hmi/ui/../inference/InferenceEngine.h \
+ /home/legion/yg2lx-work/dual_model/hmi/ui/../inference/SohAccumulator.h \
+ /usr/include/c++/13/deque /usr/include/c++/13/bits/stl_deque.h \
+ /usr/include/c++/13/bits/deque.tcc \
  /home/legion/yg2lx-work/dual_model/hmi/ui/../threads/InferenceWorker.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/QObject \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h \
@@ -406,6 +407,10 @@ CMakeFiles/battery_hmi.dir/ui/MainWindow.cpp.o: \
  /usr/include/x86_64-linux-gnu/qt5/QtCharts/qxyseries.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCharts/QValueAxis \
  /usr/include/x86_64-linux-gnu/qt5/QtCharts/qvalueaxis.h \
+ /home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.h \
+ /home/legion/yg2lx-work/dual_model/hmi/ui/AlarmPopup.h \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QDialog \
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qdialog.h \
  /home/legion/yg2lx-work/dual_model/hmi/config/AppConfig.h \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QVBoxLayout \
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qboxlayout.h \

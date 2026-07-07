@@ -10,6 +10,7 @@
 #define HMI_DATA_PROVIDER_H
 
 #include <cstdint>
+#include <cmath>
 #include <QString>
 
 /* ── Single acquisition sample ── */
@@ -66,6 +67,47 @@ public:
 
     /** Reset provider to initial state */
     virtual void reset() = 0;
+
+    /**
+     * Ensure features[132] is consistent with scalar telemetry fields.
+     *
+     * Some data sources (SPI RA8 firmware, binary file replay) may have
+     * inconsistencies between features[128..131] and the separate scalar
+     * fields (temperature, cycle_count, capacity_mah). This function
+     * overwrites features[128..131] from the scalar fields — which are
+     * the authoritative source — to guarantee correctness regardless
+     * of data-source firmware version.
+     *
+     * Call this AFTER every successful read() before feeding features
+     * to InferenceEngine::predictSOH().
+     */
+    static void fixFeatures(BatterySample &sample, float nominalVoltage, float nominalMah);
 };
+
+/* ── Inline: DataProvider::fixFeatures ── */
+inline void DataProvider::fixFeatures(BatterySample &sample,
+                                       float nominalVoltage,
+                                       float nominalMah)
+{
+    /* features[0..127] = IC curve — copy from ic_curve field */
+    for (int i = 0; i < 128; i++) {
+        sample.features[i] = sample.ic_curve[i];
+    }
+
+    /* features[128] = temperature — use scalar field (authoritative) */
+    sample.features[128] = sample.temperature;
+
+    /* features[129] = log10(cycle_count + 1) */
+    sample.features[129] = std::log10(static_cast<float>(sample.cycle_count) + 1.0f);
+
+    /* features[130] = dV proxy — keep as-is from data source
+     * (measured by RA8 ADC; we cannot reconstruct without raw ADC data) */
+
+    /* features[131] = capacity (normalized to nominal) */
+    sample.features[131] = (nominalMah > 0.0f)
+        ? (sample.capacity_mah / nominalMah)
+        : 0.0f;
+    (void)nominalVoltage;  /* reserved for future use */
+}
 
 #endif /* HMI_DATA_PROVIDER_H */
