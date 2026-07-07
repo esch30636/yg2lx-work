@@ -1,1 +1,3 @@
 *.sh
+sources/myir-renesas-flash-writer
+sources/myir-renesas-tf-a
