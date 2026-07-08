@@ -85,7 +85,7 @@ void AlarmPopup::setupUi(const QString &title, const QString &description,
     cardLayout->addWidget(m_descLabel);
 
     /* Value display */
-    m_valueLabel = new QLabel(tr("Value: %1 %2  |  Threshold: %3 %2")
+    m_valueLabel = new QLabel(tr("当前值: %1 %2  |  阈值: %3 %2")
         .arg(currentValue, 0, 'f', 2)
         .arg(unit)
         .arg(threshold, 0, 'f', 2));
@@ -97,7 +97,7 @@ void AlarmPopup::setupUi(const QString &title, const QString &description,
     /* Acknowledge button */
     QHBoxLayout *btnRow = new QHBoxLayout();
     btnRow->addStretch();
-    m_ackBtn = new QPushButton(tr("ACKNOWLEDGE"));
+    m_ackBtn = new QPushButton(tr("确认"));
     m_ackBtn->setObjectName("acknowledge");
     m_ackBtn->setFixedHeight(34);
     m_ackBtn->setMinimumWidth(140);

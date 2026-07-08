@@ -34,10 +34,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake
+CMAKE_COMMAND = /opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake
 
 # The command to remove a file.
-RM = /opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -E remove -f
+RM = /opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -55,7 +55,7 @@ include CMakeFiles/battery_hmi_autogen.dir/progress.make
 
 CMakeFiles/battery_hmi_autogen:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target battery_hmi"
-	/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -E cmake_autogen /home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi_autogen.dir/AutogenInfo.json ""
+	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -E cmake_autogen /home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi_autogen.dir/AutogenInfo.json MinSizeRel
 
 battery_hmi_autogen: CMakeFiles/battery_hmi_autogen
 battery_hmi_autogen: CMakeFiles/battery_hmi_autogen.dir/build.make

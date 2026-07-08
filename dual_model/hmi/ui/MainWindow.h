@@ -1,5 +1,5 @@
 /*===========================================================================
- * MainWindow.h — Central HMI orchestrator (v2.0 — 3-screen wizard)
+ * MainWindow.h — Central HMI orchestrator (v3.0 — 1920×1080 oscilloscope)
  *
  * Owns and coordinates:
  *   - DataProvider (SPI / file / demo)
@@ -8,15 +8,16 @@
  *   - QStackedWidget with 3 screens:
  *       Screen 0: InitScreen      — progress bar + "Start Test"
  *       Screen 1: ModelSelectScreen — PINN vs CNN choice
- *       Screen 2: ResultScreen    — unified 5-element display
+ *       Screen 2: ResultScreen    — oscilloscope V/A chart + digital readouts
  *
  * Flow:
  *   InitScreen → startTestClicked → ModelSelectScreen
  *   ModelSelectScreen → modelSelected → ResultScreen (timers start)
  *   ResultScreen → backClicked → ModelSelectScreen (timers stop)
  *
- * PINN mode:  SOH convergence → auto-stop
- * CNN mode:   continuous RUL updates → manual stop
+ * v3.0: Default 1920×1080 fullscreen, light theme, oscilloscope V/A display.
+ *       Voltage (blue) + Current (red) vs Time — primary chart.
+ *       IC curve still available but secondary.
  *===========================================================================*/
 #ifndef HMI_UI_MAIN_WINDOW_H
 #define HMI_UI_MAIN_WINDOW_H

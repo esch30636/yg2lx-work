@@ -34,10 +34,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake
+CMAKE_COMMAND = /opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake
 
 # The command to remove a file.
-RM = /opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -E remove -f
+RM = /opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =

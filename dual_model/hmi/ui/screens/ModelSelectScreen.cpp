@@ -23,7 +23,7 @@ void ModelSelectScreen::setupUi()
     layout->setSpacing(20);
 
     /* ── Title ── */
-    m_titleLabel = new QLabel(tr("Select Inference Model"));
+    m_titleLabel = new QLabel(tr("选择推理模型"));
     m_titleLabel->setAlignment(Qt::AlignCenter);
     m_titleLabel->setStyleSheet(QString(
         "color: %1; font-size: 22px; font-weight: bold;"
@@ -48,7 +48,7 @@ void ModelSelectScreen::setupUi()
     ).arg(COLOR_TEXT));
 
     /* Use rich text layout inside button */
-    m_pinnButton->setText(tr("PINN  Fast Assessment\nSOH  ·  Seconds to Converge"));
+    m_pinnButton->setText(tr("PINN  快速评估\nSOH  ·  秒级收敛"));
 
     layout->addWidget(m_pinnButton);
 
@@ -69,7 +69,7 @@ void ModelSelectScreen::setupUi()
         "}"
     ).arg(COLOR_TEXT));
 
-    m_cnnButton->setText(tr("CNN  Deep Analysis\nRUL  ·  Full Cycle Assessment"));
+    m_cnnButton->setText(tr("CNN  深度分析\nRUL  ·  全周期评估"));
 
     layout->addWidget(m_cnnButton);
 

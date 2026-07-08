@@ -1,9 +1,9 @@
-set(CMAKE_HOST_SYSTEM "Linux-6.8.0-124-generic")
+set(CMAKE_HOST_SYSTEM "Linux-6.8.0-134-generic")
 set(CMAKE_HOST_SYSTEM_NAME "Linux")
-set(CMAKE_HOST_SYSTEM_VERSION "6.8.0-124-generic")
+set(CMAKE_HOST_SYSTEM_VERSION "6.8.0-134-generic")
 set(CMAKE_HOST_SYSTEM_PROCESSOR "x86_64")
 
-include("/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/share/cmake/OEToolchainConfig.cmake")
+include("/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/share/cmake/OEToolchainConfig.cmake")
 
 set(CMAKE_SYSTEM "Linux")
 set(CMAKE_SYSTEM_NAME "Linux")

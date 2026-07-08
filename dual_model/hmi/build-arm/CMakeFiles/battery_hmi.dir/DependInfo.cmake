@@ -24,11 +24,11 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "battery_hmi_autogen/include"
   "../../include"
   "../"
-  "/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/QtCore"
-  "/opt/yg2lx/sysroots/aarch64-poky-linux/usr/lib64/mkspecs/linux-oe-g++"
-  "/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/QtGui"
-  "/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/QtWidgets"
-  "/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/QtCharts"
+  "/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore"
+  "/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/lib64/mkspecs/linux-oe-g++"
+  "/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui"
+  "/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets"
+  "/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCharts"
   )
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/legion/yg2lx-work/dual_model/hmi/build-arm/battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp.o"
@@ -43,10 +43,11 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/ui/AlarmIndicator.cpp.o"
   "/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmPopup.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/ui/AlarmPopup.cpp.o"
   "/home/legion/yg2lx-work/dual_model/hmi/ui/ChartWidget.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/ui/ChartWidget.cpp.o"
-  "/home/legion/yg2lx-work/dual_model/hmi/ui/CycleProgressBar.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/ui/CycleProgressBar.cpp.o"
   "/home/legion/yg2lx-work/dual_model/hmi/ui/MainWindow.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/ui/MainWindow.cpp.o"
   "/home/legion/yg2lx-work/dual_model/hmi/ui/StatusPanel.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/ui/StatusPanel.cpp.o"
-  "/home/legion/yg2lx-work/dual_model/hmi/ui/StorageWidget.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/ui/StorageWidget.cpp.o"
+  "/home/legion/yg2lx-work/dual_model/hmi/ui/screens/InitScreen.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o"
+  "/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ModelSelectScreen.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/ui/screens/ModelSelectScreen.cpp.o"
+  "/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/ui/screens/ResultScreen.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -64,11 +65,11 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "battery_hmi_autogen/include"
   "../../include"
   "../"
-  "/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/QtCore"
-  "/opt/yg2lx/sysroots/aarch64-poky-linux/usr/lib64/mkspecs/linux-oe-g++"
-  "/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/QtGui"
-  "/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/QtWidgets"
-  "/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/QtCharts"
+  "/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore"
+  "/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/lib64/mkspecs/linux-oe-g++"
+  "/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui"
+  "/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets"
+  "/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCharts"
   )
 
 # Targets to which this target links.

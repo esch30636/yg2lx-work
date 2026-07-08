@@ -1,5 +1,8 @@
 /*===========================================================================
- * MainWindow.cpp — Central HMI orchestrator implementation (v2.0)
+ * MainWindow.cpp — Central HMI orchestrator implementation (v3.0)
+ *
+ * v3.0: 1920×1080 fullscreen, light theme, oscilloscope V/A vs time display.
+ *       Voltage (blue) + Current (red) traces with digital readout bar.
  *===========================================================================*/
 #include "MainWindow.h"
 #include "config/AppConfig.h"
@@ -92,23 +95,23 @@ void MainWindow::setupUi()
     mainVBox->setContentsMargins(0, 0, 0, 0);
     mainVBox->setSpacing(0);
 
-    /* ── Header bar (compact) ── */
+    /* ── Header bar (compact, light) ── */
     QWidget *header = new QWidget();
     header->setObjectName("headerBar");
     header->setFixedHeight(HEADER_HEIGHT);
 
     QHBoxLayout *headerLayout = new QHBoxLayout(header);
-    headerLayout->setContentsMargins(12, 4, 12, 4);
-    headerLayout->setSpacing(12);
+    headerLayout->setContentsMargins(16, 6, 16, 6);
+    headerLayout->setSpacing(16);
 
-    m_headerTitle = new QLabel(tr("BATTERY HMI v2.0"));
-    m_headerTitle->setStyleSheet(QString("color: %1; font-size: 16px; font-weight: bold;").arg(COLOR_TEXT));
+    m_headerTitle = new QLabel(tr("电池监测 HMI v3.0"));
+    m_headerTitle->setStyleSheet(QString("color: %1; font-size: 18px; font-weight: bold;").arg(COLOR_TEXT));
     headerLayout->addWidget(m_headerTitle);
 
     headerLayout->addStretch();
 
     m_headerClock = new QLabel("00:00:00");
-    m_headerClock->setStyleSheet(QString("color: %1; font-size: 13px;").arg(COLOR_TEXT_DIM));
+    m_headerClock->setStyleSheet(QString("color: %1; font-size: 15px;").arg(COLOR_TEXT_DIM));
     headerLayout->addWidget(m_headerClock);
 
     /* Alarm indicator (red dot, blinks on alert) */
@@ -133,7 +136,7 @@ void MainWindow::setupUi()
             this, &MainWindow::onModelSelected);
     m_stack->addWidget(m_modelSelectScreen);  /* index 1 */
 
-    /* Screen 2: Result */
+    /* Screen 2: Result (oscilloscope) */
     m_resultScreen = new ResultScreen();
     connect(m_resultScreen, &ResultScreen::backClicked,
             this, &MainWindow::onBackToModelSelect);
@@ -146,16 +149,17 @@ void MainWindow::setupUi()
     /* ── Status bar ── */
     QStatusBar *statusBar = new QStatusBar();
     statusBar->setStyleSheet(QString(
-        "QStatusBar { background-color: #0a0a1a; color: %1; border-top: 1px solid %2; font-size: 11px; }"
+        "QStatusBar { background-color: #FFFFFF; color: %1; border-top: 1px solid %2; font-size: 12px; }"
     ).arg(COLOR_TEXT_DIM).arg(COLOR_BORDER));
-    statusBar->showMessage(tr("Data: %1").arg(m_dataProvider->name()));
+    statusBar->showMessage(tr("数据源: %1").arg(m_dataProvider->name()));
     setStatusBar(statusBar);
 
     setCentralWidget(central);
 
-    /* Fixed size 640×480 */
-    setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-    setWindowTitle(QString("Battery HMI v2.0 — %1").arg(m_dataProvider->name()));
+    /* v3.0: Window is resizable (1920×1080 native, fullscreen on embedded) */
+    setMinimumSize(1024, 600);
+    resize(WINDOW_WIDTH, WINDOW_HEIGHT);
+    setWindowTitle(QString("电池监测 HMI v3.0 — %1").arg(m_dataProvider->name()));
 
     /* Start on init screen */
     m_stack->setCurrentIndex(0);
@@ -206,7 +210,7 @@ void MainWindow::onModelSelected(int model)
     /* Configure result screen */
     m_resultScreen->setMode(model == 0 ? ResultScreen::PINN : ResultScreen::CNN);
 
-    /* Switch to result screen */
+    /* Switch to oscilloscope result screen */
     m_stack->setCurrentIndex(2);
 
     /* Start data acquisition + inference */
@@ -222,7 +226,7 @@ void MainWindow::onBackToModelSelect()
     m_resultScreen->setHealth(0.0f, 0.0f);
     m_resultScreen->setTemperature(0.0f);
     m_resultScreen->setSwelling(false);
-    m_resultScreen->setStatus(tr("Ready"));
+    m_resultScreen->setStatus(tr("就绪"));
 
     m_stack->setCurrentIndex(1);
 }
@@ -235,7 +239,7 @@ void MainWindow::onStopRequested()
     } else {
         printf("[HMI] Stop requested by user\n");
         stopAcquisition();
-        m_resultScreen->setStatus(tr("Stopped"));
+        m_resultScreen->setStatus(tr("已停止"));
     }
 }
 
@@ -265,7 +269,7 @@ void MainWindow::startAcquisition(int model)
         connect(m_pinnTimer, &QTimer::timeout, this, &MainWindow::onPinnInference);
         m_pinnTimer->start();
 
-        m_resultScreen->setStatus(tr("PINN mode — acquiring SOH..."));
+        m_resultScreen->setStatus(tr("PINN 模式 — 采集 SOH..."));
         printf("[HMI] PINN acquisition started (data=100ms, pinn=500ms)\n");
     } else {
         /* ── CNN mode: 2 s inference via worker thread ── */
@@ -280,7 +284,7 @@ void MainWindow::startAcquisition(int model)
         });
         m_cnnTimer->start();
 
-        m_resultScreen->setStatus(tr("CNN mode — acquiring RUL..."));
+        m_resultScreen->setStatus(tr("CNN 模式 — 采集 RUL..."));
         printf("[HMI] CNN acquisition started (data=100ms, cnn=2000ms)\n");
     }
 }
@@ -310,6 +314,8 @@ void MainWindow::stopAcquisition()
 
 /* ═══════════════════════════════════════════════════════════════════
  * Data acquisition (shared by both modes)
+ * v3.0: Feeds voltage/current to oscilloscope chart as primary display.
+ *       IC curve still updated but secondary.
  * ═══════════════════════════════════════════════════════════════════ */
 
 void MainWindow::onDataAcquisition()
@@ -322,9 +328,7 @@ void MainWindow::onDataAcquisition()
     m_latestSample = sample;
     m_elapsedSec = m_elapsedTimer.elapsed() / 1000.0;
 
-    /* Ensure features[128..131] are consistent with scalar telemetry.
-     * This guarantees correctness regardless of RA8 firmware version
-     * or data source quirks. */
+    /* Ensure features[128..131] are consistent with scalar telemetry */
     DataProvider::fixFeatures(m_latestSample, BATTERY_NOMINAL_V, BATTERY_NOMINAL_MAH);
 
     /* Heartbeat log every 1 second */
@@ -341,8 +345,16 @@ void MainWindow::onDataAcquisition()
     /* ── Alarm checks (every tick = 10 Hz, with hysteresis) ── */
     checkAlarms(sample);
 
-    /* Update IC curve (always) */
-    m_resultScreen->setIcCurve(sample.ic_curve);
+    /* ── v3.0: Primary display = oscilloscope V/A vs time ── */
+    m_resultScreen->appendOscilloscopeData(m_elapsedSec,
+                                            static_cast<double>(sample.voltage),
+                                            static_cast<double>(sample.current));
+
+    /* ── Update IC curve (every 5th tick = 2 Hz, secondary) ── */
+    static int icTick = 0;
+    if (++icTick % 5 == 0) {
+        m_resultScreen->setIcCurve(sample.ic_curve);
+    }
 
     /* Update temperature (every 5th tick = 2 Hz) */
     static int auxTick = 0;
@@ -381,7 +393,7 @@ void MainWindow::onPinnInference()
 
     /* Show sample count / window status */
     if (!stats.window_full) {
-        m_resultScreen->setStatus(tr("Stabilizing... %1/%2 samples")
+        m_resultScreen->setStatus(tr("稳定中... %1/%2 样本")
                                   .arg(stats.sample_count)
                                   .arg(SOH_WINDOW_SIZE));
     }
@@ -401,9 +413,9 @@ void MainWindow::onPinnInference()
             /* Show final value in header */
             int sohPct = static_cast<int>(cs.final_soh * 100.0f);
             int ciPct  = static_cast<int>(cs.final_ci_half * 100.0f);
-            m_headerTitle->setText(tr("BATTERY HMI  —  SOH: %1% ±%2%  ✓")
+            m_headerTitle->setText(tr("电池监测  —  SOH: %1% ±%2%  ✓")
                                    .arg(sohPct).arg(ciPct));
-            m_headerTitle->setStyleSheet(QString("color: %1; font-size: 16px; font-weight: bold;")
+            m_headerTitle->setStyleSheet(QString("color: %1; font-size: 18px; font-weight: bold;")
                                          .arg(COLOR_HEALTHY_GREEN));
 
             /* Stop PINN timer (keep data timer running for display) */
@@ -414,7 +426,7 @@ void MainWindow::onPinnInference()
             printf("[HMI] PINN CONVERGED: SOH=%.3f ±%.4f (σ=%.5f, %d samples)\n",
                    cs.final_soh, cs.final_ci_half, cs.current_stddev, cs.samples_used);
         } else if (cs.stable_count > 0) {
-            m_resultScreen->setStatus(tr("Converging... σ=%1 (stable: %2/%3)")
+            m_resultScreen->setStatus(tr("收敛中... σ=%1 (稳定: %2/%3)")
                                       .arg(cs.current_stddev, 0, 'f', 4)
                                       .arg(cs.stable_count)
                                       .arg(CONVERGENCE_STABLE_CHECKS));
@@ -437,9 +449,9 @@ void MainWindow::onCnnResult(int stage, QVector<float> probs, float rul)
     m_resultScreen->setHealth(rul, probs[stage]);  /* max stage prob as confidence */
 
     /* Update status with stage info */
-    static const char *stageNames[] = { "HEALTHY", "DEGRADING", "EOL" };
+    static const char *stageNames[] = { "健康", "退化", "寿命终止" };
     if (stage >= 0 && stage < 3) {
-        m_resultScreen->setStatus(tr("Stage: %1 (RUL: %2%)  |  Data: %3 samples")
+        m_resultScreen->setStatus(tr("阶段: %1 (RUL: %2%)  |  数据: %3 样本")
                                   .arg(stageNames[stage])
                                   .arg(static_cast<int>(rul * 100.0f))
                                   .arg(m_sohAccumulator.count() + 1));
@@ -455,7 +467,7 @@ void MainWindow::onCnnResult(int stage, QVector<float> probs, float rul)
 
 void MainWindow::onCnnError(const QString &msg)
 {
-    statusBar()->showMessage(tr("CNN Error: %1").arg(msg), 5000);
+    statusBar()->showMessage(tr("CNN 错误: %1").arg(msg), 5000);
     printf("[HMI] CNN ERROR: %s\n", qPrintable(msg));
 }
 
@@ -476,8 +488,8 @@ void MainWindow::checkAlarms(const BatterySample &sample)
         m_alarmState.over_temp_value = sample.temperature;
         m_alarmIndicator->triggerAlarm(
             AlarmPopup::OverTemperature,
-            "Over-Temperature",
-            "Battery temperature exceeds safe limit!",
+            "过温警报",
+            "电池温度超过安全限值!",
             sample.temperature, ALARM_TEMP_MAX_C
         );
     } else if (sample.temperature <= ALARM_TEMP_MAX_C * 0.9f && m_alarmState.over_temp) {
@@ -490,8 +502,8 @@ void MainWindow::checkAlarms(const BatterySample &sample)
         m_alarmState.over_voltage_value = sample.voltage;
         m_alarmIndicator->triggerAlarm(
             AlarmPopup::OverVoltage,
-            "Over-Voltage",
-            "Battery voltage exceeds safe charging limit!",
+            "过压警报",
+            "电池电压超过充电安全限值!",
             sample.voltage, ALARM_VOLTAGE_MAX_V
         );
     } else if (sample.voltage <= ALARM_VOLTAGE_MAX_V * 0.95f && m_alarmState.over_voltage) {
@@ -504,8 +516,8 @@ void MainWindow::checkAlarms(const BatterySample &sample)
         m_alarmState.over_current_value = std::fabs(sample.current);
         m_alarmIndicator->triggerAlarm(
             AlarmPopup::OverCurrent,
-            "Over-Current",
-            "Charge/discharge current exceeds rated limit!",
+            "过流警报",
+            "充放电电流超过额定限值!",
             std::fabs(sample.current), ALARM_CURRENT_MAX_A
         );
     } else if (std::fabs(sample.current) <= ALARM_CURRENT_MAX_A * 0.9f && m_alarmState.over_current) {
@@ -518,8 +530,8 @@ void MainWindow::checkAlarms(const BatterySample &sample)
         m_alarmState.cell_swelling_value = sample.cell_swelling;
         m_alarmIndicator->triggerAlarm(
             AlarmPopup::CellSwelling,
-            "Cell Swelling Detected",
-            "Battery cell deformation sensor triggered!",
+            "电池膨胀警报",
+            "电池电芯形变传感器触发!",
             sample.cell_swelling * 100.0f, ALARM_SWELLING_THRESH * 100.0f
         );
     } else if (sample.cell_swelling <= ALARM_SWELLING_THRESH * 0.5f && m_alarmState.cell_swelling) {
@@ -532,8 +544,8 @@ void MainWindow::checkAlarms(const BatterySample &sample)
         m_alarmState.soh_value = m_latestSoh;
         m_alarmIndicator->triggerAlarm(
             AlarmPopup::SohCritical,
-            "SOH Critical",
-            "Battery state of health critically low! Immediate replacement recommended.",
+            "SOH 严重衰减",
+            "电池健康状态严重劣化! 建议立即更换。",
             m_latestSoh, ALARM_SOH_CRITICAL
         );
     } else if (m_latestSoh >= ALARM_SOH_CRITICAL && m_alarmState.soh_critical) {

@@ -1,5 +1,9 @@
 /*===========================================================================
- * ChartWidget.cpp — Real-time chart implementation (dual-mode)
+ * ChartWidget.cpp — Real-time oscilloscope chart implementation (v3.0)
+ *
+ * v3.0: Default Voltage/Current oscilloscope mode for 1920×1080 light theme.
+ *       Voltage trace in blue, Current trace in red-orange.
+ *       Oscilloscope-style grid, dark axis labels on light background.
  *===========================================================================*/
 #include "ChartWidget.h"
 #include "config/AppConfig.h"
@@ -23,6 +27,8 @@ ChartWidget::ChartWidget(QWidget *parent)
     , m_mode(VoltageCurrent)
     , m_timeOffset(0.0)
     , m_lastTime(0.0)
+    , m_lastVoltage(0.0)
+    , m_lastCurrent(0.0)
 {
     setupChart();
 }
@@ -33,50 +39,74 @@ void ChartWidget::setupChart()
 {
     /* ── Chart ── */
     m_chart = new QChart();
-    m_chart->setTitleBrush(QColor(COLOR_TEXT_DIM));
-    m_chart->setBackgroundBrush(QColor(COLOR_BG_PANEL));
-    m_chart->setBackgroundRoundness(6);
+    m_chart->setBackgroundBrush(QColor(COLOR_CHART_BG));
+    m_chart->setBackgroundRoundness(0);
     m_chart->legend()->setVisible(true);
-    m_chart->legend()->setLabelColor(QColor(COLOR_TEXT_DIM));
+    m_chart->legend()->setLabelColor(QColor(COLOR_TEXT));
     m_chart->legend()->setAlignment(Qt::AlignTop);
+    m_chart->legend()->setFont(QFont(FONT_FAMILY, FONT_SIZE_DEFAULT));
     m_chart->setAnimationOptions(QChart::NoAnimation);  /* critical for real-time perf */
-    m_chart->setMargins(QMargins(4, 4, 4, 4));
+    m_chart->setMargins(QMargins(8, 8, 8, 8));
 
     /* ── Chart View ── */
     m_chartView = new QChartView(m_chart, this);
     m_chartView->setRenderHint(QPainter::Antialiasing, false);
-    /* NOTE: Antialiasing disabled for embedded Mali-G31 — prevents GPU
-     * driver state corruption on EGLFS after sustained rendering */
-    m_chartView->setBackgroundBrush(QColor(COLOR_BG_PANEL));
+    /* NOTE: Antialiasing disabled for embedded Mali-G31 */
+    m_chartView->setBackgroundBrush(QColor(COLOR_CHART_BG));
 
     /* Layout */
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(m_chartView);
 
-    /* Start in IC curve mode (primary mode for new UI) */
-    setMode(IcCurve);
+    /* Start in oscilloscope mode (V/A vs time) — v3.0 default */
+    setMode(VoltageCurrent);
+}
+
+void ChartWidget::applyOscilloscopeStyle()
+{
+    /* ── Oscilloscope-style grid: subtle horizontal + vertical grid lines ── */
+    if (m_axisX) {
+        m_axisX->setGridLineColor(QColor(COLOR_CHART_GRID));
+        m_axisX->setMinorGridLineColor(QColor("#E8E8EE"));
+        m_axisX->setGridLinePen(QPen(QColor(COLOR_CHART_GRID), 1.0, Qt::DashLine));
+    }
+    if (m_axisY_voltage) {
+        m_axisY_voltage->setGridLineColor(QColor(COLOR_CHART_GRID));
+        m_axisY_voltage->setMinorGridLineColor(QColor("#E8E8EE"));
+        m_axisY_voltage->setGridLinePen(QPen(QColor(COLOR_CHART_GRID), 1.0, Qt::DashLine));
+    }
 }
 
 void ChartWidget::setMode(Mode mode)
 {
-    if (m_mode == mode && m_icSeries != nullptr)
+    if (m_mode == mode && m_voltageSeries != nullptr)
         return;
 
     m_mode = mode;
 
     /* Remove all series and axes */
     m_chart->removeAllSeries();
-    /* Remove all axes (removeAxis needs the pointer) */
     const auto axes = m_chart->axes();
     for (auto *axis : axes)
         m_chart->removeAxis(axis);
 
-    /* Hide legend in IC mode (single series) */
+    /* Null out pointers */
+    m_voltageSeries = nullptr;
+    m_currentSeries = nullptr;
+    m_axisY_voltage = nullptr;
+    m_axisY_current = nullptr;
+    m_axisX = nullptr;
+    m_icSeries = nullptr;
+    m_axisY_ic = nullptr;
+    m_axisX_ic = nullptr;
+
+    /* Show legend in oscilloscope mode (two traces) */
     m_chart->legend()->setVisible(mode == VoltageCurrent);
 
     if (mode == VoltageCurrent) {
         setupVoltageCurrentMode();
+        applyOscilloscopeStyle();
     } else {
         setupIcCurveMode();
     }
@@ -84,29 +114,42 @@ void ChartWidget::setMode(Mode mode)
 
 void ChartWidget::setupVoltageCurrentMode()
 {
-    m_chart->setTitle(tr("Charge / Discharge Curves"));
+    m_chart->setTitle(tr("电压 / 电流 — 实时监测"));
 
-    /* ── Series ── */
+    QFont titleFont(FONT_FAMILY, FONT_SIZE_CHART_TITLE);
+    titleFont.setBold(true);
+    m_chart->setTitleFont(titleFont);
+    m_chart->setTitleBrush(QColor(COLOR_TEXT));
+
+    /* ── Voltage series (blue) ── */
     m_voltageSeries = new QLineSeries(this);
-    m_voltageSeries->setName(tr("Voltage (V)"));
-    m_voltageSeries->setColor(QColor(COLOR_ACCENT_CYAN));
-    m_voltageSeries->setPen(QPen(QColor(COLOR_ACCENT_CYAN), 2.0));
+    m_voltageSeries->setName(tr("电压 (V)"));
+    m_voltageSeries->setColor(QColor(COLOR_CHART_VOLTAGE));
+    m_voltageSeries->setPen(QPen(QColor(COLOR_CHART_VOLTAGE), 2.5));
 
+    /* ── Current series (red-orange) ── */
     m_currentSeries = new QLineSeries(this);
-    m_currentSeries->setName(tr("Current (A)"));
-    m_currentSeries->setColor(QColor(COLOR_ACCENT_ORANGE));
-    m_currentSeries->setPen(QPen(QColor(COLOR_ACCENT_ORANGE), 2.0));
+    m_currentSeries->setName(tr("电流 (A)"));
+    m_currentSeries->setColor(QColor(COLOR_CHART_CURRENT));
+    m_currentSeries->setPen(QPen(QColor(COLOR_CHART_CURRENT), 2.5));
 
     m_chart->addSeries(m_voltageSeries);
     m_chart->addSeries(m_currentSeries);
 
+    QFont axisLabelFont(FONT_FAMILY, FONT_SIZE_CHART_AXIS);
+    QFont axisTitleFont(FONT_FAMILY, FONT_SIZE_DEFAULT);
+    axisTitleFont.setBold(true);
+
     /* ── Y-axis: Voltage (left) ── */
     m_axisY_voltage = new QValueAxis(this);
-    m_axisY_voltage->setTitleText(tr("Voltage (V)"));
-    m_axisY_voltage->setTitleBrush(QColor(COLOR_ACCENT_CYAN));
-    m_axisY_voltage->setLabelsColor(QColor(COLOR_ACCENT_CYAN));
-    m_axisY_voltage->setGridLineColor(QColor("#2a2a4a"));
-    m_axisY_voltage->setLinePenColor(QColor(COLOR_ACCENT_CYAN));
+    m_axisY_voltage->setTitleText(tr("电压 (V)"));
+    m_axisY_voltage->setTitleFont(axisTitleFont);
+    m_axisY_voltage->setLabelsFont(axisLabelFont);
+    m_axisY_voltage->setTitleBrush(QColor(COLOR_CHART_VOLTAGE));
+    m_axisY_voltage->setLabelsColor(QColor(COLOR_CHART_VOLTAGE));
+    m_axisY_voltage->setGridLineColor(QColor(COLOR_CHART_GRID));
+    m_axisY_voltage->setLinePenColor(QColor(COLOR_CHART_VOLTAGE));
+    m_axisY_voltage->setLinePen(QPen(QColor(COLOR_CHART_VOLTAGE), 1.5));
     m_axisY_voltage->setRange(0.0, 5.0);
     m_axisY_voltage->setTickCount(6);
     m_chart->addAxis(m_axisY_voltage, Qt::AlignLeft);
@@ -114,24 +157,31 @@ void ChartWidget::setupVoltageCurrentMode()
 
     /* ── Y-axis: Current (right) ── */
     m_axisY_current = new QValueAxis(this);
-    m_axisY_current->setTitleText(tr("Current (A)"));
-    m_axisY_current->setTitleBrush(QColor(COLOR_ACCENT_ORANGE));
-    m_axisY_current->setLabelsColor(QColor(COLOR_ACCENT_ORANGE));
+    m_axisY_current->setTitleText(tr("电流 (A)"));
+    m_axisY_current->setTitleFont(axisTitleFont);
+    m_axisY_current->setLabelsFont(axisLabelFont);
+    m_axisY_current->setTitleBrush(QColor(COLOR_CHART_CURRENT));
+    m_axisY_current->setLabelsColor(QColor(COLOR_CHART_CURRENT));
     m_axisY_current->setGridLineVisible(false);
-    m_axisY_current->setLinePenColor(QColor(COLOR_ACCENT_ORANGE));
+    m_axisY_current->setLinePenColor(QColor(COLOR_CHART_CURRENT));
+    m_axisY_current->setLinePen(QPen(QColor(COLOR_CHART_CURRENT), 1.5));
     m_axisY_current->setRange(-150.0, 150.0);
     m_axisY_current->setTickCount(7);
     m_chart->addAxis(m_axisY_current, Qt::AlignRight);
     m_currentSeries->attachAxis(m_axisY_current);
 
-    /* ── X-axis: Time ── */
+    /* ── X-axis: Time (seconds) ── */
     m_axisX = new QValueAxis(this);
-    m_axisX->setTitleText(tr("Time (s)"));
-    m_axisX->setTitleBrush(QColor(COLOR_TEXT_DIM));
-    m_axisX->setLabelsColor(QColor(COLOR_TEXT_DIM));
-    m_axisX->setGridLineColor(QColor("#2a2a4a"));
+    m_axisX->setTitleText(tr("时间 (s)"));
+    m_axisX->setTitleFont(axisTitleFont);
+    m_axisX->setLabelsFont(axisLabelFont);
+    m_axisX->setTitleBrush(QColor(COLOR_CHART_AXIS));
+    m_axisX->setLabelsColor(QColor(COLOR_CHART_AXIS));
+    m_axisX->setGridLineColor(QColor(COLOR_CHART_GRID));
+    m_axisX->setLinePenColor(QColor(COLOR_CHART_AXIS));
+    m_axisX->setLinePen(QPen(QColor(COLOR_CHART_AXIS), 1.5));
     m_axisX->setRange(0.0, static_cast<double>(CHART_WINDOW_SECONDS));
-    m_axisX->setTickCount(6);
+    m_axisX->setTickCount(7);
     m_axisX->setLabelFormat("%.0f");
     m_chart->addAxis(m_axisX, Qt::AlignBottom);
     m_voltageSeries->attachAxis(m_axisX);
@@ -140,32 +190,48 @@ void ChartWidget::setupVoltageCurrentMode()
 
 void ChartWidget::setupIcCurveMode()
 {
-    m_chart->setTitle(tr("IC Curve (dQ/dV)"));
+    m_chart->setTitle(tr("IC 曲线 (dQ/dV)"));
+
+    QFont titleFont(FONT_FAMILY, FONT_SIZE_CHART_TITLE);
+    titleFont.setBold(true);
+    m_chart->setTitleFont(titleFont);
+    m_chart->setTitleBrush(QColor(COLOR_TEXT));
+
+    QFont axisLabelFont(FONT_FAMILY, FONT_SIZE_CHART_AXIS);
+    QFont axisTitleFont(FONT_FAMILY, FONT_SIZE_DEFAULT);
+    axisTitleFont.setBold(true);
 
     /* ── IC series ── */
     m_icSeries = new QLineSeries(this);
     m_icSeries->setName(tr("dQ/dV"));
-    m_icSeries->setColor(QColor(COLOR_ACCENT_CYAN));
-    m_icSeries->setPen(QPen(QColor(COLOR_ACCENT_CYAN), 2.0));
+    m_icSeries->setColor(QColor(COLOR_CHART_VOLTAGE));
+    m_icSeries->setPen(QPen(QColor(COLOR_CHART_VOLTAGE), 2.5));
     m_chart->addSeries(m_icSeries);
 
     /* ── Y-axis: dQ/dV ── */
     m_axisY_ic = new QValueAxis(this);
     m_axisY_ic->setTitleText(tr("dQ/dV"));
-    m_axisY_ic->setTitleBrush(QColor(COLOR_ACCENT_CYAN));
-    m_axisY_ic->setLabelsColor(QColor(COLOR_ACCENT_CYAN));
-    m_axisY_ic->setGridLineColor(QColor("#2a2a4a"));
-    m_axisY_ic->setLinePenColor(QColor(COLOR_ACCENT_CYAN));
+    m_axisY_ic->setTitleFont(axisTitleFont);
+    m_axisY_ic->setLabelsFont(axisLabelFont);
+    m_axisY_ic->setTitleBrush(QColor(COLOR_CHART_VOLTAGE));
+    m_axisY_ic->setLabelsColor(QColor(COLOR_CHART_VOLTAGE));
+    m_axisY_ic->setGridLineColor(QColor(COLOR_CHART_GRID));
+    m_axisY_ic->setLinePenColor(QColor(COLOR_CHART_VOLTAGE));
+    m_axisY_ic->setLinePen(QPen(QColor(COLOR_CHART_VOLTAGE), 1.5));
     m_axisY_ic->setTickCount(5);
     m_chart->addAxis(m_axisY_ic, Qt::AlignLeft);
     m_icSeries->attachAxis(m_axisY_ic);
 
     /* ── X-axis: Voltage (fixed 2.5–3.65V for 128-point IC curve) ── */
     m_axisX_ic = new QValueAxis(this);
-    m_axisX_ic->setTitleText(tr("Voltage (V)"));
-    m_axisX_ic->setTitleBrush(QColor(COLOR_TEXT_DIM));
-    m_axisX_ic->setLabelsColor(QColor(COLOR_TEXT_DIM));
-    m_axisX_ic->setGridLineColor(QColor("#2a2a4a"));
+    m_axisX_ic->setTitleText(tr("电压 (V)"));
+    m_axisX_ic->setTitleFont(axisTitleFont);
+    m_axisX_ic->setLabelsFont(axisLabelFont);
+    m_axisX_ic->setTitleBrush(QColor(COLOR_CHART_AXIS));
+    m_axisX_ic->setLabelsColor(QColor(COLOR_CHART_AXIS));
+    m_axisX_ic->setGridLineColor(QColor(COLOR_CHART_GRID));
+    m_axisX_ic->setLinePenColor(QColor(COLOR_CHART_AXIS));
+    m_axisX_ic->setLinePen(QPen(QColor(COLOR_CHART_AXIS), 1.5));
     m_axisX_ic->setRange(2.5, 3.65);
     m_axisX_ic->setTickCount(6);
     m_axisX_ic->setLabelFormat("%.2f");
@@ -200,9 +266,8 @@ void ChartWidget::setIcCurve(const float ic[128])
         if (ic[i] < yMin) yMin = ic[i];
         if (ic[i] > yMax) yMax = ic[i];
     }
-    /* Add 10% padding */
     float yPad = (yMax - yMin) * 0.10f;
-    if (yPad < 0.001f) yPad = 1.0f;  /* flat curve fallback */
+    if (yPad < 0.001f) yPad = 1.0f;
     m_axisY_ic->setRange(static_cast<double>(yMin - yPad),
                          static_cast<double>(yMax + yPad));
 }
@@ -218,6 +283,8 @@ void ChartWidget::appendData(double timeSec, double voltage, double current)
         m_currentSeries->append(timeSec, current);
 
     m_lastTime = timeSec;
+    m_lastVoltage = voltage;
+    m_lastCurrent = current;
 
     /* Remove points older than the rolling window */
     double cutoff = timeSec - static_cast<double>(CHART_WINDOW_SECONDS);
@@ -252,7 +319,7 @@ void ChartWidget::updateAxes(double timeSec)
 
     double window = static_cast<double>(CHART_WINDOW_SECONDS);
     double left = std::max(0.0, timeSec - window);
-    double right = std::max(window, timeSec + 5.0);
+    double right = std::max(window, timeSec + 2.0);
 
     if (right - left < window)
         right = left + window;
@@ -265,6 +332,8 @@ void ChartWidget::clear()
     if (m_voltageSeries) m_voltageSeries->clear();
     if (m_currentSeries) m_currentSeries->clear();
     if (m_icSeries)      m_icSeries->clear();
+    m_lastVoltage = 0.0;
+    m_lastCurrent = 0.0;
 }
 
 void ChartWidget::setTitle(const QString &title)

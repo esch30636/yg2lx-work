@@ -1,5 +1,8 @@
 /*===========================================================================
- * ResultScreen.cpp — Unified result screen implementation
+ * ResultScreen.cpp — Oscilloscope result screen implementation (v3.0)
+ *
+ * 1920×1080 light theme. Dominant oscilloscope chart (voltage/current vs time)
+ * with digital readout bar below it.
  *===========================================================================*/
 #include "ResultScreen.h"
 #include "config/AppConfig.h"
@@ -12,13 +15,13 @@ ResultScreen::ResultScreen(QWidget *parent)
     : QWidget(parent)
     , m_mode(PINN)
     , m_chartWidget(nullptr)
+    , m_voltReadoutValue(nullptr)
+    , m_currReadoutValue(nullptr)
+    , m_tempReadoutValue(nullptr)
     , m_healthTitle(nullptr)
     , m_healthValue(nullptr)
     , m_healthConfidence(nullptr)
     , m_healthBar(nullptr)
-    , m_tempLabel(nullptr)
-    , m_tempValue(nullptr)
-    , m_swellLabel(nullptr)
     , m_swellValue(nullptr)
     , m_statusLabel(nullptr)
     , m_backButton(nullptr)
@@ -35,112 +38,157 @@ void ResultScreen::setupUi()
     mainLayout->setContentsMargins(8, 4, 8, 4);
     mainLayout->setSpacing(4);
 
-    /* ── IC Curve chart ── */
+    /* ═══════════════════════════════════════════════════════════════
+     * 1. Oscilloscope Chart — dominant element (~780px)
+     * ═══════════════════════════════════════════════════════════════ */
     m_chartWidget = new ChartWidget();
     m_chartWidget->setObjectName("panel");
-    m_chartWidget->setMinimumHeight(IC_CHART_HEIGHT);
-    m_chartWidget->setMaximumHeight(IC_CHART_HEIGHT);
-    mainLayout->addWidget(m_chartWidget);
+    m_chartWidget->setMinimumHeight(CHART_AREA_HEIGHT);
+    mainLayout->addWidget(m_chartWidget, 1);  /* stretch factor 1 — takes all space */
 
-    /* ── Separator ── */
+    /* ── Thin separator ── */
     QFrame *sep1 = new QFrame();
     sep1->setFrameShape(QFrame::HLine);
     sep1->setStyleSheet(QString("color: %1;").arg(COLOR_BORDER));
     sep1->setFixedHeight(1);
     mainLayout->addWidget(sep1);
 
-    /* ── Health section ── */
-    QWidget *healthPanel = new QWidget();
-    healthPanel->setObjectName("panel");
-    QVBoxLayout *healthLayout = new QVBoxLayout(healthPanel);
-    healthLayout->setContentsMargins(12, 8, 12, 8);
-    healthLayout->setSpacing(4);
+    /* ═══════════════════════════════════════════════════════════════
+     * 2. Digital Readout Bar — oscilloscope-style numeric display
+     * ═══════════════════════════════════════════════════════════════ */
+    QWidget *readoutBar = new QWidget();
+    readoutBar->setObjectName("panel");
+    readoutBar->setFixedHeight(72);
+    QHBoxLayout *readoutLayout = new QHBoxLayout(readoutBar);
+    readoutLayout->setContentsMargins(20, 6, 20, 6);
+    readoutLayout->setSpacing(40);
 
-    /* Health header row: title + value + confidence */
-    QHBoxLayout *healthHeader = new QHBoxLayout();
+    /* ── Voltage readout ── */
+    QWidget *voltBox = new QWidget();
+    QHBoxLayout *voltLayout = new QHBoxLayout(voltBox);
+    voltLayout->setContentsMargins(0, 0, 0, 0);
+    voltLayout->setSpacing(12);
+    QLabel *voltLabel = new QLabel(tr("电压"));
+    voltLabel->setStyleSheet(QString("color: %1; font-size: 18px; font-weight: bold;").arg(COLOR_CHART_VOLTAGE));
+    m_voltReadoutValue = new QLabel("-- V");
+    m_voltReadoutValue->setObjectName("valueLarge");
+    m_voltReadoutValue->setStyleSheet(QString("color: %1; font-size: 36px; font-weight: bold;").arg(COLOR_CHART_VOLTAGE));
+    voltLayout->addWidget(voltLabel);
+    voltLayout->addWidget(m_voltReadoutValue);
+    readoutLayout->addWidget(voltBox);
+
+    /* Vertical separators */
+    QFrame *vSep1 = new QFrame();
+    vSep1->setFrameShape(QFrame::VLine);
+    vSep1->setStyleSheet(QString("color: %1;").arg(COLOR_BORDER));
+    readoutLayout->addWidget(vSep1);
+
+    /* ── Current readout ── */
+    QWidget *currBox = new QWidget();
+    QHBoxLayout *currLayout = new QHBoxLayout(currBox);
+    currLayout->setContentsMargins(0, 0, 0, 0);
+    currLayout->setSpacing(12);
+    QLabel *currLabel = new QLabel(tr("电流"));
+    currLabel->setStyleSheet(QString("color: %1; font-size: 18px; font-weight: bold;").arg(COLOR_CHART_CURRENT));
+    m_currReadoutValue = new QLabel("-- A");
+    m_currReadoutValue->setObjectName("valueLarge");
+    m_currReadoutValue->setStyleSheet(QString("color: %1; font-size: 36px; font-weight: bold;").arg(COLOR_CHART_CURRENT));
+    currLayout->addWidget(currLabel);
+    currLayout->addWidget(m_currReadoutValue);
+    readoutLayout->addWidget(currBox);
+
+    QFrame *vSep2 = new QFrame();
+    vSep2->setFrameShape(QFrame::VLine);
+    vSep2->setStyleSheet(QString("color: %1;").arg(COLOR_BORDER));
+    readoutLayout->addWidget(vSep2);
+
+    /* ── Temperature readout ── */
+    QWidget *tempBox = new QWidget();
+    QHBoxLayout *tempLayout = new QHBoxLayout(tempBox);
+    tempLayout->setContentsMargins(0, 0, 0, 0);
+    tempLayout->setSpacing(12);
+    QLabel *tempLabel = new QLabel(tr("温度"));
+    tempLabel->setStyleSheet(QString("color: %1; font-size: 18px; font-weight: bold;").arg(COLOR_TEXT_DIM));
+    m_tempReadoutValue = new QLabel("-- °C");
+    m_tempReadoutValue->setObjectName("valueLarge");
+    m_tempReadoutValue->setStyleSheet(QString("color: %1; font-size: 36px; font-weight: bold;").arg(COLOR_TEXT));
+    tempLayout->addWidget(tempLabel);
+    tempLayout->addWidget(m_tempReadoutValue);
+    readoutLayout->addWidget(tempBox);
+
+    readoutLayout->addStretch();
+
+    /* ── Swelling indicator ── */
+    m_swellValue = new QLabel(tr("正常"));
+    m_swellValue->setStyleSheet(QString("color: %1; font-size: 18px; font-weight: bold;").arg(COLOR_HEALTHY_GREEN));
+    readoutLayout->addWidget(m_swellValue);
+
+    mainLayout->addWidget(readoutBar);
+
+    /* ── Thin separator ── */
+    QFrame *sep2 = new QFrame();
+    sep2->setFrameShape(QFrame::HLine);
+    sep2->setStyleSheet(QString("color: %1;").arg(COLOR_BORDER));
+    sep2->setFixedHeight(1);
+    mainLayout->addWidget(sep2);
+
+    /* ═══════════════════════════════════════════════════════════════
+     * 3. Bottom Bar — health + status + buttons
+     * ═══════════════════════════════════════════════════════════════ */
+    QWidget *bottomBar = new QWidget();
+    bottomBar->setObjectName("panel");
+    bottomBar->setFixedHeight(56);
+    QHBoxLayout *bottomLayout = new QHBoxLayout(bottomBar);
+    bottomLayout->setContentsMargins(16, 6, 16, 6);
+    bottomLayout->setSpacing(16);
+
+    /* Health title + value */
     m_healthTitle = new QLabel(tr("SOH"));
-    m_healthTitle->setStyleSheet(QString("color: %1; font-size: 14px; font-weight: bold;").arg(COLOR_TEXT_DIM));
+    m_healthTitle->setStyleSheet(QString("color: %1; font-size: 15px; font-weight: bold;").arg(COLOR_TEXT_DIM));
+    bottomLayout->addWidget(m_healthTitle);
 
     m_healthValue = new QLabel("--%");
-    m_healthValue->setObjectName("value");
-    m_healthValue->setStyleSheet(QString("color: %1; font-size: 28px; font-weight: bold;").arg(COLOR_ACCENT_CYAN));
-    m_healthValue->setAlignment(Qt::AlignCenter);
+    m_healthValue->setStyleSheet(QString("color: %1; font-size: 24px; font-weight: bold;").arg(COLOR_HEALTHY_GREEN));
+    bottomLayout->addWidget(m_healthValue);
 
     m_healthConfidence = new QLabel("");
-    m_healthConfidence->setStyleSheet(QString("color: %1; font-size: 14px;").arg(COLOR_TEXT_DIM));
-    m_healthConfidence->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_healthConfidence->setStyleSheet(QString("color: %1; font-size: 13px;").arg(COLOR_TEXT_DIM));
     m_healthConfidence->setMinimumWidth(80);
-
-    healthHeader->addWidget(m_healthTitle);
-    healthHeader->addWidget(m_healthValue, 1);
-    healthHeader->addWidget(m_healthConfidence);
-    healthLayout->addLayout(healthHeader);
+    bottomLayout->addWidget(m_healthConfidence);
 
     /* Health progress bar */
     m_healthBar = new QProgressBar();
     m_healthBar->setRange(0, 100);
     m_healthBar->setTextVisible(false);
     m_healthBar->setMinimumHeight(HEALTH_BAR_HEIGHT);
+    m_healthBar->setMaximumHeight(HEALTH_BAR_HEIGHT);
+    m_healthBar->setMinimumWidth(200);
+    m_healthBar->setMaximumWidth(300);
     m_healthBar->setObjectName("healthyBar");
-    healthLayout->addWidget(m_healthBar);
+    bottomLayout->addWidget(m_healthBar);
 
-    mainLayout->addWidget(healthPanel);
+    bottomLayout->addStretch();
 
-    /* ── Info row: Temperature + Swelling side by side ── */
-    QHBoxLayout *infoRow = new QHBoxLayout();
-    infoRow->setSpacing(12);
+    /* Status text */
+    m_statusLabel = new QLabel(tr("就绪"));
+    m_statusLabel->setStyleSheet(QString("color: %1; font-size: 14px;").arg(COLOR_TEXT_DIM));
+    bottomLayout->addWidget(m_statusLabel);
 
-    /* Temperature */
-    QWidget *tempBox = new QWidget();
-    tempBox->setObjectName("panel");
-    QHBoxLayout *tempLayout = new QHBoxLayout(tempBox);
-    tempLayout->setContentsMargins(12, 6, 12, 6);
-    m_tempLabel = new QLabel(tr("Temp"));
-    m_tempLabel->setStyleSheet(QString("color: %1; font-size: 13px;").arg(COLOR_TEXT_DIM));
-    m_tempValue = new QLabel("-- °C");
-    m_tempValue->setObjectName("value");
-    m_tempValue->setStyleSheet(QString("color: %1; font-size: 20px; font-weight: bold;").arg(COLOR_ACCENT_CYAN));
-    m_tempValue->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    tempLayout->addWidget(m_tempLabel);
-    tempLayout->addWidget(m_tempValue, 1);
-    infoRow->addWidget(tempBox, 1);
+    bottomLayout->addStretch();
 
-    /* Swelling */
-    QWidget *swellBox = new QWidget();
-    swellBox->setObjectName("panel");
-    QHBoxLayout *swellLayout = new QHBoxLayout(swellBox);
-    swellLayout->setContentsMargins(12, 6, 12, 6);
-    m_swellLabel = new QLabel(tr("Swelling"));
-    m_swellLabel->setStyleSheet(QString("color: %1; font-size: 13px;").arg(COLOR_TEXT_DIM));
-    m_swellValue = new QLabel("--");
-    m_swellValue->setObjectName("value");
-    m_swellValue->setStyleSheet(QString("color: %1; font-size: 20px; font-weight: bold;").arg(COLOR_HEALTHY_GREEN));
-    m_swellValue->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    swellLayout->addWidget(m_swellLabel);
-    swellLayout->addWidget(m_swellValue, 1);
-    infoRow->addWidget(swellBox, 1);
-
-    mainLayout->addLayout(infoRow);
-
-    /* ── Status + buttons row ── */
-    QHBoxLayout *bottomRow = new QHBoxLayout();
-    bottomRow->setSpacing(8);
-
-    m_statusLabel = new QLabel(tr("Ready"));
-    m_statusLabel->setStyleSheet(QString("color: %1; font-size: 12px;").arg(COLOR_TEXT_DIM));
-    bottomRow->addWidget(m_statusLabel, 1);
-
-    m_stopButton = new QPushButton(tr("Stop"));
+    /* Stop button */
+    m_stopButton = new QPushButton(tr("停止"));
     m_stopButton->setObjectName("danger");
-    m_stopButton->setFixedWidth(80);
-    m_stopButton->setVisible(false);  /* hidden until running */
-    bottomRow->addWidget(m_stopButton);
+    m_stopButton->setFixedWidth(100);
+    m_stopButton->setVisible(false);
+    bottomLayout->addWidget(m_stopButton);
 
-    m_backButton = new QPushButton(tr("Back"));
-    m_backButton->setFixedWidth(80);
-    bottomRow->addWidget(m_backButton);
+    /* Back button */
+    m_backButton = new QPushButton(tr("返回"));
+    m_backButton->setFixedWidth(100);
+    bottomLayout->addWidget(m_backButton);
 
-    mainLayout->addLayout(bottomRow);
+    mainLayout->addWidget(bottomBar);
 
     /* ── Connections ── */
     connect(m_backButton, &QPushButton::clicked,
@@ -154,10 +202,10 @@ void ResultScreen::setMode(Mode mode)
     m_mode = mode;
     if (mode == PINN) {
         m_healthTitle->setText(tr("SOH"));
-        m_statusLabel->setText(tr("PINN mode — acquiring..."));
+        m_statusLabel->setText(tr("PINN 模式 — 采集中..."));
     } else {
         m_healthTitle->setText(tr("RUL"));
-        m_statusLabel->setText(tr("CNN mode — acquiring..."));
+        m_statusLabel->setText(tr("CNN 模式 — 采集中..."));
     }
     m_healthValue->setText("--%");
     m_healthConfidence->setText("");
@@ -167,6 +215,27 @@ void ResultScreen::setMode(Mode mode)
 void ResultScreen::setIcCurve(const float ic[128])
 {
     m_chartWidget->setIcCurve(ic);
+}
+
+void ResultScreen::appendOscilloscopeData(double timeSec, double voltage, double current)
+{
+    m_chartWidget->appendData(timeSec, voltage, current);
+
+    /* Update digital readout */
+    m_voltReadoutValue->setText(QString("%1 V").arg(voltage, 0, 'f', 2));
+    m_currReadoutValue->setText(QString("%1 A").arg(current, 0, 'f', 2));
+
+    /* Color current based on charge/discharge */
+    if (current > 0.05) {
+        /* Charging — orange */
+        m_currReadoutValue->setStyleSheet(QString("color: %1; font-size: 36px; font-weight: bold;").arg(COLOR_ACCENT_ORANGE));
+    } else if (current < -0.05) {
+        /* Discharging — blue */
+        m_currReadoutValue->setStyleSheet(QString("color: %1; font-size: 36px; font-weight: bold;").arg(COLOR_ACCENT_CYAN));
+    } else {
+        /* Idle — neutral */
+        m_currReadoutValue->setStyleSheet(QString("color: %1; font-size: 36px; font-weight: bold;").arg(COLOR_TEXT));
+    }
 }
 
 void ResultScreen::setHealth(float value, float confidence)
@@ -180,13 +249,13 @@ void ResultScreen::setHealth(float value, float confidence)
 
     /* Color based on health level */
     if (value > 0.80f) {
-        m_healthValue->setStyleSheet(QString("color: %1; font-size: 28px; font-weight: bold;").arg(COLOR_HEALTHY_GREEN));
+        m_healthValue->setStyleSheet(QString("color: %1; font-size: 24px; font-weight: bold;").arg(COLOR_HEALTHY_GREEN));
         m_healthBar->setObjectName("healthyBar");
     } else if (value > 0.60f) {
-        m_healthValue->setStyleSheet(QString("color: %1; font-size: 28px; font-weight: bold;").arg(COLOR_WARNING_YELLOW));
+        m_healthValue->setStyleSheet(QString("color: %1; font-size: 24px; font-weight: bold;").arg(COLOR_WARNING_YELLOW));
         m_healthBar->setObjectName("warningBar");
     } else {
-        m_healthValue->setStyleSheet(QString("color: %1; font-size: 28px; font-weight: bold;").arg(COLOR_CRITICAL_RED));
+        m_healthValue->setStyleSheet(QString("color: %1; font-size: 24px; font-weight: bold;").arg(COLOR_CRITICAL_RED));
         m_healthBar->setObjectName("criticalBar");
     }
 
@@ -197,7 +266,7 @@ void ResultScreen::setHealth(float value, float confidence)
     /* Confidence display */
     if (m_mode == PINN) {
         int ciPct = static_cast<int>(confidence * 100.0f);
-        m_healthConfidence->setText(QString("\302\261%1%").arg(ciPct));  /* ±X% */
+        m_healthConfidence->setText(QString("\302\261%1%").arg(ciPct));
     } else {
         int confPct = static_cast<int>(confidence * 100.0f);
         m_healthConfidence->setText(QString("conf: %1%").arg(confPct));
@@ -206,24 +275,24 @@ void ResultScreen::setHealth(float value, float confidence)
 
 void ResultScreen::setTemperature(float tempC)
 {
-    m_tempValue->setText(QString("%1 °C").arg(tempC, 0, 'f', 1));
+    m_tempReadoutValue->setText(QString("%1 °C").arg(tempC, 0, 'f', 1));
 
     if (tempC > ALARM_TEMP_MAX_C)
-        m_tempValue->setStyleSheet(QString("color: %1; font-size: 20px; font-weight: bold;").arg(COLOR_CRITICAL_RED));
+        m_tempReadoutValue->setStyleSheet(QString("color: %1; font-size: 36px; font-weight: bold;").arg(COLOR_CRITICAL_RED));
     else if (tempC > ALARM_TEMP_MAX_C * 0.8f)
-        m_tempValue->setStyleSheet(QString("color: %1; font-size: 20px; font-weight: bold;").arg(COLOR_WARNING_YELLOW));
+        m_tempReadoutValue->setStyleSheet(QString("color: %1; font-size: 36px; font-weight: bold;").arg(COLOR_WARNING_YELLOW));
     else
-        m_tempValue->setStyleSheet(QString("color: %1; font-size: 20px; font-weight: bold;").arg(COLOR_ACCENT_CYAN));
+        m_tempReadoutValue->setStyleSheet(QString("color: %1; font-size: 36px; font-weight: bold;").arg(COLOR_TEXT));
 }
 
 void ResultScreen::setSwelling(bool swollen)
 {
     if (swollen) {
-        m_swellValue->setText(tr("WARNING"));
-        m_swellValue->setStyleSheet(QString("color: %1; font-size: 20px; font-weight: bold;").arg(COLOR_CRITICAL_RED));
+        m_swellValue->setText(tr("膨胀警告"));
+        m_swellValue->setStyleSheet(QString("color: %1; font-size: 18px; font-weight: bold;").arg(COLOR_CRITICAL_RED));
     } else {
-        m_swellValue->setText(tr("Normal"));
-        m_swellValue->setStyleSheet(QString("color: %1; font-size: 20px; font-weight: bold;").arg(COLOR_HEALTHY_GREEN));
+        m_swellValue->setText(tr("正常"));
+        m_swellValue->setStyleSheet(QString("color: %1; font-size: 18px; font-weight: bold;").arg(COLOR_HEALTHY_GREEN));
     }
 }
 
@@ -237,11 +306,11 @@ void ResultScreen::setConverged(bool converged, float finalSoh, float finalCiHal
     if (converged) {
         int pct = static_cast<int>(finalSoh * 100.0f);
         int ciPct = static_cast<int>(finalCiHalf * 100.0f);
-        m_statusLabel->setText(tr("✓ Converged — SOH: %1% ±%2%").arg(pct).arg(ciPct));
-        m_statusLabel->setStyleSheet(QString("color: %1; font-size: 12px; font-weight: bold;").arg(COLOR_HEALTHY_GREEN));
+        m_statusLabel->setText(tr("✓ 已收敛 — SOH: %1% ±%2%").arg(pct).arg(ciPct));
+        m_statusLabel->setStyleSheet(QString("color: %1; font-size: 14px; font-weight: bold;").arg(COLOR_HEALTHY_GREEN));
         m_stopButton->setVisible(true);
-        m_stopButton->setText(tr("Done"));
+        m_stopButton->setText(tr("完成"));
     } else {
-        m_statusLabel->setStyleSheet(QString("color: %1; font-size: 12px;").arg(COLOR_TEXT_DIM));
+        m_statusLabel->setStyleSheet(QString("color: %1; font-size: 14px;").arg(COLOR_TEXT_DIM));
     }
 }

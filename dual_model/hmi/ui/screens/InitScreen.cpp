@@ -26,7 +26,7 @@ void InitScreen::setupUi()
     layout->setSpacing(24);
 
     /* ── Title ── */
-    m_titleLabel = new QLabel(tr("Device Initializing..."));
+    m_titleLabel = new QLabel(tr("设备初始化中..."));
     m_titleLabel->setAlignment(Qt::AlignCenter);
     m_titleLabel->setStyleSheet(QString(
         "color: %1; font-size: 22px; font-weight: bold;"
@@ -48,7 +48,7 @@ void InitScreen::setupUi()
     layout->addSpacing(30);
 
     /* ── Start button (initially disabled) ── */
-    m_startButton = new QPushButton(tr("Start Test"));
+    m_startButton = new QPushButton(tr("开始测试"));
     m_startButton->setObjectName("primary");
     m_startButton->setEnabled(false);
     m_startButton->setMinimumHeight(44);
@@ -84,7 +84,7 @@ void InitScreen::onProgressTick()
 
         /* Enable the start button */
         m_startButton->setEnabled(true);
-        m_titleLabel->setText(tr("Device Ready"));
+        m_titleLabel->setText(tr("设备就绪"));
         m_titleLabel->setStyleSheet(QString(
             "color: %1; font-size: 22px; font-weight: bold;"
         ).arg(COLOR_HEALTHY_GREEN));

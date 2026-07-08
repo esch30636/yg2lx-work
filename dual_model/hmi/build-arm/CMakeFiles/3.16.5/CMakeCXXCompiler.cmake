@@ -1,5 +1,5 @@
-set(CMAKE_CXX_COMPILER "/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++")
-set(CMAKE_CXX_COMPILER_ARG1 "  -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx/sysroots/aarch64-poky-linux")
+set(CMAKE_CXX_COMPILER "/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++")
+set(CMAKE_CXX_COMPILER_ARG1 "  -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux")
 set(CMAKE_CXX_COMPILER_ID "GNU")
 set(CMAKE_CXX_COMPILER_VERSION "8.3.0")
 set(CMAKE_CXX_COMPILER_VERSION_INTERNAL "")
@@ -19,11 +19,11 @@ set(CMAKE_CXX_SIMULATE_VERSION "")
 
 
 
-set(CMAKE_AR "/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-ar")
-set(CMAKE_CXX_COMPILER_AR "/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-gcc-ar")
-set(CMAKE_RANLIB "/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-ranlib")
-set(CMAKE_CXX_COMPILER_RANLIB "/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-gcc-ranlib")
-set(CMAKE_LINKER "/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-ld")
+set(CMAKE_AR "/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-ar")
+set(CMAKE_CXX_COMPILER_AR "/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-gcc-ar")
+set(CMAKE_RANLIB "/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-ranlib")
+set(CMAKE_CXX_COMPILER_RANLIB "/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-gcc-ranlib")
+set(CMAKE_LINKER "/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-ld")
 set(CMAKE_MT "")
 set(CMAKE_COMPILER_IS_GNUCXX 1)
 set(CMAKE_CXX_COMPILER_LOADED 1)
@@ -82,7 +82,7 @@ endif()
 
 
 
-set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES "/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/c++/8.3.0;/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/c++/8.3.0/aarch64-poky-linux;/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/c++/8.3.0/backward;/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/lib/aarch64-poky-linux/gcc/aarch64-poky-linux/8.3.0/include;/opt/yg2lx/sysroots/aarch64-poky-linux/usr/local/include;/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/lib/aarch64-poky-linux/gcc/aarch64-poky-linux/8.3.0/include-fixed;/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include")
+set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES "/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/c++/8.3.0;/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/c++/8.3.0/aarch64-poky-linux;/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/c++/8.3.0/backward;/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/lib/aarch64-poky-linux/gcc/aarch64-poky-linux/8.3.0/include;/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/local/include;/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/lib/aarch64-poky-linux/gcc/aarch64-poky-linux/8.3.0/include-fixed;/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include")
 set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES "stdc++;m;gcc_s;gcc;c;gcc_s;gcc")
-set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/lib/aarch64-poky-linux/gcc/aarch64-poky-linux/8.3.0;/opt/yg2lx/sysroots/aarch64-poky-linux/lib64;/opt/yg2lx/sysroots/aarch64-poky-linux/usr/lib64/aarch64-poky-linux/8.3.0;/opt/yg2lx/sysroots/aarch64-poky-linux/usr/lib64")
+set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/lib/aarch64-poky-linux/gcc/aarch64-poky-linux/8.3.0;/opt/yg2lx-full/sysroots/aarch64-poky-linux/lib64;/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/lib64/aarch64-poky-linux/8.3.0;/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/lib64")
 set(CMAKE_CXX_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")

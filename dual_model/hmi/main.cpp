@@ -1,22 +1,25 @@
 /*===========================================================================
- * main.cpp — Battery SOH Assessment HMI entry point
+ * main.cpp — Battery Monitoring HMI entry point (v3.0)
+ *
+ * v3.0: 1920×1080 light theme oscilloscope display.
+ *       Voltage (blue) + Current (red) vs Time — primary chart.
+ *       Dark Chinese text on light background.
  *
  * Usage:
  *   battery_hmi [--demo] [--file <path>] [--spi <dev>] [--spi-mock]
- *               [--fullscreen] [--lang <zh|en>]
+ *               [--windowed] [--lang <zh|en>]
  *
  * Examples:
- *   battery_hmi --demo                        Demo mode with synthetic data
- *   battery_hmi --file /data/session_001.bin   Replay recorded session
- *   battery_hmi --spi /dev/spidev0.0           RA8 real-time via SPI
- *   battery_hmi --spi-mock --lang zh           SPI mock + Chinese UI
- *   battery_hmi --demo --fullscreen             Fullscreen demo
+ *   battery_hmi --demo                   Demo mode (default, fullscreen 1080p)
+ *   battery_hmi --file /data/session.bin Replay recorded session
+ *   battery_hmi --spi /dev/spidev0.0     RA8 real-time via SPI
+ *   battery_hmi --windowed               Windowed mode (1024×600 min)
+ *   battery_hmi --demo --lang zh          Chinese UI
  *
  * Environment variables for Qt QPA:
- *   QT_QPA_PLATFORM=eglfs                      GPU-accelerated (Mali-G31)
- *   QT_QPA_PLATFORM=linuxfb:fb=/dev/fb0        Framebuffer fallback
- *   QT_QPA_EGLFS_INTEGRATION=none               Disable platform integration
- *   LANG=zh_CN                                  Override UI language
+ *   QT_QPA_PLATFORM=wayland-egl           Wayland EGL (MYD-YG2LX)
+ *   QT_QPA_PLATFORM=linuxfb:fb=/dev/fb0   Framebuffer fallback
+ *   LANG=zh_CN                             Override UI language
  *===========================================================================*/
 #include <QApplication>
 #include <QCommandLineParser>
@@ -40,19 +43,16 @@ static void crashHandler(int sig)
     const char *name = (sig == SIGSEGV) ? "SIGSEGV" :
                        (sig == SIGABRT) ? "SIGABRT" :
                        (sig == SIGFPE)  ? "SIGFPE"  : "SIGNAL";
-    /* Write directly via write(2) — async-signal-safe */
     char buf[256];
     int len = snprintf(buf, sizeof(buf),
                        "\n[HMI] FATAL: %s (signal %d) — process terminating\n",
                        name, sig);
     write(STDERR_FILENO, buf, len);
 
-    /* Attempt backtrace (best-effort, not async-signal-safe but useful) */
     void *bt[32];
     int n = backtrace(bt, 32);
     backtrace_symbols_fd(bt, n, STDERR_FILENO);
 
-    /* Re-raise with default handler to produce core dump */
     signal(sig, SIG_DFL);
     raise(sig);
 }
@@ -64,10 +64,11 @@ static void crashHandler(int sig)
 #include "data/SpiDataProvider.h"
 #include "ui/MainWindow.h"
 
-/* ── Attempt to load CJK font (one-shot, called before app.setFont) ── */
+/* ── Attempt to load CJK font for light theme (dark text on light bg) ── */
 static void setupCjkFont(QApplication &app)
 {
-    /* Font families to try, in preference order */
+    /* Font families to try, in preference order.
+     * v3.0: Regular weight preferred (dark text on light background). */
     static const char *candidates[] = {
         "Noto Sans CJK SC",        /* Google Noto — best coverage */
         "Source Han Sans SC",      /* Adobe — same glyphs as Noto */
@@ -78,7 +79,7 @@ static void setupCjkFont(QApplication &app)
         nullptr
     };
 
-    /* ── Strategy A: Look for a .ttf/.otf file in common locations ── */
+    /* ── Strategy A: Look for .ttf/.otf files in common locations ── */
     static const char *fontPaths[] = {
         "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",
         "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
@@ -100,21 +101,21 @@ static void setupCjkFont(QApplication &app)
         }
     }
 
-    /* ── Strategy B: Try font family names (if already installed system-wide) ── */
+    /* ── Strategy B: Try font family names ── */
     QFontDatabase fdb;
     for (const char **fam = candidates; *fam != nullptr; fam++) {
         if (fdb.families().contains(QLatin1String(*fam))) {
             QFont cjkFont(*fam, FONT_SIZE_DEFAULT);
-            cjkFont.setStyleHint(QFont::Monospace);
+            cjkFont.setStyleHint(QFont::SansSerif);
             app.setFont(cjkFont);
-            printf("[HMI] CJK font active: %s\n", *fam);
+            printf("[HMI] CJK font active: %s (size %d)\n", *fam, FONT_SIZE_DEFAULT);
             return;
         }
     }
 
     /* Fallback: use the system default */
     QFont fallback(FONT_FAMILY, FONT_SIZE_DEFAULT);
-    fallback.setStyleHint(QFont::Monospace);
+    fallback.setStyleHint(QFont::SansSerif);
     app.setFont(fallback);
     printf("[HMI] No CJK font found — using %s (Chinese chars may render as tofu)\n",
            FONT_FAMILY);
@@ -123,7 +124,6 @@ static void setupCjkFont(QApplication &app)
 /* ── Load translations from resource or filesystem ── */
 static void setupTranslations(QApplication &app, const QString &lang)
 {
-    /* Determine locale: CLI arg > env LANG > system locale */
     QLocale locale;
     if (!lang.isEmpty()) {
         locale = QLocale(lang);
@@ -137,21 +137,18 @@ static void setupTranslations(QApplication &app, const QString &lang)
            qPrintable(locale.name()),
            qPrintable(locale.nativeLanguageName()));
 
-    /* If locale is already English (C/POSIX/en_US), skip translator loading */
+    /* If locale is English, skip translator loading (tr() returns source text) */
     if (locale.language() == QLocale::C || locale.language() == QLocale::English) {
-        printf("[HMI] English locale — translations not loaded\n");
+        printf("[HMI] English locale — using source strings (Chinese)\n");
         return;
     }
 
-    /* Try loading from Qt resource first, then filesystem */
     auto *translator = new QTranslator(&app);
 
-    /* Resource path: :/translations/battery_hmi_zh_CN.qm */
     QString resPath = QString(":/translations/battery_hmi_%1.qm").arg(locale.name());
     bool loaded = translator->load(resPath);
 
     if (!loaded) {
-        /* Filesystem: look next to the binary */
         QString fsPath = QString("%1/../translations/battery_hmi_%2.qm")
                          .arg(QCoreApplication::applicationDirPath())
                          .arg(locale.name());
@@ -159,7 +156,6 @@ static void setupTranslations(QApplication &app, const QString &lang)
     }
 
     if (!loaded) {
-        /* Try base name without country suffix: battery_hmi_zh.qm */
         QString shortName = locale.name().left(2);
         QString resShort = QString(":/translations/battery_hmi_%1.qm").arg(shortName);
         loaded = translator->load(resShort);
@@ -170,7 +166,7 @@ static void setupTranslations(QApplication &app, const QString &lang)
         printf("[HMI] Translations loaded for %s\n", qPrintable(locale.name()));
     } else {
         delete translator;
-        printf("[HMI] No translation found for %s — using English\n",
+        printf("[HMI] No translation found for %s — using source strings\n",
                qPrintable(locale.name()));
     }
 }
@@ -188,14 +184,13 @@ int main(int argc, char *argv[])
 #endif
 
     /* ── Qt Platform setup ──
-     * No longer force linuxfb — wayland-egl is the preferred backend
-     * for mouse-driven interaction on the MYD-YG2LX.
+     * wayland-egl is the preferred backend for MYD-YG2LX.
      * Set QT_QPA_PLATFORM=linuxfb to override for framebuffer-only mode. */
 
     /* ── Application ── */
     QApplication app(argc, argv);
-    app.setApplicationName("Battery HMI");
-    app.setApplicationVersion("2.0.0");
+    app.setApplicationName("电池监测 HMI");
+    app.setApplicationVersion("3.0.0");
     app.setOrganizationName("BatteryTeam");
 
     /* ── Font setup (must happen before any widget creation) ── */
@@ -203,26 +198,26 @@ int main(int argc, char *argv[])
 
     /* ── Command-line parsing ── */
     QCommandLineParser parser;
-    parser.setApplicationDescription("Battery SOH Assessment — Industrial HMI");
+    parser.setApplicationDescription("电池监测 — 示波器 HMI (1920×1080 浅色界面)");
     parser.addHelpOption();
     parser.addVersionOption();
 
-    QCommandLineOption demoOption("demo", "Use synthetic demo data");
+    QCommandLineOption demoOption("demo", "使用合成演示数据");
     parser.addOption(demoOption);
 
-    QCommandLineOption fileOption("file", "Replay binary session file", "path");
+    QCommandLineOption fileOption("file", "回放二进制数据文件", "path");
     parser.addOption(fileOption);
 
-    QCommandLineOption spiOption("spi", "Read from RA8 via SPI device", "device");
+    QCommandLineOption spiOption("spi", "通过 SPI 读取 RA8 实时数据", "device");
     parser.addOption(spiOption);
 
-    QCommandLineOption spiMockOption("spi-mock", "SPI provider in mock mode (no hardware)");
+    QCommandLineOption spiMockOption("spi-mock", "SPI 模拟模式 (无硬件)");
     parser.addOption(spiMockOption);
 
-    QCommandLineOption fullscreenOption("fullscreen", "Start in fullscreen mode");
-    parser.addOption(fullscreenOption);
+    QCommandLineOption windowedOption("windowed", "窗口模式 (非全屏)");
+    parser.addOption(windowedOption);
 
-    QCommandLineOption langOption("lang", "UI language (zh|en)", "locale");
+    QCommandLineOption langOption("lang", "界面语言 (zh|en)", "locale");
     parser.addOption(langOption);
 
     parser.process(app);
@@ -234,49 +229,50 @@ int main(int argc, char *argv[])
     DataProvider *provider = nullptr;
 
     if (parser.isSet(spiMockOption)) {
-        /* SPI mock mode: uses SpiDataProvider with synthetic data */
         SpiDataProvider::Config cfg;
         SpiDataProvider *sp = new SpiDataProvider(cfg);
         provider = sp;
-        printf("[HMI] SPI mock mode (RA8 simulation)\n");
+        printf("[HMI] SPI 模拟模式 (RA8 仿真)\n");
     } else if (parser.isSet(spiOption)) {
-        /* SPI real mode: RA8 over physical SPI bus */
         SpiDataProvider::Config cfg;
         cfg.device = parser.value(spiOption);
         SpiDataProvider *sp = new SpiDataProvider(cfg);
         provider = sp;
-        printf("[HMI] SPI mode: %s (%s)\n", qPrintable(cfg.device),
-               sp->isOpen() ? "connected" : "mock fallback");
+        printf("[HMI] SPI 模式: %s (%s)\n", qPrintable(cfg.device),
+               sp->isOpen() ? "已连接" : "模拟回退");
     } else if (parser.isSet(fileOption)) {
         QString path = parser.value(fileOption);
         FileDataProvider *fp = new FileDataProvider(path);
         if (!fp->isValid()) {
-            fprintf(stderr, "ERROR: Cannot open or parse file: %s\n",
+            fprintf(stderr, "ERROR: 无法打开文件: %s\n",
                     qPrintable(path));
             delete fp;
             return 1;
         }
         provider = fp;
-        printf("[HMI] File replay mode: %s\n", qPrintable(path));
+        printf("[HMI] 文件回放模式: %s\n", qPrintable(path));
     } else {
         /* Default: demo mode */
         DemoDataProvider *dp = new DemoDataProvider(42);
         provider = dp;
-        printf("[HMI] Demo mode (synthetic data, seed=42)\n");
+        printf("[HMI] 演示模式 (合成数据, seed=42)\n");
     }
 
     /* ── Create and show main window ── */
     MainWindow window(provider);
-    window.setWindowTitle(QString("Battery SOH Assessment — %1").arg(provider->name()));
+    window.setWindowTitle(QString("电池监测 HMI v3.0 — %1").arg(provider->name()));
 
-    if (parser.isSet(fullscreenOption) || qEnvironmentVariableIsSet("QT_QPA_PLATFORM")) {
-        /* On embedded, go fullscreen */
-        window.showFullScreen();
-    } else {
+    /* v3.0: Default to fullscreen for 1920×1080 oscilloscope display.
+     * Use --windowed for desktop development. */
+    if (parser.isSet(windowedOption)) {
         window.show();
+        printf("[HMI] 窗口模式 (minimum 1024×600)\n");
+    } else {
+        window.showFullScreen();
+        printf("[HMI] 全屏模式 (1920×1080)\n");
     }
 
-    printf("[HMI] Application started. Close window or Ctrl+C to exit.\n");
+    printf("[HMI] 应用已启动。关闭窗口或 Ctrl+C 退出。\n");
 
     int result = app.exec();
 

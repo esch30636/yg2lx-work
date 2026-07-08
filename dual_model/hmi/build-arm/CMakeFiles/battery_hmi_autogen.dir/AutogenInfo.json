@@ -3,7 +3,7 @@
 	"CMAKE_BINARY_DIR" : "/home/legion/yg2lx-work/dual_model/hmi/build-arm",
 	"CMAKE_CURRENT_BINARY_DIR" : "/home/legion/yg2lx-work/dual_model/hmi/build-arm",
 	"CMAKE_CURRENT_SOURCE_DIR" : "/home/legion/yg2lx-work/dual_model/hmi",
-	"CMAKE_EXECUTABLE" : "/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake",
+	"CMAKE_EXECUTABLE" : "/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake",
 	"CMAKE_SOURCE_DIR" : "/home/legion/yg2lx-work/dual_model/hmi",
 	"HEADERS" : 
 	[
@@ -53,11 +53,6 @@
 			"UYX5XTB5RZ/moc_ChartWidget.cpp"
 		],
 		[
-			"/home/legion/yg2lx-work/dual_model/hmi/ui/CycleProgressBar.h",
-			"MU",
-			"UYX5XTB5RZ/moc_CycleProgressBar.cpp"
-		],
-		[
 			"/home/legion/yg2lx-work/dual_model/hmi/ui/MainWindow.h",
 			"MU",
 			"UYX5XTB5RZ/moc_MainWindow.cpp"
@@ -68,9 +63,19 @@
 			"UYX5XTB5RZ/moc_StatusPanel.cpp"
 		],
 		[
-			"/home/legion/yg2lx-work/dual_model/hmi/ui/StorageWidget.h",
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/screens/InitScreen.h",
 			"MU",
-			"UYX5XTB5RZ/moc_StorageWidget.cpp"
+			"OF4FSJ2DWT/moc_InitScreen.cpp"
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ModelSelectScreen.h",
+			"MU",
+			"OF4FSJ2DWT/moc_ModelSelectScreen.cpp"
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.h",
+			"MU",
+			"OF4FSJ2DWT/moc_ResultScreen.cpp"
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
@@ -95,36 +100,36 @@
 	[
 		"/home/legion/yg2lx-work/dual_model/include",
 		"/home/legion/yg2lx-work/dual_model/hmi",
-		"/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/QtCore",
-		"/opt/yg2lx/sysroots/aarch64-poky-linux/usr/lib64/mkspecs/linux-oe-g++",
-		"/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/QtGui",
-		"/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/QtWidgets",
-		"/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/QtCharts",
-		"/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include",
-		"/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/c++/8.3.0",
-		"/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/c++/8.3.0/aarch64-poky-linux",
-		"/opt/yg2lx/sysroots/aarch64-poky-linux/usr/include/c++/8.3.0/backward",
-		"/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/lib/aarch64-poky-linux/gcc/aarch64-poky-linux/8.3.0/include",
-		"/opt/yg2lx/sysroots/aarch64-poky-linux/usr/local/include",
-		"/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/lib/aarch64-poky-linux/gcc/aarch64-poky-linux/8.3.0/include-fixed"
+		"/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore",
+		"/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/lib64/mkspecs/linux-oe-g++",
+		"/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui",
+		"/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets",
+		"/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCharts",
+		"/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include",
+		"/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/c++/8.3.0",
+		"/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/c++/8.3.0/aarch64-poky-linux",
+		"/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/c++/8.3.0/backward",
+		"/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/lib/aarch64-poky-linux/gcc/aarch64-poky-linux/8.3.0/include",
+		"/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/local/include",
+		"/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/lib/aarch64-poky-linux/gcc/aarch64-poky-linux/8.3.0/include-fixed"
 	],
 	"MOC_MACRO_NAMES" : [ "Q_OBJECT", "Q_GADGET", "Q_NAMESPACE", "Q_NAMESPACE_EXPORT" ],
 	"MOC_OPTIONS" : [],
 	"MOC_PATH_PREFIX" : true,
 	"MOC_PREDEFS_CMD" : 
 	[
-		"/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++",
+		"/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++",
 		"-mtune=cortex-a55",
 		"-fstack-protector-strong",
 		"-D_FORTIFY_SOURCE=2",
 		"-Wformat",
 		"-Wformat-security",
 		"-Werror=format-security",
-		"--sysroot=/opt/yg2lx/sysroots/aarch64-poky-linux",
+		"--sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux",
 		"-dM",
 		"-E",
 		"-c",
-		"/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp"
+		"/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp"
 	],
 	"MOC_PREDEFS_FILE" : "/home/legion/yg2lx-work/dual_model/hmi/build-arm/battery_hmi_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
@@ -132,8 +137,8 @@
 	"MULTI_CONFIG" : false,
 	"PARALLEL" : 20,
 	"PARSE_CACHE_FILE" : "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi_autogen.dir/ParseCache.txt",
-	"QT_MOC_EXECUTABLE" : "/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/moc",
-	"QT_UIC_EXECUTABLE" : "/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/uic",
+	"QT_MOC_EXECUTABLE" : "/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/moc",
+	"QT_UIC_EXECUTABLE" : "/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/uic",
 	"QT_VERSION_MAJOR" : 5,
 	"SETTINGS_FILE" : "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
@@ -166,13 +171,20 @@
 		[ "/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.cpp", "MU" ],
 		[ "/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmPopup.cpp", "MU" ],
 		[ "/home/legion/yg2lx-work/dual_model/hmi/ui/ChartWidget.cpp", "MU" ],
-		[
-			"/home/legion/yg2lx-work/dual_model/hmi/ui/CycleProgressBar.cpp",
-			"MU"
-		],
 		[ "/home/legion/yg2lx-work/dual_model/hmi/ui/MainWindow.cpp", "MU" ],
 		[ "/home/legion/yg2lx-work/dual_model/hmi/ui/StatusPanel.cpp", "MU" ],
-		[ "/home/legion/yg2lx-work/dual_model/hmi/ui/StorageWidget.cpp", "MU" ],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/screens/InitScreen.cpp",
+			"MU"
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ModelSelectScreen.cpp",
+			"MU"
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.cpp",
+			"MU"
+		],
 		[ "/home/legion/yg2lx-work/dual_model/src/cnn_inference.c", "MU" ],
 		[ "/home/legion/yg2lx-work/dual_model/src/pinn_inference.c", "MU" ]
 	],

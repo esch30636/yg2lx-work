@@ -24,7 +24,7 @@ void StatusPanel::setupUi()
     mainLayout->setSpacing(8);
 
     /* Section title */
-    QLabel *secTitle = new QLabel(tr("Battery Status"));
+    QLabel *secTitle = new QLabel(tr("电池状态"));
     secTitle->setObjectName("title");
     secTitle->setStyleSheet(QString("color: %1; font-size: 16px; font-weight: bold;").arg(COLOR_TEXT));
     mainLayout->addWidget(secTitle);

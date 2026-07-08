@@ -1,15 +1,18 @@
 /*===========================================================================
- * ResultScreen.h — Screen 3: Unified result display (PINN & CNN)
+ * ResultScreen.h — Screen 3: Oscilloscope result display (v3.0)
  *
- * Five display elements (same for both models):
- *   1. IC Curve (dQ/dV vs Voltage) — real-time from lower computer
- *   2. Health prediction value — PINN: SOH, CNN: RUL
- *   3. Confidence — PINN: 95% CI half-width, CNN: stage softmax probability
- *   4. Temperature — direct sensor readout
- *   5. Swelling — bool: Normal / Warning
+ * 1920×1080 light theme layout:
+ *   ┌──────────────────────────────────────────────┐
+ *   │  Voltage/Current vs Time Oscilloscope Chart   │  ← ~780px
+ *   │  [blue=V trace]  [red=A trace]               │
+ *   ├──────────────────────────────────────────────┤
+ *   │  Volt: 3.25V  │  Curr: -2.3A  │  Temp: 32°C │  ← digital readout bar
+ *   ├──────────────────────────────────────────────┤
+ *   │  SOH: ████████░░ 85%  │  Status  │  Back     │  ← bottom bar
+ *   └──────────────────────────────────────────────┘
  *
- * PINN mode: stops automatically when SOH converges (stddev < epsilon)
- * CNN mode:  runs continuously, RUL updated on each inference
+ * PINN mode: stops automatically when SOH converges
+ * CNN mode:  runs continuously, RUL updated each inference
  *===========================================================================*/
 #ifndef HMI_UI_SCREENS_RESULT_SCREEN_H
 #define HMI_UI_SCREENS_RESULT_SCREEN_H
@@ -34,6 +37,9 @@ public:
 public slots:
     /** Update IC curve from lower computer (128-point dQ/dV array) */
     void setIcCurve(const float ic[128]);
+
+    /** Append oscilloscope data point (voltage + current vs time) */
+    void appendOscilloscopeData(double timeSec, double voltage, double current);
 
     /**
      * Update health prediction.
@@ -66,8 +72,13 @@ private:
 
     Mode m_mode;
 
-    /* Chart */
+    /* Oscilloscope chart (dominant element) */
     ChartWidget *m_chartWidget;
+
+    /* Digital readout labels */
+    QLabel *m_voltReadoutValue;
+    QLabel *m_currReadoutValue;
+    QLabel *m_tempReadoutValue;
 
     /* Health section */
     QLabel       *m_healthTitle;
@@ -75,10 +86,7 @@ private:
     QLabel       *m_healthConfidence;
     QProgressBar *m_healthBar;
 
-    /* Info row */
-    QLabel       *m_tempLabel;
-    QLabel       *m_tempValue;
-    QLabel       *m_swellLabel;
+    /* Swelling indicator */
     QLabel       *m_swellValue;
 
     /* Status */

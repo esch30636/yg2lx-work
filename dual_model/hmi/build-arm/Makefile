@@ -39,10 +39,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake
+CMAKE_COMMAND = /opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake
 
 # The command to remove a file.
-RM = /opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -E remove -f
+RM = /opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -59,31 +59,31 @@ CMAKE_BINARY_DIR = /home/legion/yg2lx-work/dual_model/hmi/build-arm
 # Special rule for the target install/strip
 install/strip: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip
 
 # Special rule for the target install/strip
 install/strip/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip/fast
 
 # Special rule for the target install/local
 install/local: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local
 
 # Special rule for the target install/local
 install/local/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -94,7 +94,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -115,13 +115,13 @@ list_install_components/fast: list_install_components
 # Special rule for the target install
 install: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -P cmake_install.cmake
+	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install
 
 # Special rule for the target install
 install/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -P cmake_install.cmake
+	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
 # The main all target
@@ -573,33 +573,6 @@ ui/ChartWidget.cpp.s:
 	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/ChartWidget.cpp.s
 .PHONY : ui/ChartWidget.cpp.s
 
-ui/CycleProgressBar.o: ui/CycleProgressBar.cpp.o
-
-.PHONY : ui/CycleProgressBar.o
-
-# target to build an object file
-ui/CycleProgressBar.cpp.o:
-	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/CycleProgressBar.cpp.o
-.PHONY : ui/CycleProgressBar.cpp.o
-
-ui/CycleProgressBar.i: ui/CycleProgressBar.cpp.i
-
-.PHONY : ui/CycleProgressBar.i
-
-# target to preprocess a source file
-ui/CycleProgressBar.cpp.i:
-	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/CycleProgressBar.cpp.i
-.PHONY : ui/CycleProgressBar.cpp.i
-
-ui/CycleProgressBar.s: ui/CycleProgressBar.cpp.s
-
-.PHONY : ui/CycleProgressBar.s
-
-# target to generate assembly for a file
-ui/CycleProgressBar.cpp.s:
-	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/CycleProgressBar.cpp.s
-.PHONY : ui/CycleProgressBar.cpp.s
-
 ui/MainWindow.o: ui/MainWindow.cpp.o
 
 .PHONY : ui/MainWindow.o
@@ -654,32 +627,86 @@ ui/StatusPanel.cpp.s:
 	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/StatusPanel.cpp.s
 .PHONY : ui/StatusPanel.cpp.s
 
-ui/StorageWidget.o: ui/StorageWidget.cpp.o
+ui/screens/InitScreen.o: ui/screens/InitScreen.cpp.o
 
-.PHONY : ui/StorageWidget.o
+.PHONY : ui/screens/InitScreen.o
 
 # target to build an object file
-ui/StorageWidget.cpp.o:
-	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/StorageWidget.cpp.o
-.PHONY : ui/StorageWidget.cpp.o
+ui/screens/InitScreen.cpp.o:
+	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o
+.PHONY : ui/screens/InitScreen.cpp.o
 
-ui/StorageWidget.i: ui/StorageWidget.cpp.i
+ui/screens/InitScreen.i: ui/screens/InitScreen.cpp.i
 
-.PHONY : ui/StorageWidget.i
+.PHONY : ui/screens/InitScreen.i
 
 # target to preprocess a source file
-ui/StorageWidget.cpp.i:
-	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/StorageWidget.cpp.i
-.PHONY : ui/StorageWidget.cpp.i
+ui/screens/InitScreen.cpp.i:
+	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.i
+.PHONY : ui/screens/InitScreen.cpp.i
 
-ui/StorageWidget.s: ui/StorageWidget.cpp.s
+ui/screens/InitScreen.s: ui/screens/InitScreen.cpp.s
 
-.PHONY : ui/StorageWidget.s
+.PHONY : ui/screens/InitScreen.s
 
 # target to generate assembly for a file
-ui/StorageWidget.cpp.s:
-	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/StorageWidget.cpp.s
-.PHONY : ui/StorageWidget.cpp.s
+ui/screens/InitScreen.cpp.s:
+	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.s
+.PHONY : ui/screens/InitScreen.cpp.s
+
+ui/screens/ModelSelectScreen.o: ui/screens/ModelSelectScreen.cpp.o
+
+.PHONY : ui/screens/ModelSelectScreen.o
+
+# target to build an object file
+ui/screens/ModelSelectScreen.cpp.o:
+	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/screens/ModelSelectScreen.cpp.o
+.PHONY : ui/screens/ModelSelectScreen.cpp.o
+
+ui/screens/ModelSelectScreen.i: ui/screens/ModelSelectScreen.cpp.i
+
+.PHONY : ui/screens/ModelSelectScreen.i
+
+# target to preprocess a source file
+ui/screens/ModelSelectScreen.cpp.i:
+	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/screens/ModelSelectScreen.cpp.i
+.PHONY : ui/screens/ModelSelectScreen.cpp.i
+
+ui/screens/ModelSelectScreen.s: ui/screens/ModelSelectScreen.cpp.s
+
+.PHONY : ui/screens/ModelSelectScreen.s
+
+# target to generate assembly for a file
+ui/screens/ModelSelectScreen.cpp.s:
+	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/screens/ModelSelectScreen.cpp.s
+.PHONY : ui/screens/ModelSelectScreen.cpp.s
+
+ui/screens/ResultScreen.o: ui/screens/ResultScreen.cpp.o
+
+.PHONY : ui/screens/ResultScreen.o
+
+# target to build an object file
+ui/screens/ResultScreen.cpp.o:
+	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/screens/ResultScreen.cpp.o
+.PHONY : ui/screens/ResultScreen.cpp.o
+
+ui/screens/ResultScreen.i: ui/screens/ResultScreen.cpp.i
+
+.PHONY : ui/screens/ResultScreen.i
+
+# target to preprocess a source file
+ui/screens/ResultScreen.cpp.i:
+	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/screens/ResultScreen.cpp.i
+.PHONY : ui/screens/ResultScreen.cpp.i
+
+ui/screens/ResultScreen.s: ui/screens/ResultScreen.cpp.s
+
+.PHONY : ui/screens/ResultScreen.s
+
+# target to generate assembly for a file
+ui/screens/ResultScreen.cpp.s:
+	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/ui/screens/ResultScreen.cpp.s
+.PHONY : ui/screens/ResultScreen.cpp.s
 
 # Help Target
 help:
@@ -738,18 +765,21 @@ help:
 	@echo "... ui/ChartWidget.o"
 	@echo "... ui/ChartWidget.i"
 	@echo "... ui/ChartWidget.s"
-	@echo "... ui/CycleProgressBar.o"
-	@echo "... ui/CycleProgressBar.i"
-	@echo "... ui/CycleProgressBar.s"
 	@echo "... ui/MainWindow.o"
 	@echo "... ui/MainWindow.i"
 	@echo "... ui/MainWindow.s"
 	@echo "... ui/StatusPanel.o"
 	@echo "... ui/StatusPanel.i"
 	@echo "... ui/StatusPanel.s"
-	@echo "... ui/StorageWidget.o"
-	@echo "... ui/StorageWidget.i"
-	@echo "... ui/StorageWidget.s"
+	@echo "... ui/screens/InitScreen.o"
+	@echo "... ui/screens/InitScreen.i"
+	@echo "... ui/screens/InitScreen.s"
+	@echo "... ui/screens/ModelSelectScreen.o"
+	@echo "... ui/screens/ModelSelectScreen.i"
+	@echo "... ui/screens/ModelSelectScreen.s"
+	@echo "... ui/screens/ResultScreen.o"
+	@echo "... ui/screens/ResultScreen.i"
+	@echo "... ui/screens/ResultScreen.s"
 .PHONY : help
 
 

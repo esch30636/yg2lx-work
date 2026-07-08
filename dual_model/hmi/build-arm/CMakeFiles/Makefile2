@@ -35,10 +35,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake
+CMAKE_COMMAND = /opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake
 
 # The command to remove a file.
-RM = /opt/yg2lx/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -E remove -f
+RM = /opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -103,12 +103,12 @@ CMakeFiles/translations.dir/clean:
 CMakeFiles/battery_hmi.dir/all: CMakeFiles/battery_hmi_autogen.dir/all
 	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/depend
 	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 "Built target battery_hmi"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 "Built target battery_hmi"
 .PHONY : CMakeFiles/battery_hmi.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/battery_hmi.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles 21
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles 22
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/battery_hmi.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles 0
 .PHONY : CMakeFiles/battery_hmi.dir/rule
@@ -130,7 +130,7 @@ CMakeFiles/battery_hmi.dir/clean:
 CMakeFiles/battery_hmi_autogen.dir/all:
 	$(MAKE) -f CMakeFiles/battery_hmi_autogen.dir/build.make CMakeFiles/battery_hmi_autogen.dir/depend
 	$(MAKE) -f CMakeFiles/battery_hmi_autogen.dir/build.make CMakeFiles/battery_hmi_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=21 "Built target battery_hmi_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=22 "Built target battery_hmi_autogen"
 .PHONY : CMakeFiles/battery_hmi_autogen.dir/all
 
 # Build rule for subdir invocation for target.
