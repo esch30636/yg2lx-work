@@ -10,6 +10,7 @@
 #include <QHBoxLayout>
 #include <QFrame>
 #include <QStyle>
+#include <cmath>
 
 ResultScreen::ResultScreen(QWidget *parent)
     : QWidget(parent)
@@ -266,6 +267,10 @@ void ResultScreen::appendOscilloscopeData(double timeSec, double voltage, double
 
 void ResultScreen::setHealth(float value, float confidence)
 {
+    /* Guard against NaN/Inf — static_cast<int>(NaN) is UB on ARM, can trap */
+    if (std::isnan(value) || std::isinf(value)) value = 0.0f;
+    if (std::isnan(confidence) || std::isinf(confidence)) confidence = 0.0f;
+
     int pct = static_cast<int>(value * 100.0f);
     if (pct < 0) pct = 0;
     if (pct > 100) pct = 100;
@@ -273,21 +278,33 @@ void ResultScreen::setHealth(float value, float confidence)
     m_healthValue->setText(QString("%1%").arg(pct));
     m_healthBar->setValue(pct);
 
-    /* Color based on health level */
+    /* Color based on health level.
+     * v3.1: Use direct setStyleSheet() instead of setObjectName + polish/unpolish.
+     * On Wayland/EGL embedded platforms, style()->polish() triggers synchronous
+     * widget repaints that can cause EGL buffer race conditions with the compositor,
+     * leading to Wayland protocol errors → SIGABRT. */
     if (value > 0.80f) {
         m_healthValue->setStyleSheet(QString("color: %1; font-size: 24px; font-weight: bold;").arg(COLOR_HEALTHY_GREEN));
-        m_healthBar->setObjectName("healthyBar");
+        m_healthBar->setStyleSheet(QString(
+            "QProgressBar { background-color: #E8E8EE; border: 1px solid #C8C8D0; border-radius: 4px; }"
+            "QProgressBar::chunk { background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+            "    stop:0 %1, stop:1 #44CC66); border-radius: 3px; }"
+        ).arg(COLOR_HEALTHY_GREEN));
     } else if (value > 0.60f) {
         m_healthValue->setStyleSheet(QString("color: %1; font-size: 24px; font-weight: bold;").arg(COLOR_WARNING_YELLOW));
-        m_healthBar->setObjectName("warningBar");
+        m_healthBar->setStyleSheet(QString(
+            "QProgressBar { background-color: #E8E8EE; border: 1px solid #C8C8D0; border-radius: 4px; }"
+            "QProgressBar::chunk { background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+            "    stop:0 %1, stop:1 #EEAA22); border-radius: 3px; }"
+        ).arg(COLOR_WARNING_YELLOW));
     } else {
         m_healthValue->setStyleSheet(QString("color: %1; font-size: 24px; font-weight: bold;").arg(COLOR_CRITICAL_RED));
-        m_healthBar->setObjectName("criticalBar");
+        m_healthBar->setStyleSheet(QString(
+            "QProgressBar { background-color: #E8E8EE; border: 1px solid #C8C8D0; border-radius: 4px; }"
+            "QProgressBar::chunk { background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+            "    stop:0 %1, stop:1 %1); border-radius: 3px; }"
+        ).arg(COLOR_CRITICAL_RED));
     }
-
-    /* Re-polish progress bar for color change */
-    m_healthBar->style()->unpolish(m_healthBar);
-    m_healthBar->style()->polish(m_healthBar);
 
     /* Confidence display — Chinese label */
     if (m_mode == PINN) {

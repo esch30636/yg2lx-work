@@ -29,7 +29,10 @@ AlarmPopup::AlarmPopup(AlarmId id, const QString &title,
     , m_ackBtn(nullptr)
 {
     setObjectName("alarmPopup");
-    setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    /* v3.1: Remove Qt::WindowStaysOnTopHint — unsupported on Wayland compositors.
+     * Wayland does not allow clients to control window stacking; setting this
+     * hint can cause xdg-shell protocol errors that abort the client (SIGABRT). */
+    setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground);
     setModal(false);
 

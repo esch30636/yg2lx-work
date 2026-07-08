@@ -38,6 +38,8 @@
 #ifndef _WIN32
 #include <execinfo.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 static void crashHandler(int sig)
 {
     const char *name = (sig == SIGSEGV) ? "SIGSEGV" :
@@ -49,9 +51,28 @@ static void crashHandler(int sig)
                        name, sig);
     write(STDERR_FILENO, buf, len);
 
-    void *bt[32];
-    int n = backtrace(bt, 32);
-    backtrace_symbols_fd(bt, n, STDERR_FILENO);
+    /* Write backtrace to persistent log file on board for post-mortem analysis */
+    int fd = open("/tmp/battery_hmi_crash.log",
+                  O_WRONLY | O_CREAT | O_APPEND | O_SYNC, 0644);
+    if (fd >= 0) {
+        /* Timestamp marker */
+        char marker[64];
+        int ml = snprintf(marker, sizeof(marker),
+                          "=== CRASH %s (sig=%d) ===\n", name, sig);
+        write(fd, marker, ml);
+
+        /* Backtrace to file */
+        void *bt[32];
+        int n = backtrace(bt, 32);
+        backtrace_symbols_fd(bt, n, fd);
+        write(fd, "\n", 1);
+        close(fd);
+    }
+
+    /* Also write backtrace to stderr (may be visible on serial console) */
+    void *bt2[32];
+    int n2 = backtrace(bt2, 32);
+    backtrace_symbols_fd(bt2, n2, STDERR_FILENO);
 
     signal(sig, SIG_DFL);
     raise(sig);
