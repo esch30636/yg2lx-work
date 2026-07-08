@@ -280,8 +280,11 @@ int main(int argc, char *argv[])
     }
 
     /* ── Create and show main window ── */
+    printf("[HMI] 创建主窗口...\n"); fflush(stdout);
     MainWindow window(provider);
+    printf("[HMI] 主窗口构造完成\n"); fflush(stdout);
     window.setWindowTitle(QString("电池监测 HMI v3.0 — %1").arg(provider->name()));
+    printf("[HMI] 标题已设置\n"); fflush(stdout);
 
     /* v3.1: On Wayland, showFullScreen() in the constructor triggers a
      * Wayland protocol error (xdg-shell surface not yet configured when
@@ -290,11 +293,13 @@ int main(int argc, char *argv[])
      * This avoids the QWaylandDisplay::checkError() → abort() path. */
     if (!parser.isSet(windowedOption)) {
         window.setWindowState(Qt::WindowFullScreen);
-        printf("[HMI] 全屏模式 (1920×1080)\n");
+        printf("[HMI] 全屏模式 (1920×1080)\n"); fflush(stdout);
     } else {
-        printf("[HMI] 窗口模式 (minimum 1024×600)\n");
+        printf("[HMI] 窗口模式 (minimum 1024×600)\n"); fflush(stdout);
     }
+    printf("[HMI] 即将显示窗口...\n"); fflush(stdout);
     window.show();
+    printf("[HMI] 窗口已显示\n"); fflush(stdout);
 
     printf("[HMI] 应用已启动。关闭窗口或 Ctrl+C 退出。\n");
 

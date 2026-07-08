@@ -51,12 +51,16 @@ MainWindow::MainWindow(DataProvider *provider, QWidget *parent)
     try {
         m_inferenceEngine = new InferenceEngine();
         printf("[HMI] Inference engine initialized (PINN + CNN)\n");
+        fflush(stdout);
     } catch (const std::exception &e) {
         qFatal("Failed to initialize inference engine: %s", e.what());
     }
 
+    printf("[HMI] 应用主题...\n"); fflush(stdout);
     applyTheme();
+    printf("[HMI] 构建UI...\n"); fflush(stdout);
     setupUi();
+    printf("[HMI] 启动工作线程...\n"); fflush(stdout);
     setupWorkerThread();
 
     /* Clock timer always runs */
@@ -64,6 +68,7 @@ MainWindow::MainWindow(DataProvider *provider, QWidget *parent)
     m_clockTimer->setInterval(CLOCK_UPDATE_MS);
     connect(m_clockTimer, &QTimer::timeout, this, &MainWindow::onClockUpdate);
     m_clockTimer->start();
+    printf("[HMI] 主窗口初始化完成\n"); fflush(stdout);
 }
 
 MainWindow::~MainWindow()

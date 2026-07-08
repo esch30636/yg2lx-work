@@ -6,6 +6,8 @@
 
 #IncludeRegexTransform: 
 
+../config/AppConfig.h
+
 /home/legion/yg2lx-work/dual_model/hmi/config/AppConfig.h
 
 /home/legion/yg2lx-work/dual_model/hmi/data/DataProvider.h
@@ -146,6 +148,34 @@ QtCharts/QValueAxis
 deque
 -
 
+/home/legion/yg2lx-work/dual_model/hmi/ui/MainWindow.cpp
+MainWindow.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/MainWindow.h
+config/AppConfig.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/config/AppConfig.h
+AlarmPopup.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmPopup.h
+QVBoxLayout
+-
+QHBoxLayout
+-
+QStatusBar
+-
+QApplication
+-
+QStyle
+-
+QFile
+-
+QDateTime
+-
+cstring
+-
+cmath
+-
+cstdio
+-
+
 /home/legion/yg2lx-work/dual_model/hmi/ui/MainWindow.h
 QMainWindow
 -
@@ -214,6 +244,10 @@ QPushButton
 qcommandlineparser.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qcommandlineparser.h
 
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/QDateTime
+qdatetime.h
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qdatetime.h
+
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/QDir
 qdir.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qdir.h
@@ -268,6 +302,16 @@ QtCore/qstringlist.h
 QtCore/qcoreapplication.h
 -
 QtCore/qcommandlineoption.h
+-
+
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qdatetime.h
+QtCore/qstring.h
+-
+QtCore/qnamespace.h
+-
+QtCore/qshareddata.h
+-
+limits
 -
 
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qdir.h
@@ -454,6 +498,10 @@ qapplication.h
 qdialog.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qdialog.h
 
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QHBoxLayout
+qboxlayout.h
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qboxlayout.h
+
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QLabel
 qlabel.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qlabel.h
@@ -473,6 +521,18 @@ qpushbutton.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QStackedWidget
 qstackedwidget.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qstackedwidget.h
+
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QStatusBar
+qstatusbar.h
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qstatusbar.h
+
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QStyle
+qstyle.h
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qstyle.h
+
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QVBoxLayout
+qboxlayout.h
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qboxlayout.h
 
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QWidget
 qwidget.h
@@ -494,6 +554,16 @@ QtGui/qcursor.h
 QtWidgets/qdesktopwidget.h
 -
 QtGui/qguiapplication.h
+-
+
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qboxlayout.h
+QtWidgets/qtwidgetsglobal.h
+-
+QtWidgets/qlayout.h
+-
+QtWidgets/qwidget.h
+-
+limits.h
 -
 
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qdialog.h
@@ -532,6 +602,30 @@ QtWidgets/qabstractbutton.h
 QtWidgets/qtwidgetsglobal.h
 -
 QtWidgets/qframe.h
+-
+
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qstatusbar.h
+QtWidgets/qtwidgetsglobal.h
+-
+QtWidgets/qwidget.h
+-
+
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qstyle.h
+QtWidgets/qtwidgetsglobal.h
+-
+QtCore/qobject.h
+-
+QtCore/qrect.h
+-
+QtCore/qsize.h
+-
+QtGui/qicon.h
+-
+QtGui/qpixmap.h
+-
+QtGui/qpalette.h
+-
+QtWidgets/qsizepolicy.h
 -
 
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qwidget.h
