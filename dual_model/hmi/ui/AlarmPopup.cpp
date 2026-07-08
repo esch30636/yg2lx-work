@@ -115,14 +115,13 @@ void AlarmPopup::showEvent(QShowEvent *event)
 {
     QDialog::showEvent(event);
 
-    /* Position at top-right area of parent or screen */
+    /* Position at center of parent or screen */
     if (parentWidget()) {
-        QPoint parentCenter = parentWidget()->geometry().center();
-        int x = parentCenter.x() + ALARM_POPUP_WIDTH / 2 + 50;
-        int y = parentCenter.y() - ALARM_POPUP_HEIGHT * 2;
+        QRect parentRect = parentWidget()->geometry();
+        int x = parentRect.x() + (parentRect.width()  - ALARM_POPUP_WIDTH)  / 2;
+        int y = parentRect.y() + (parentRect.height() - ALARM_POPUP_HEIGHT) / 2;
         move(x, y);
     } else {
-        /* Center on screen */
         QScreen *screen = QApplication::primaryScreen();
         if (screen) {
             QRect screenRect = screen->availableGeometry();

@@ -49,7 +49,17 @@ struct AlarmState {
     float over_current_value;
     float cell_swelling_value;
     float soh_value;
+    /* Cooldown timestamps (seconds) — prevent alarm flood */
+    double over_temp_cooldown;
+    double over_voltage_cooldown;
+    double over_current_cooldown;
+    double cell_swelling_cooldown;
+    double soh_critical_cooldown;
+    double soh_warning_cooldown;
 };
+
+/* Minimum interval between same-type alarm popups (seconds) */
+#define ALARM_COOLDOWN_SEC 30.0
 
 /* ── Abstract data provider ── */
 class DataProvider {

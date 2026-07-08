@@ -253,6 +253,7 @@ void MainWindow::startAcquisition(int model)
     m_converged = false;
     m_sohAccumulator.reset();
     std::memset(&m_latestSample, 0, sizeof(m_latestSample));
+    std::memset(&m_alarmState, 0, sizeof(m_alarmState));
     m_elapsedTimer.start();
     m_elapsedSec = 0.0;
 
@@ -345,16 +346,12 @@ void MainWindow::onDataAcquisition()
     /* ── Alarm checks (every tick = 10 Hz, with hysteresis) ── */
     checkAlarms(sample);
 
-    /* ── v3.0: Primary display = oscilloscope V/A vs time ── */
+    /* ── v3.0: Primary display = oscilloscope V/A vs time ──
+     * NOTE: Do NOT call setIcCurve() here — it switches ChartWidget mode
+     * and destroys all V/A series data, causing severe flickering. */
     m_resultScreen->appendOscilloscopeData(m_elapsedSec,
                                             static_cast<double>(sample.voltage),
                                             static_cast<double>(sample.current));
-
-    /* ── Update IC curve (every 5th tick = 2 Hz, secondary) ── */
-    static int icTick = 0;
-    if (++icTick % 5 == 0) {
-        m_resultScreen->setIcCurve(sample.ic_curve);
-    }
 
     /* Update temperature (every 5th tick = 2 Hz) */
     static int auxTick = 0;
@@ -483,9 +480,11 @@ void MainWindow::onClockUpdate()
 void MainWindow::checkAlarms(const BatterySample &sample)
 {
     /* ── Over-temperature (>60°C) ── */
-    if (sample.temperature > ALARM_TEMP_MAX_C && !m_alarmState.over_temp) {
+    if (sample.temperature > ALARM_TEMP_MAX_C && !m_alarmState.over_temp
+        && (m_elapsedSec - m_alarmState.over_temp_cooldown) > ALARM_COOLDOWN_SEC) {
         m_alarmState.over_temp = true;
         m_alarmState.over_temp_value = sample.temperature;
+        m_alarmState.over_temp_cooldown = m_elapsedSec;
         m_alarmIndicator->triggerAlarm(
             AlarmPopup::OverTemperature,
             "过温警报",
@@ -497,9 +496,11 @@ void MainWindow::checkAlarms(const BatterySample &sample)
     }
 
     /* ── Over-voltage (>4.25V) ── */
-    if (sample.voltage > ALARM_VOLTAGE_MAX_V && !m_alarmState.over_voltage) {
+    if (sample.voltage > ALARM_VOLTAGE_MAX_V && !m_alarmState.over_voltage
+        && (m_elapsedSec - m_alarmState.over_voltage_cooldown) > ALARM_COOLDOWN_SEC) {
         m_alarmState.over_voltage = true;
         m_alarmState.over_voltage_value = sample.voltage;
+        m_alarmState.over_voltage_cooldown = m_elapsedSec;
         m_alarmIndicator->triggerAlarm(
             AlarmPopup::OverVoltage,
             "过压警报",
@@ -511,9 +512,11 @@ void MainWindow::checkAlarms(const BatterySample &sample)
     }
 
     /* ── Over-current (>100A magnitude) ── */
-    if (std::fabs(sample.current) > ALARM_CURRENT_MAX_A && !m_alarmState.over_current) {
+    if (std::fabs(sample.current) > ALARM_CURRENT_MAX_A && !m_alarmState.over_current
+        && (m_elapsedSec - m_alarmState.over_current_cooldown) > ALARM_COOLDOWN_SEC) {
         m_alarmState.over_current = true;
         m_alarmState.over_current_value = std::fabs(sample.current);
+        m_alarmState.over_current_cooldown = m_elapsedSec;
         m_alarmIndicator->triggerAlarm(
             AlarmPopup::OverCurrent,
             "过流警报",
@@ -525,9 +528,11 @@ void MainWindow::checkAlarms(const BatterySample &sample)
     }
 
     /* ── Cell swelling (>0.3) ── */
-    if (sample.cell_swelling > ALARM_SWELLING_THRESH && !m_alarmState.cell_swelling) {
+    if (sample.cell_swelling > ALARM_SWELLING_THRESH && !m_alarmState.cell_swelling
+        && (m_elapsedSec - m_alarmState.cell_swelling_cooldown) > ALARM_COOLDOWN_SEC) {
         m_alarmState.cell_swelling = true;
         m_alarmState.cell_swelling_value = sample.cell_swelling;
+        m_alarmState.cell_swelling_cooldown = m_elapsedSec;
         m_alarmIndicator->triggerAlarm(
             AlarmPopup::CellSwelling,
             "电池膨胀警报",
@@ -539,9 +544,11 @@ void MainWindow::checkAlarms(const BatterySample &sample)
     }
 
     /* ── SOH critical (<20%, PINN only) ── */
-    if (m_latestSoh < ALARM_SOH_CRITICAL && m_latestSoh > 0.0f && !m_alarmState.soh_critical) {
+    if (m_latestSoh < ALARM_SOH_CRITICAL && m_latestSoh > 0.0f && !m_alarmState.soh_critical
+        && (m_elapsedSec - m_alarmState.soh_critical_cooldown) > ALARM_COOLDOWN_SEC) {
         m_alarmState.soh_critical = true;
         m_alarmState.soh_value = m_latestSoh;
+        m_alarmState.soh_critical_cooldown = m_elapsedSec;
         m_alarmIndicator->triggerAlarm(
             AlarmPopup::SohCritical,
             "SOH 严重衰减",

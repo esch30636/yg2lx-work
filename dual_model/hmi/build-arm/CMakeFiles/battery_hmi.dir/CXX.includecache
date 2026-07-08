@@ -6,12 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../../include/battery_inference.h
-stddef.h
--
-
-../../include/scalers.h
-
 ../config/AppConfig.h
 
 ../data/DataProvider.h
@@ -153,8 +147,6 @@ QPushButton
 -
 ../ChartWidget.h
 ../ui/ChartWidget.h
-
-/home/legion/yg2lx-work/dual_model/hmi/build-arm/battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp
 
 /home/legion/yg2lx-work/dual_model/hmi/build-arm/battery_hmi_autogen/OF4FSJ2DWT/moc_InitScreen.cpp
 memory
@@ -350,32 +342,6 @@ QString
 cstdint
 -
 
-/home/legion/yg2lx-work/dual_model/hmi/inference/CnnPreprocessor.cpp
-CnnPreprocessor.h
-/home/legion/yg2lx-work/dual_model/hmi/inference/CnnPreprocessor.h
-scalers.h
-/home/legion/yg2lx-work/dual_model/hmi/inference/scalers.h
-cmath
--
-algorithm
--
-
-/home/legion/yg2lx-work/dual_model/hmi/inference/CnnPreprocessor.h
-cstddef
--
-
-/home/legion/yg2lx-work/dual_model/hmi/inference/InferenceEngine.cpp
-InferenceEngine.h
-/home/legion/yg2lx-work/dual_model/hmi/inference/InferenceEngine.h
-CnnPreprocessor.h
-/home/legion/yg2lx-work/dual_model/hmi/inference/CnnPreprocessor.h
-battery_inference.h
-/home/legion/yg2lx-work/dual_model/hmi/inference/battery_inference.h
-cmath
--
-cstring
--
-
 /home/legion/yg2lx-work/dual_model/hmi/inference/InferenceEngine.h
 stdexcept
 -
@@ -432,12 +398,6 @@ data/SpiDataProvider.h
 ui/MainWindow.h
 /home/legion/yg2lx-work/dual_model/hmi/ui/MainWindow.h
 
-/home/legion/yg2lx-work/dual_model/hmi/threads/InferenceWorker.cpp
-InferenceWorker.h
-/home/legion/yg2lx-work/dual_model/hmi/threads/InferenceWorker.h
-cstring
--
-
 /home/legion/yg2lx-work/dual_model/hmi/threads/InferenceWorker.h
 QObject
 -
@@ -447,14 +407,6 @@ QVector
 -
 ../inference/InferenceEngine.h
 /home/legion/yg2lx-work/dual_model/hmi/inference/InferenceEngine.h
-
-/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.cpp
-AlarmIndicator.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.h
-config/AppConfig.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/config/AppConfig.h
-QHBoxLayout
--
 
 /home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.h
 QWidget
@@ -496,16 +448,6 @@ QLabel
 QPushButton
 -
 QTimer
--
-
-/home/legion/yg2lx-work/dual_model/hmi/ui/ChartWidget.cpp
-ChartWidget.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/ChartWidget.h
-config/AppConfig.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/config/AppConfig.h
-QtCharts/QChart
--
-QHBoxLayout
 -
 
 /home/legion/yg2lx-work/dual_model/hmi/ui/ChartWidget.h
@@ -578,40 +520,6 @@ screens/ResultScreen.h
 AlarmIndicator.h
 /home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.h
 
-/home/legion/yg2lx-work/dual_model/hmi/ui/StatusPanel.cpp
-StatusPanel.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/StatusPanel.h
-config/AppConfig.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/config/AppConfig.h
-QVBoxLayout
--
-QHBoxLayout
--
-QFormLayout
--
-QFont
--
-QStyle
--
-
-/home/legion/yg2lx-work/dual_model/hmi/ui/StatusPanel.h
-QWidget
--
-QProgressBar
--
-QLabel
--
-QTimer
--
-
-/home/legion/yg2lx-work/dual_model/hmi/ui/screens/InitScreen.cpp
-InitScreen.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/screens/InitScreen.h
-config/AppConfig.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/screens/config/AppConfig.h
-QVBoxLayout
--
-
 /home/legion/yg2lx-work/dual_model/hmi/ui/screens/InitScreen.h
 QWidget
 -
@@ -624,34 +532,12 @@ QLabel
 QTimer
 -
 
-/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ModelSelectScreen.cpp
-ModelSelectScreen.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ModelSelectScreen.h
-config/AppConfig.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/screens/config/AppConfig.h
-QVBoxLayout
--
-
 /home/legion/yg2lx-work/dual_model/hmi/ui/screens/ModelSelectScreen.h
 QWidget
 -
 QPushButton
 -
 QLabel
--
-
-/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.cpp
-ResultScreen.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.h
-config/AppConfig.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/screens/config/AppConfig.h
-QVBoxLayout
--
-QHBoxLayout
--
-QFrame
--
-QStyle
 -
 
 /home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.h
@@ -990,14 +876,6 @@ qapplication.h
 qdialog.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qdialog.h
 
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QFormLayout
-qformlayout.h
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qformlayout.h
-
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QFrame
-qframe.h
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qframe.h
-
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QGraphicsOpacityEffect
 qgraphicseffect.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qgraphicseffect.h
@@ -1071,18 +949,6 @@ limits.h
 -
 
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qdialog.h
-QtWidgets/qtwidgetsglobal.h
--
-QtWidgets/qwidget.h
--
-
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qformlayout.h
-QtWidgets/qtwidgetsglobal.h
--
-QtWidgets/QLayout
--
-
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qframe.h
 QtWidgets/qtwidgetsglobal.h
 -
 QtWidgets/qwidget.h
