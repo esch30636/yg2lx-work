@@ -36,6 +36,15 @@
 #define CONVERGENCE_EPSILON       0.005f  /* stddev < 0.5% → candidate */
 #define CONVERGENCE_MIN_SAMPLES   60      /* at least 60 samples (30s @ 2Hz) */
 #define CONVERGENCE_STABLE_CHECKS 3       /* N consecutive windows under epsilon */
+#define CONVERGENCE_FORCE_AFTER_FULL_CHECKS  20  /* force-complete 10s after window fills (2Hz) */
+
+/* ── Convergence Detection (CNN) ── */
+#define CNN_STAGE_WINDOW          30      /* last 30 inferences (60s @ 0.5Hz) */
+#define CNN_STAGE_MAJORITY        0.80f   /* 80% majority required for stage stability */
+#define CNN_STAGE_STABLE_CHECKS   5       /* 5 consecutive checks with majority */
+#define CNN_RUL_EPSILON           0.01f   /* RUL stddev < 1% → candidate */
+#define CNN_RUL_STABLE_CHECKS     3       /* 3 consecutive windows under epsilon */
+#define CNN_FORCE_AFTER_CHECKS    20      /* force after 20 extra inferences (~40s) */
 
 /* ── Chart (Oscilloscope) ── */
 #define CHART_WINDOW_SECONDS  60     /* rolling 60-second window (oscilloscope) */

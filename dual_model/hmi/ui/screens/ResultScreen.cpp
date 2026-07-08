@@ -24,6 +24,9 @@ ResultScreen::ResultScreen(QWidget *parent)
     , m_healthBar(nullptr)
     , m_swellValue(nullptr)
     , m_statusLabel(nullptr)
+    , m_completionBanner(nullptr)
+    , m_completionTitle(nullptr)
+    , m_completionDetail(nullptr)
     , m_backButton(nullptr)
     , m_stopButton(nullptr)
 {
@@ -125,6 +128,26 @@ void ResultScreen::setupUi()
 
     mainLayout->addWidget(readoutBar);
 
+    /* ── Completion Banner (hidden until PINN finishes) ── */
+    m_completionBanner = new QWidget();
+    m_completionBanner->setObjectName("panel");
+    m_completionBanner->setFixedHeight(80);
+    m_completionBanner->setVisible(false);
+    QHBoxLayout *bannerLayout = new QHBoxLayout(m_completionBanner);
+    bannerLayout->setContentsMargins(24, 10, 24, 10);
+    bannerLayout->setSpacing(24);
+
+    m_completionTitle = new QLabel();
+    m_completionTitle->setStyleSheet(QString("color: %1; font-size: 22px; font-weight: bold;").arg(COLOR_HEALTHY_GREEN));
+    bannerLayout->addWidget(m_completionTitle);
+
+    m_completionDetail = new QLabel();
+    m_completionDetail->setStyleSheet(QString("color: %1; font-size: 15px;").arg(COLOR_TEXT));
+    bannerLayout->addWidget(m_completionDetail, 1);
+
+    bannerLayout->addStretch();
+    mainLayout->addWidget(m_completionBanner);
+
     /* ── Thin separator ── */
     QFrame *sep2 = new QFrame();
     sep2->setFrameShape(QFrame::HLine);
@@ -153,7 +176,7 @@ void ResultScreen::setupUi()
 
     m_healthConfidence = new QLabel("");
     m_healthConfidence->setStyleSheet(QString("color: %1; font-size: 13px;").arg(COLOR_TEXT_DIM));
-    m_healthConfidence->setMinimumWidth(80);
+    m_healthConfidence->setMinimumWidth(130);
     bottomLayout->addWidget(m_healthConfidence);
 
     /* Health progress bar */
@@ -201,15 +224,18 @@ void ResultScreen::setMode(Mode mode)
 {
     m_mode = mode;
     if (mode == PINN) {
-        m_healthTitle->setText(tr("SOH"));
+        m_healthTitle->setText(tr("健康度"));
         m_statusLabel->setText(tr("PINN 模式 — 采集中..."));
     } else {
-        m_healthTitle->setText(tr("RUL"));
+        m_healthTitle->setText(tr("健康度"));
         m_statusLabel->setText(tr("CNN 模式 — 采集中..."));
     }
     m_healthValue->setText("--%");
     m_healthConfidence->setText("");
     m_healthBar->setValue(0);
+    if (m_completionBanner)
+        m_completionBanner->setVisible(false);
+    m_stopButton->setVisible(false);
 }
 
 void ResultScreen::setIcCurve(const float ic[128])
@@ -263,13 +289,13 @@ void ResultScreen::setHealth(float value, float confidence)
     m_healthBar->style()->unpolish(m_healthBar);
     m_healthBar->style()->polish(m_healthBar);
 
-    /* Confidence display */
+    /* Confidence display — Chinese label */
     if (m_mode == PINN) {
         int ciPct = static_cast<int>(confidence * 100.0f);
-        m_healthConfidence->setText(QString("\302\261%1%").arg(ciPct));
+        m_healthConfidence->setText(QString("置信度 \302\261%1%").arg(ciPct));
     } else {
         int confPct = static_cast<int>(confidence * 100.0f);
-        m_healthConfidence->setText(QString("conf: %1%").arg(confPct));
+        m_healthConfidence->setText(QString("置信度 %1%").arg(confPct));
     }
 }
 
@@ -306,11 +332,81 @@ void ResultScreen::setConverged(bool converged, float finalSoh, float finalCiHal
     if (converged) {
         int pct = static_cast<int>(finalSoh * 100.0f);
         int ciPct = static_cast<int>(finalCiHalf * 100.0f);
-        m_statusLabel->setText(tr("✓ 已收敛 — SOH: %1% ±%2%").arg(pct).arg(ciPct));
+        m_statusLabel->setText(tr("✓ 已收敛 — 健康度: %1% ±%2%").arg(pct).arg(ciPct));
         m_statusLabel->setStyleSheet(QString("color: %1; font-size: 14px; font-weight: bold;").arg(COLOR_HEALTHY_GREEN));
         m_stopButton->setVisible(true);
         m_stopButton->setText(tr("完成"));
     } else {
         m_statusLabel->setStyleSheet(QString("color: %1; font-size: 14px;").arg(COLOR_TEXT_DIM));
     }
+}
+
+void ResultScreen::showCompletion(float finalSoh, float finalCiHalf,
+                                    int samples, float /*stddev*/, bool natural)
+{
+    m_completionBanner->setVisible(true);
+
+    int sohPct = static_cast<int>(finalSoh * 100.0f);
+    int ciPct  = static_cast<int>(finalCiHalf * 100.0f);
+
+    if (natural) {
+        m_completionTitle->setText(tr("✓ 收敛完成"));
+        m_completionTitle->setStyleSheet(QString("color: %1; font-size: 22px; font-weight: bold;")
+                                         .arg(COLOR_HEALTHY_GREEN));
+    } else {
+        m_completionTitle->setText(tr("⏱ 检测完成 (超时终止)"));
+        m_completionTitle->setStyleSheet(QString("color: %1; font-size: 22px; font-weight: bold;")
+                                         .arg(COLOR_ACCENT_CYAN));
+    }
+
+    m_completionDetail->setText(tr("健康度: %1% ±%2%  |  样本数: %3")
+                                .arg(sohPct).arg(ciPct).arg(samples));
+
+    /* Also update the status bar and show stop/completion button */
+    m_statusLabel->setStyleSheet(QString("color: %1; font-size: 14px; font-weight: bold;")
+                                 .arg(natural ? COLOR_HEALTHY_GREEN : COLOR_ACCENT_CYAN));
+    m_stopButton->setVisible(true);
+    m_stopButton->setText(tr("完成"));
+}
+
+void ResultScreen::showCnnCompletion(float finalRul, float finalConfidence,
+                                       int stage, int inferenceCount, bool natural)
+{
+    m_completionBanner->setVisible(true);
+
+    int rulPct  = static_cast<int>(finalRul * 100.0f);
+    int confPct = static_cast<int>(finalConfidence * 100.0f);
+
+    static const char *stageNames[] = { "健康", "退化", "寿命终止" };
+    const char *stageName = (stage >= 0 && stage < 3) ? stageNames[stage] : "?";
+
+    if (natural) {
+        m_completionTitle->setText(tr("✓ 收敛完成"));
+        m_completionTitle->setStyleSheet(QString("color: %1; font-size: 22px; font-weight: bold;")
+                                         .arg(COLOR_HEALTHY_GREEN));
+    } else {
+        m_completionTitle->setText(tr("⏱ 检测完成 (超时终止)"));
+        m_completionTitle->setStyleSheet(QString("color: %1; font-size: 22px; font-weight: bold;")
+                                         .arg(COLOR_ACCENT_CYAN));
+    }
+
+    m_completionDetail->setText(tr("健康度: %1%  置信度: %2%  |  阶段: %3  |  推理: %4 次")
+                                .arg(rulPct).arg(confPct).arg(stageName).arg(inferenceCount));
+
+    /* Also update status bar */
+    m_statusLabel->setStyleSheet(QString("color: %1; font-size: 14px; font-weight: bold;")
+                                 .arg(natural ? COLOR_HEALTHY_GREEN : COLOR_ACCENT_CYAN));
+    m_stopButton->setVisible(true);
+    m_stopButton->setText(tr("完成"));
+}
+
+void ResultScreen::clearChart()
+{
+    m_chartWidget->clear();
+    m_voltReadoutValue->setText("-- V");
+    m_currReadoutValue->setText("-- A");
+    m_tempReadoutValue->setText("-- °C");
+    if (m_completionBanner)
+        m_completionBanner->setVisible(false);
+    m_stopButton->setVisible(false);
 }

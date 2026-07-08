@@ -28,6 +28,7 @@
 #include <QThread>
 #include <QLabel>
 #include <QElapsedTimer>
+#include <deque>
 
 #include "../data/DataProvider.h"
 #include "../inference/InferenceEngine.h"
@@ -71,6 +72,10 @@ private:
     void startAcquisition(int model);
     void stopAcquisition();
     void checkAlarms(const BatterySample &sample);
+    void onPinnConverged(float finalSoh, float finalCiHalf,
+                         int samples, float stddev, bool natural);
+    void onCnnConverged(float finalRul, float finalConfidence,
+                        int finalStage, int inferenceCount, bool natural);
     void applyTheme();
 
     /* Owned components */
@@ -105,7 +110,15 @@ private:
     bool          m_running;
     int           m_selectedModel;   /* -1=none, 0=PINN, 1=CNN */
     bool          m_converged;
+    int           m_fullWindowCheckCount;  /* force-complete counter after window fills */
     float         m_latestSoh;       /* cached for SOH-critical alarm */
+
+    /* ── CNN convergence tracking ── */
+    std::deque<int>   m_cnnStageHistory;
+    std::deque<float> m_cnnRulHistory;
+    int               m_cnnStableStageCount;
+    int               m_cnnStableRulCount;
+    int               m_cnnFullWindowCount;
 };
 
 #endif /* HMI_UI_MAIN_WINDOW_H */

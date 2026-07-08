@@ -60,6 +60,23 @@ public slots:
     /** Mark PINN as converged (shows final value) */
     void setConverged(bool converged, float finalSoh, float finalCiHalf);
 
+    /**
+     * Show completion banner overlay (PINN).
+     * natural=true → "收敛完成", natural=false → "超时终止"
+     */
+    void showCompletion(float finalSoh, float finalCiHalf,
+                        int samples, float stddev, bool natural);
+
+    /**
+     * Show completion banner overlay (CNN).
+     * Displays final RUL, stage name, confidence, and inference count.
+     */
+    void showCnnCompletion(float finalRul, float finalConfidence,
+                           int stage, int inferenceCount, bool natural);
+
+    /** Clear all chart series data (call when switching sessions) */
+    void clearChart();
+
 signals:
     /** User wants to go back to model selection */
     void backClicked();
@@ -91,6 +108,11 @@ private:
 
     /* Status */
     QLabel       *m_statusLabel;
+
+    /* Completion banner */
+    QWidget      *m_completionBanner;
+    QLabel       *m_completionTitle;
+    QLabel       *m_completionDetail;
 
     /* Buttons */
     QPushButton  *m_backButton;

@@ -38,7 +38,11 @@ MainWindow::MainWindow(DataProvider *provider, QWidget *parent)
     , m_running(false)
     , m_selectedModel(-1)
     , m_converged(false)
+    , m_fullWindowCheckCount(0)
     , m_latestSoh(0.0f)
+    , m_cnnStableStageCount(0)
+    , m_cnnStableRulCount(0)
+    , m_cnnFullWindowCount(0)
 {
     std::memset(&m_latestSample, 0, sizeof(m_latestSample));
     std::memset(&m_alarmState, 0, sizeof(m_alarmState));
@@ -207,6 +211,9 @@ void MainWindow::onModelSelected(int model)
     m_selectedModel = model;
     printf("[HMI] Model selected: %s\n", model == 0 ? "PINN" : "CNN");
 
+    /* Clear any stale chart data from previous session */
+    m_resultScreen->clearChart();
+
     /* Configure result screen */
     m_resultScreen->setMode(model == 0 ? ResultScreen::PINN : ResultScreen::CNN);
 
@@ -223,6 +230,7 @@ void MainWindow::onBackToModelSelect()
     stopAcquisition();
 
     /* Clear result screen */
+    m_resultScreen->clearChart();
     m_resultScreen->setHealth(0.0f, 0.0f);
     m_resultScreen->setTemperature(0.0f);
     m_resultScreen->setSwelling(false);
@@ -251,7 +259,13 @@ void MainWindow::startAcquisition(int model)
 {
     m_running = true;
     m_converged = false;
+    m_fullWindowCheckCount = 0;
     m_sohAccumulator.reset();
+    m_cnnStageHistory.clear();
+    m_cnnRulHistory.clear();
+    m_cnnStableStageCount = 0;
+    m_cnnStableRulCount = 0;
+    m_cnnFullWindowCount = 0;
     std::memset(&m_latestSample, 0, sizeof(m_latestSample));
     std::memset(&m_alarmState, 0, sizeof(m_alarmState));
     m_elapsedTimer.start();
@@ -270,7 +284,7 @@ void MainWindow::startAcquisition(int model)
         connect(m_pinnTimer, &QTimer::timeout, this, &MainWindow::onPinnInference);
         m_pinnTimer->start();
 
-        m_resultScreen->setStatus(tr("PINN 模式 — 采集 SOH..."));
+        m_resultScreen->setStatus(tr("PINN 模式 — 采集健康度..."));
         printf("[HMI] PINN acquisition started (data=100ms, pinn=500ms)\n");
     } else {
         /* ── CNN mode: 2 s inference via worker thread ── */
@@ -285,7 +299,7 @@ void MainWindow::startAcquisition(int model)
         });
         m_cnnTimer->start();
 
-        m_resultScreen->setStatus(tr("CNN 模式 — 采集 RUL..."));
+        m_resultScreen->setStatus(tr("CNN 模式 — 采集健康度..."));
         printf("[HMI] CNN acquisition started (data=100ms, cnn=2000ms)\n");
     }
 }
@@ -393,9 +407,10 @@ void MainWindow::onPinnInference()
         m_resultScreen->setStatus(tr("稳定中... %1/%2 样本")
                                   .arg(stats.sample_count)
                                   .arg(SOH_WINDOW_SIZE));
+        m_fullWindowCheckCount = 0;  /* reset — window not yet full */
     }
 
-    /* Check convergence */
+    /* Check convergence (only when window is full) */
     if (stats.window_full) {
         SohAccumulator::ConvergenceStatus cs =
             m_sohAccumulator.checkConvergence(
@@ -404,31 +419,63 @@ void MainWindow::onPinnInference()
                 CONVERGENCE_STABLE_CHECKS);
 
         if (cs.converged) {
-            m_converged = true;
-            m_resultScreen->setConverged(true, cs.final_soh, cs.final_ci_half);
+            /* ── Natural convergence ── */
+            onPinnConverged(cs.final_soh, cs.final_ci_half, cs.samples_used,
+                           cs.current_stddev, true);
+            return;
+        }
 
-            /* Show final value in header */
-            int sohPct = static_cast<int>(cs.final_soh * 100.0f);
-            int ciPct  = static_cast<int>(cs.final_ci_half * 100.0f);
-            m_headerTitle->setText(tr("电池监测  —  SOH: %1% ±%2%  ✓")
-                                   .arg(sohPct).arg(ciPct));
-            m_headerTitle->setStyleSheet(QString("color: %1; font-size: 18px; font-weight: bold;")
-                                         .arg(COLOR_HEALTHY_GREEN));
+        /* ── Forced completion after window has been full for a while ── */
+        m_fullWindowCheckCount++;
 
-            /* Stop PINN timer (keep data timer running for display) */
-            if (m_pinnTimer) {
-                m_pinnTimer->stop();
-            }
-
-            printf("[HMI] PINN CONVERGED: SOH=%.3f ±%.4f (σ=%.5f, %d samples)\n",
-                   cs.final_soh, cs.final_ci_half, cs.current_stddev, cs.samples_used);
-        } else if (cs.stable_count > 0) {
+        if (cs.stable_count > 0) {
             m_resultScreen->setStatus(tr("收敛中... σ=%1 (稳定: %2/%3)")
                                       .arg(cs.current_stddev, 0, 'f', 4)
                                       .arg(cs.stable_count)
                                       .arg(CONVERGENCE_STABLE_CHECKS));
+        } else {
+            m_resultScreen->setStatus(tr("等待收敛... %1 样本 (强制终止: %2/%3)")
+                                      .arg(stats.sample_count)
+                                      .arg(m_fullWindowCheckCount)
+                                      .arg(CONVERGENCE_FORCE_AFTER_FULL_CHECKS));
+        }
+
+        if (m_fullWindowCheckCount >= CONVERGENCE_FORCE_AFTER_FULL_CHECKS) {
+            /* ── Forced completion: timeout ── */
+            onPinnConverged(stats.median, stats.ci_95_half, stats.sample_count,
+                           stats.stddev, false);
         }
     }
+}
+
+/** Centralized PINN completion handler — called on natural convergence OR timeout */
+void MainWindow::onPinnConverged(float finalSoh, float finalCiHalf,
+                                 int samples, float stddev, bool natural)
+{
+    m_converged = true;
+
+    /* Show completion banner on result screen */
+    m_resultScreen->showCompletion(finalSoh, finalCiHalf, samples, stddev, natural);
+
+    /* Update header */
+    int sohPct = static_cast<int>(finalSoh * 100.0f);
+    int ciPct  = static_cast<int>(finalCiHalf * 100.0f);
+    m_headerTitle->setText(tr("电池监测  —  健康度: %1% ±%2%  ✓")
+                           .arg(sohPct).arg(ciPct));
+    m_headerTitle->setStyleSheet(QString("color: %1; font-size: 18px; font-weight: bold;")
+                                 .arg(natural ? COLOR_HEALTHY_GREEN : COLOR_ACCENT_CYAN));
+
+    /* Stop PINN timer + data acquisition to freeze the V/A curve */
+    if (m_pinnTimer) {
+        m_pinnTimer->stop();
+    }
+    if (m_dataTimer) {
+        m_dataTimer->stop();
+    }
+
+    const char *how = natural ? "CONVERGED" : "FORCED (timeout)";
+    printf("[HMI] PINN %s: SOH=%.3f ±%.4f (σ=%.5f, %d samples)\n",
+           how, finalSoh, finalCiHalf, stddev, samples);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -437,29 +484,141 @@ void MainWindow::onPinnInference()
 
 void MainWindow::onCnnResult(int stage, QVector<float> probs, float rul)
 {
-    if (!m_running) return;
+    if (!m_running || m_converged) return;
 
     /* Cache RUL as health metric for alarm checks */
     m_latestSoh = rul;
 
     /* Update result screen health display with RUL */
-    m_resultScreen->setHealth(rul, probs[stage]);  /* max stage prob as confidence */
+    m_resultScreen->setHealth(rul, probs[stage]);
 
-    /* Update status with stage info */
-    static const char *stageNames[] = { "健康", "退化", "寿命终止" };
-    if (stage >= 0 && stage < 3) {
-        m_resultScreen->setStatus(tr("阶段: %1 (RUL: %2%)  |  数据: %3 样本")
-                                  .arg(stageNames[stage])
-                                  .arg(static_cast<int>(rul * 100.0f))
-                                  .arg(m_sohAccumulator.count() + 1));
+    /* Push to tracking windows */
+    m_cnnStageHistory.push_back(stage);
+    m_cnnRulHistory.push_back(rul);
+
+    if (static_cast<int>(m_cnnStageHistory.size()) > CNN_STAGE_WINDOW) {
+        m_cnnStageHistory.pop_front();
+    }
+    if (static_cast<int>(m_cnnRulHistory.size()) > CNN_STAGE_WINDOW) {
+        m_cnnRulHistory.pop_front();
     }
 
-    /* Track sample count (reuse accumulator counter for display) */
-    m_sohAccumulator.push(rul);  /* just for counting */
+    int n = static_cast<int>(m_cnnStageHistory.size());
+    static const char *stageNames[] = { "健康", "退化", "寿命终止" };
+    const char *curStage = (stage >= 0 && stage < 3) ? stageNames[stage] : "?";
 
-    printf("[HMI] CNN: stage=%d (%s)  rul=%.3f  probs=[%.3f, %.3f, %.3f]\n",
-           stage, stage >= 0 && stage < 3 ? stageNames[stage] : "?",
-           rul, probs[0], probs[1], probs[2]);
+    /* ── Pre-window: accumulate, show current prediction ── */
+    if (n < CNN_STAGE_WINDOW) {
+        m_resultScreen->setStatus(tr("稳定中... %1/%2 次推理  |  阶段: %3  健康度: %4%")
+                                  .arg(n).arg(CNN_STAGE_WINDOW)
+                                  .arg(curStage)
+                                  .arg(static_cast<int>(rul * 100.0f)));
+        m_cnnFullWindowCount = 0;
+        m_cnnStableStageCount = 0;
+        m_cnnStableRulCount = 0;
+        printf("[HMI] CNN #%d: stage=%d(%s) rul=%.3f probs=[%.3f,%.3f,%.3f]\n",
+               n, stage, curStage, rul, probs[0], probs[1], probs[2]);
+        return;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+     * Window full — convergence detection
+     * ═══════════════════════════════════════════════════════════════ */
+
+    /* ── Stage stability: majority fraction in window ── */
+    int stageCounts[3] = {0, 0, 0};
+    for (int s : m_cnnStageHistory) {
+        if (s >= 0 && s < 3) stageCounts[s]++;
+    }
+    int majorityStage = 0;
+    int maxCount = stageCounts[0];
+    if (stageCounts[1] > maxCount) { majorityStage = 1; maxCount = stageCounts[1]; }
+    if (stageCounts[2] > maxCount) { majorityStage = 2; maxCount = stageCounts[2]; }
+
+    float majorityPct = static_cast<float>(maxCount) / static_cast<float>(n);
+    bool stageStable = (majorityPct >= CNN_STAGE_MAJORITY);
+    m_cnnStableStageCount = stageStable ? m_cnnStableStageCount + 1 : 0;
+
+    /* ── RUL stability: sliding-window stddev ── */
+    float sum = 0.0f, sumSq = 0.0f;
+    for (float r : m_cnnRulHistory) {
+        sum += r;
+        sumSq += r * r;
+    }
+    float meanRul = sum / static_cast<float>(n);
+    float variance = (sumSq / static_cast<float>(n)) - (meanRul * meanRul);
+    if (variance < 0.0f) variance = 0.0f;
+    float stddev = std::sqrt(variance);
+    bool rulStable = (stddev < CNN_RUL_EPSILON);
+    m_cnnStableRulCount = rulStable ? m_cnnStableRulCount + 1 : 0;
+
+    bool stageOk = (m_cnnStableStageCount >= CNN_STAGE_STABLE_CHECKS);
+    bool rulOk   = (m_cnnStableRulCount >= CNN_RUL_STABLE_CHECKS);
+
+    /* ── Status display ── */
+    m_resultScreen->setStatus(
+        tr("阶段: %1 (%2%%) 稳定:%3/%4  |  RUL σ=%5 稳定:%6/%7  |  推理:%8")
+        .arg(stageNames[majorityStage])
+        .arg(static_cast<int>(majorityPct * 100))
+        .arg(m_cnnStableStageCount).arg(CNN_STAGE_STABLE_CHECKS)
+        .arg(stddev, 0, 'f', 4)
+        .arg(m_cnnStableRulCount).arg(CNN_RUL_STABLE_CHECKS)
+        .arg(n));
+
+    printf("[HMI] CNN #%d: stage=%d(%s) rul=%.3f majority=%s(%.0f%%) "
+           "stageStable=%d/%d σ=%.5f rulStable=%d/%d\n",
+           n, stage, curStage, rul, stageNames[majorityStage],
+           majorityPct * 100.0f,
+           m_cnnStableStageCount, CNN_STAGE_STABLE_CHECKS,
+           stddev, m_cnnStableRulCount, CNN_RUL_STABLE_CHECKS);
+
+    /* ── Natural convergence: both stage and RUL stable ── */
+    if (stageOk && rulOk) {
+        float finalConfidence = majorityPct;  /* window majority as confidence */
+        onCnnConverged(meanRul, finalConfidence, majorityStage, n, true);
+        return;
+    }
+
+    /* ── Forced completion after window stays full for too long ── */
+    m_cnnFullWindowCount++;
+    if (m_cnnFullWindowCount >= CNN_FORCE_AFTER_CHECKS) {
+        float finalConfidence = majorityPct;
+        onCnnConverged(meanRul, finalConfidence, majorityStage, n, false);
+    }
+}
+
+/** Centralized CNN completion handler — called on natural convergence OR timeout */
+void MainWindow::onCnnConverged(float finalRul, float finalConfidence,
+                                 int finalStage, int inferenceCount, bool natural)
+{
+    m_converged = true;
+
+    /* Stop CNN timer + data acquisition to freeze the V/A curve */
+    if (m_cnnTimer) {
+        m_cnnTimer->stop();
+    }
+    if (m_dataTimer) {
+        m_dataTimer->stop();
+    }
+
+    /* Show completion banner on result screen */
+    m_resultScreen->showCnnCompletion(finalRul, finalConfidence,
+                                       finalStage, inferenceCount, natural);
+
+    /* Update header */
+    int rulPct  = static_cast<int>(finalRul * 100.0f);
+    int confPct = static_cast<int>(finalConfidence * 100.0f);
+    static const char *stageNames[] = { "健康", "退化", "寿命终止" };
+    const char *sn = (finalStage >= 0 && finalStage < 3) ? stageNames[finalStage] : "?";
+
+    m_headerTitle->setText(tr("电池监测  —  健康度: %1%  置信度: %2%  阶段: %3  ✓")
+                           .arg(rulPct).arg(confPct).arg(sn));
+    m_headerTitle->setStyleSheet(QString("color: %1; font-size: 18px; font-weight: bold;")
+                                 .arg(natural ? COLOR_HEALTHY_GREEN : COLOR_ACCENT_CYAN));
+
+    const char *how = natural ? "CONVERGED" : "FORCED (timeout)";
+    printf("[HMI] CNN %s: RUL=%.3f stage=%d(%s) confidence=%.3f (%d inferences)\n",
+           how, finalRul, finalStage, sn, finalConfidence, inferenceCount);
 }
 
 void MainWindow::onCnnError(const QString &msg)

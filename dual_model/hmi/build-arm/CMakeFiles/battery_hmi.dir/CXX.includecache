@@ -89,6 +89,8 @@ QLabel
 -
 QElapsedTimer
 -
+deque
+-
 ../data/DataProvider.h
 ../data/DataProvider.h
 ../inference/InferenceEngine.h
@@ -281,6 +283,8 @@ cmath
 -
 cstring
 -
+algorithm
+-
 
 /home/legion/yg2lx-work/dual_model/hmi/data/DemoDataProvider.h
 DataProvider.h
@@ -408,6 +412,14 @@ QVector
 ../inference/InferenceEngine.h
 /home/legion/yg2lx-work/dual_model/hmi/inference/InferenceEngine.h
 
+/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.cpp
+AlarmIndicator.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.h
+config/AppConfig.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/config/AppConfig.h
+QHBoxLayout
+-
+
 /home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.h
 QWidget
 -
@@ -448,6 +460,16 @@ QLabel
 QPushButton
 -
 QTimer
+-
+
+/home/legion/yg2lx-work/dual_model/hmi/ui/ChartWidget.cpp
+ChartWidget.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/ChartWidget.h
+config/AppConfig.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/config/AppConfig.h
+QtCharts/QChart
+-
+QHBoxLayout
 -
 
 /home/legion/yg2lx-work/dual_model/hmi/ui/ChartWidget.h
@@ -503,6 +525,8 @@ QLabel
 -
 QElapsedTimer
 -
+deque
+-
 ../data/DataProvider.h
 /home/legion/yg2lx-work/dual_model/hmi/data/DataProvider.h
 ../inference/InferenceEngine.h
@@ -520,6 +544,40 @@ screens/ResultScreen.h
 AlarmIndicator.h
 /home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.h
 
+/home/legion/yg2lx-work/dual_model/hmi/ui/StatusPanel.cpp
+StatusPanel.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/StatusPanel.h
+config/AppConfig.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/config/AppConfig.h
+QVBoxLayout
+-
+QHBoxLayout
+-
+QFormLayout
+-
+QFont
+-
+QStyle
+-
+
+/home/legion/yg2lx-work/dual_model/hmi/ui/StatusPanel.h
+QWidget
+-
+QProgressBar
+-
+QLabel
+-
+QTimer
+-
+
+/home/legion/yg2lx-work/dual_model/hmi/ui/screens/InitScreen.cpp
+InitScreen.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/screens/InitScreen.h
+config/AppConfig.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/screens/config/AppConfig.h
+QVBoxLayout
+-
+
 /home/legion/yg2lx-work/dual_model/hmi/ui/screens/InitScreen.h
 QWidget
 -
@@ -532,12 +590,34 @@ QLabel
 QTimer
 -
 
+/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ModelSelectScreen.cpp
+ModelSelectScreen.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ModelSelectScreen.h
+config/AppConfig.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/screens/config/AppConfig.h
+QVBoxLayout
+-
+
 /home/legion/yg2lx-work/dual_model/hmi/ui/screens/ModelSelectScreen.h
 QWidget
 -
 QPushButton
 -
 QLabel
+-
+
+/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.cpp
+ResultScreen.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.h
+config/AppConfig.h
+/home/legion/yg2lx-work/dual_model/hmi/ui/screens/config/AppConfig.h
+QVBoxLayout
+-
+QHBoxLayout
+-
+QFrame
+-
+QStyle
 -
 
 /home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.h
@@ -876,6 +956,14 @@ qapplication.h
 qdialog.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qdialog.h
 
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QFormLayout
+qformlayout.h
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qformlayout.h
+
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QFrame
+qframe.h
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qframe.h
+
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QGraphicsOpacityEffect
 qgraphicseffect.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qgraphicseffect.h
@@ -949,6 +1037,18 @@ limits.h
 -
 
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qdialog.h
+QtWidgets/qtwidgetsglobal.h
+-
+QtWidgets/qwidget.h
+-
+
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qformlayout.h
+QtWidgets/qtwidgetsglobal.h
+-
+QtWidgets/QLayout
+-
+
+/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qframe.h
 QtWidgets/qtwidgetsglobal.h
 -
 QtWidgets/qwidget.h

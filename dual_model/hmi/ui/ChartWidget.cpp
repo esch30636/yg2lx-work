@@ -150,8 +150,9 @@ void ChartWidget::setupVoltageCurrentMode()
     m_axisY_voltage->setGridLineColor(QColor(COLOR_CHART_GRID));
     m_axisY_voltage->setLinePenColor(QColor(COLOR_CHART_VOLTAGE));
     m_axisY_voltage->setLinePen(QPen(QColor(COLOR_CHART_VOLTAGE), 1.5));
-    m_axisY_voltage->setRange(0.0, 5.0);
+    m_axisY_voltage->setRange(2.5, 3.8);
     m_axisY_voltage->setTickCount(6);
+    m_axisY_voltage->setLabelFormat("%.2f");
     m_chart->addAxis(m_axisY_voltage, Qt::AlignLeft);
     m_voltageSeries->attachAxis(m_axisY_voltage);
 
@@ -165,8 +166,9 @@ void ChartWidget::setupVoltageCurrentMode()
     m_axisY_current->setGridLineVisible(false);
     m_axisY_current->setLinePenColor(QColor(COLOR_CHART_CURRENT));
     m_axisY_current->setLinePen(QPen(QColor(COLOR_CHART_CURRENT), 1.5));
-    m_axisY_current->setRange(-150.0, 150.0);
-    m_axisY_current->setTickCount(7);
+    m_axisY_current->setRange(-0.08, 0.08);
+    m_axisY_current->setTickCount(5);
+    m_axisY_current->setLabelFormat("%.3f");
     m_chart->addAxis(m_axisY_current, Qt::AlignRight);
     m_currentSeries->attachAxis(m_axisY_current);
 
