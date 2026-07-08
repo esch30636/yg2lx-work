@@ -308,11 +308,17 @@ void ResultScreen::setHealth(float value, float confidence)
 
     /* Confidence display — Chinese label */
     if (m_mode == PINN) {
-        int ciPct = static_cast<int>(confidence * 100.0f);
-        m_healthConfidence->setText(QString("置信度 \302\261%1%").arg(ciPct));
+        /* PINN "confidence" is actually the 95% CI half-width
+         * (1.96 * stddev / sqrt(n)), a precision metric typically
+         * below 0.01.  Integer truncation always gave 0%.
+         * Show with 2 decimal places so it reads e.g. "±0.12%".
+         * Label it "精度" (precision) rather than "置信度" (confidence)
+         * since that is what this metric actually represents. */
+        m_healthConfidence->setText(QString("\347\262\276\345\272\246 \302\261%1%")
+                                    .arg(confidence * 100.0f, 0, 'f', 2));
     } else {
         int confPct = static_cast<int>(confidence * 100.0f);
-        m_healthConfidence->setText(QString("置信度 %1%").arg(confPct));
+        m_healthConfidence->setText(QString("\347\275\256\344\277\241\345\272\246 %1%").arg(confPct));
     }
 }
 
@@ -364,7 +370,8 @@ void ResultScreen::showCompletion(float finalSoh, float finalCiHalf,
     m_completionBanner->setVisible(true);
 
     int sohPct = static_cast<int>(finalSoh * 100.0f);
-    int ciPct  = static_cast<int>(finalCiHalf * 100.0f);
+    /* Show CI half-width with 2 decimal places (same as setHealth fix) */
+    QString ciStr = QString::number(finalCiHalf * 100.0f, 'f', 2);
 
     if (natural) {
         m_completionTitle->setText(tr("✓ 收敛完成"));
@@ -376,8 +383,8 @@ void ResultScreen::showCompletion(float finalSoh, float finalCiHalf,
                                          .arg(COLOR_ACCENT_CYAN));
     }
 
-    m_completionDetail->setText(tr("健康度: %1% ±%2%  |  样本数: %3")
-                                .arg(sohPct).arg(ciPct).arg(samples));
+    m_completionDetail->setText(tr("\345\201\245\345\272\267\345\272\246: %1% \302\261%2%  |  \346\240\267\346\234\254\346\225\260: %3")
+                                .arg(sohPct).arg(ciStr).arg(samples));
 
     /* Also update the status bar and show stop/completion button */
     m_statusLabel->setStyleSheet(QString("color: %1; font-size: 14px; font-weight: bold;")

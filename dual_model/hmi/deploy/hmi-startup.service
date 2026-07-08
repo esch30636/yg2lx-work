@@ -1,0 +1,36 @@
+[Unit]
+Description=Battery HMI Display (Weston + Qt5 wayland-egl)
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+Environment=HOME=/root
+Environment=XDG_RUNTIME_DIR=/run/user/0
+Environment=WAYLAND_DISPLAY=wayland-0
+Environment=QT_QPA_PLATFORM=wayland-egl
+
+# Pre-flight: create runtime dir
+ExecStartPre=-/bin/mkdir -p /run/user/0
+ExecStartPre=-/bin/chmod 700 /run/user/0
+
+# Cleanup previous instances
+ExecStartPre=-/bin/sh -c 'pkill -9 weston 2>/dev/null; pkill -9 battery_hmi 2>/dev/null; rm -f /run/user/0/wayland-0; sleep 1'
+
+# Release framebuffer console and start Weston with GPU settle time
+ExecStartPre=-/bin/sh -c 'echo 0 > /sys/class/vtconsole/vtcon1/bind 2>/dev/null; setsid weston-launch --tty=/dev/tty2 --user=root -- --idle-time=0 > /var/log/weston.log 2>&1 & for i in $(seq 1 100); do [ -S /run/user/0/wayland-0 ] && break; sleep 0.1; done; sleep 3; [ -S /run/user/0/wayland-0 ] || exit 1'
+
+# Launch HMI directly (no wrapper script)
+ExecStart=/opt/battery_hmi/battery_hmi --demo
+
+# Cleanup on stop
+ExecStop=-/usr/bin/killall battery_hmi
+ExecStop=-/usr/bin/killall weston
+
+Restart=on-failure
+RestartSec=10
+TimeoutStartSec=45
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target

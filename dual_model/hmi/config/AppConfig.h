@@ -41,10 +41,10 @@
 /* ── Convergence Detection (CNN) ── */
 #define CNN_STAGE_WINDOW          30      /* last 30 inferences (60s @ 0.5Hz) */
 #define CNN_STAGE_MAJORITY        0.80f   /* 80% majority required for stage stability */
-#define CNN_STAGE_STABLE_CHECKS   5       /* 5 consecutive checks with majority */
+#define CNN_STAGE_STABLE_CHECKS   500     /* require many checks (effectively disabled) */
 #define CNN_RUL_EPSILON           0.01f   /* RUL stddev < 1% → candidate */
-#define CNN_RUL_STABLE_CHECKS     3       /* 3 consecutive windows under epsilon */
-#define CNN_FORCE_AFTER_CHECKS    20      /* force after 20 extra inferences (~40s) */
+#define CNN_RUL_STABLE_CHECKS     300     /* require many checks (effectively disabled) */
+#define CNN_FORCE_AFTER_CHECKS    3000    /* force after 3000 extra inferences (~100min @ 0.5Hz) */
 
 /* ── Chart (Oscilloscope) ── */
 #define CHART_WINDOW_SECONDS  60     /* rolling 60-second window (oscilloscope) */
