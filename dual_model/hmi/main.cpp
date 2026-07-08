@@ -283,15 +283,18 @@ int main(int argc, char *argv[])
     MainWindow window(provider);
     window.setWindowTitle(QString("电池监测 HMI v3.0 — %1").arg(provider->name()));
 
-    /* v3.0: Default to fullscreen for 1920×1080 oscilloscope display.
-     * Use --windowed for desktop development. */
-    if (parser.isSet(windowedOption)) {
-        window.show();
-        printf("[HMI] 窗口模式 (minimum 1024×600)\n");
-    } else {
-        window.showFullScreen();
+    /* v3.1: On Wayland, showFullScreen() in the constructor triggers a
+     * Wayland protocol error (xdg-shell surface not yet configured when
+     * setVisible is called). Instead, set the window state BEFORE show()
+     * so the fullscreen hint is applied during initial surface creation.
+     * This avoids the QWaylandDisplay::checkError() → abort() path. */
+    if (!parser.isSet(windowedOption)) {
+        window.setWindowState(Qt::WindowFullScreen);
         printf("[HMI] 全屏模式 (1920×1080)\n");
+    } else {
+        printf("[HMI] 窗口模式 (minimum 1024×600)\n");
     }
+    window.show();
 
     printf("[HMI] 应用已启动。关闭窗口或 Ctrl+C 退出。\n");
 

@@ -6,8 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../config/AppConfig.h
-
 /home/legion/yg2lx-work/dual_model/hmi/config/AppConfig.h
 
 /home/legion/yg2lx-work/dual_model/hmi/data/DataProvider.h
@@ -126,26 +124,6 @@ vector
 AlarmPopup.h
 /home/legion/yg2lx-work/dual_model/hmi/ui/AlarmPopup.h
 
-/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmPopup.cpp
-AlarmPopup.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/AlarmPopup.h
-config/AppConfig.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/config/AppConfig.h
-QVBoxLayout
--
-QHBoxLayout
--
-QPainter
--
-QGraphicsOpacityEffect
--
-QPropertyAnimation
--
-QApplication
--
-QScreen
--
-
 /home/legion/yg2lx-work/dual_model/hmi/ui/AlarmPopup.h
 QDialog
 -
@@ -220,22 +198,6 @@ QPushButton
 QLabel
 -
 
-/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.cpp
-ResultScreen.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.h
-config/AppConfig.h
-/home/legion/yg2lx-work/dual_model/hmi/ui/screens/config/AppConfig.h
-QVBoxLayout
--
-QHBoxLayout
--
-QFrame
--
-QStyle
--
-cmath
--
-
 /home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.h
 QWidget
 -
@@ -279,10 +241,6 @@ qlocale.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/QObject
 qobject.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qobject.h
-
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/QPropertyAnimation
-qpropertyanimation.h
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qpropertyanimation.h
 
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/QString
 qstring.h
@@ -382,10 +340,6 @@ QtCore/qobject_impl.h
 chrono
 -
 
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qpropertyanimation.h
-QtCore/qvariantanimation.h
--
-
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qstring.h
 QtCore/qchar.h
 -
@@ -472,14 +426,6 @@ qfont.h
 qfontdatabase.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui/qfontdatabase.h
 
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui/QPainter
-qpainter.h
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui/qpainter.h
-
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui/QScreen
-qscreen.h
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui/qscreen.h
-
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui/qfont.h
 QtGui/qtguiglobal.h
 -
@@ -500,56 +446,6 @@ QtCore/qstring.h
 QtGui/qfont.h
 -
 
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui/qpainter.h
-QtGui/qtguiglobal.h
--
-QtCore/qnamespace.h
--
-QtCore/qrect.h
--
-QtCore/qpoint.h
--
-QtCore/qscopedpointer.h
--
-QtGui/qpixmap.h
--
-QtGui/qimage.h
--
-QtGui/qtextoption.h
--
-QtGui/qpolygon.h
--
-QtGui/qpen.h
--
-QtGui/qbrush.h
--
-QtGui/qmatrix.h
--
-QtGui/qtransform.h
--
-QtGui/qfontinfo.h
--
-QtGui/qfontmetrics.h
--
-
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui/qscreen.h
-QtGui/qtguiglobal.h
--
-QtCore/QList
--
-QtCore/QObject
--
-QtCore/QRect
--
-QtCore/QSize
--
-QtCore/QSizeF
--
-QtGui/QTransform
--
-QtCore/qnamespace.h
--
-
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QApplication
 qapplication.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qapplication.h
@@ -557,18 +453,6 @@ qapplication.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QDialog
 qdialog.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qdialog.h
-
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QFrame
-qframe.h
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qframe.h
-
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QGraphicsOpacityEffect
-qgraphicseffect.h
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qgraphicseffect.h
-
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QHBoxLayout
-qboxlayout.h
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qboxlayout.h
 
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QLabel
 qlabel.h
@@ -589,14 +473,6 @@ qpushbutton.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QStackedWidget
 qstackedwidget.h
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qstackedwidget.h
-
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QStyle
-qstyle.h
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qstyle.h
-
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QVBoxLayout
-qboxlayout.h
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qboxlayout.h
 
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QWidget
 qwidget.h
@@ -620,40 +496,10 @@ QtWidgets/qdesktopwidget.h
 QtGui/qguiapplication.h
 -
 
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qboxlayout.h
-QtWidgets/qtwidgetsglobal.h
--
-QtWidgets/qlayout.h
--
-QtWidgets/qwidget.h
--
-limits.h
--
-
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qdialog.h
 QtWidgets/qtwidgetsglobal.h
 -
 QtWidgets/qwidget.h
--
-
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qframe.h
-QtWidgets/qtwidgetsglobal.h
--
-QtWidgets/qwidget.h
--
-
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qgraphicseffect.h
-QtWidgets/qtwidgetsglobal.h
--
-QtCore/qobject.h
--
-QtCore/qpoint.h
--
-QtCore/qrect.h
--
-QtGui/qcolor.h
--
-QtGui/qbrush.h
 -
 
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qlabel.h
@@ -686,24 +532,6 @@ QtWidgets/qabstractbutton.h
 QtWidgets/qtwidgetsglobal.h
 -
 QtWidgets/qframe.h
--
-
-/opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qstyle.h
-QtWidgets/qtwidgetsglobal.h
--
-QtCore/qobject.h
--
-QtCore/qrect.h
--
-QtCore/qsize.h
--
-QtGui/qicon.h
--
-QtGui/qpixmap.h
--
-QtGui/qpalette.h
--
-QtWidgets/qsizepolicy.h
 -
 
 /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/qwidget.h
