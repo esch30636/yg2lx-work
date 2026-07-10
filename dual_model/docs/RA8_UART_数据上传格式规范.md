@@ -1,23 +1,33 @@
 # RA8 → RZ/G2L UART 数据上传格式规范
 
-> **接收方:** RZ/G2L (MYD-YG2LX, Linux), `/dev/ttyS5`  
+> **接收方:** RZ/G2L (MYD-YG2LX, Linux), 推荐 `/dev/ttySC3` (UART3/SCIF3)  
 > **发送方:** RA8 微控制器 (裸机, e2studio FSP)  
 > **物理接口:** UART, 2 线 (TX + GND)  
 > **波特率:** 115200, 8N1 (8 data bits, no parity, 1 stop bit)  
 > **更新频率:** 每 100ms 发送一帧（10 Hz）  
-> **文档版本:** v1.0, 2026-07-10  
+> **文档版本:** v2.0, 2026-07-10  
+>
+> **⚠ 设备名以板端实际查询为准。** 上板先跑：
+> ```
+> ls /dev/ttySC* && dmesg | grep -Ei "tty|uart|serial|scif"
+> ```
+> 根据输出确认实际设备名。`/dev/ttySC3` 是 UART3 (SCIF3) 的预期名称。  
 
 ---
 
 ## 1. 硬件接线
 
 ```
-RA8                          RZ/G2L (MYD-YG2LX)
-════                         ═══════════════════
-TX  (UART TXD)  ──────────── RX  (UART RXD)
+RA8                          RZ/G2L J20 40-pin 排针
+════                         ═══════════════════════
+TX  (UART TXD)  ──────────── UART3_RX  (P0_1, SCIF3 RXD)
 GND             ──────────── GND
 
 只需要两根线。
+UART3 = SCIF3 = /dev/ttySC3 (内核已启用)。
+引脚: P0_0 = TXD, P0_1 = RXD, Function 5。
+在 J20 排针上的具体物理位置需查 MYC-YG2LX-Pin List 文档（米尔开发者中心下载）
+或通过 GPIO sysfs 翻转电平 + 万用表定位。
 ```
 
 ## 2. 数据格式
@@ -120,14 +130,33 @@ float signed_current = (g_charge_state == CHARGING) ? g_current_a : -g_current_a
 
 ## 4. RZ/G2L 端接收
 
-### 一行命令验证
+### 第 0 步：确认设备名（每次上板必须先做）
 
 ```bash
-# 配置串口
-stty -F /dev/ttyS5 115200 cs8 -cstopb -parenb -echo raw
+# 列出所有串口设备
+ls /dev/ttySC* /dev/ttyS* /dev/ttyAMA* 2>/dev/null
+
+# 查看内核串口日志，确认每个设备对应哪个 SCIF
+dmesg | grep -Ei "tty|uart|serial|scif"
+```
+
+根据输出确认实际设备名。以下为 MYD-YG2LX 预期映射：
+
+| 设备名 | GPIO | 状态 | 说明 |
+|--------|------|:---:|------|
+| `/dev/ttySC0` | P38_0, P38_1 | 占用 | 调试控制台 (接电脑) |
+| `/dev/ttySC1` | P40_0, P40_1 | 空闲 | RS485 (无子板时空闲) |
+| `/dev/ttySC2` | P48_0, P48_1 | 空闲 | RS232 (无子板时空闲) |
+| **`/dev/ttySC3`** | **P0_0, P0_1** | **空闲** | **纯 UART，推荐使用** |
+
+### 一行命令验证（以 ttySC3 为例）
+
+```bash
+# 配置串口 — 把 /dev/ttySC3 换成你实际查到的设备名
+stty -F /dev/ttySC3 115200 cs8 -cstopb -parenb -echo raw
 
 # 直接看数据
-cat /dev/ttyS5
+cat /dev/ttySC3
 ```
 
 ### 期望输出

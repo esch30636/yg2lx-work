@@ -23,6 +23,11 @@
 			"QYFM2Z2WYQ/moc_SpiDataProvider.cpp"
 		],
 		[
+			"/home/legion/yg2lx-work/dual_model/hmi/data/UartDataProvider.h",
+			"MU",
+			"QYFM2Z2WYQ/moc_UartDataProvider.cpp"
+		],
+		[
 			"/home/legion/yg2lx-work/dual_model/hmi/inference/CnnPreprocessor.h",
 			"MU",
 			"332VT2GGFB/moc_CnnPreprocessor.cpp"
@@ -153,6 +158,10 @@
 		],
 		[
 			"/home/legion/yg2lx-work/dual_model/hmi/data/SpiDataProvider.cpp",
+			"MU"
+		],
+		[
+			"/home/legion/yg2lx-work/dual_model/hmi/data/UartDataProvider.cpp",
 			"MU"
 		],
 		[

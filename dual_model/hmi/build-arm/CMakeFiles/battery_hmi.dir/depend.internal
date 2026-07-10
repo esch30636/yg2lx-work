@@ -86,6 +86,13 @@ CMakeFiles/battery_hmi.dir/data/SpiDataProvider.cpp.o
  /home/legion/yg2lx-work/dual_model/hmi/data/SpiDataProvider.h
  /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/QString
  /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qstring.h
+CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o
+ ../config/AppConfig.h
+ /home/legion/yg2lx-work/dual_model/hmi/data/DataProvider.h
+ /home/legion/yg2lx-work/dual_model/hmi/data/UartDataProvider.cpp
+ /home/legion/yg2lx-work/dual_model/hmi/data/UartDataProvider.h
+ /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/QString
+ /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qstring.h
 CMakeFiles/battery_hmi.dir/inference/CnnPreprocessor.cpp.o
  ../../include/scalers.h
  /home/legion/yg2lx-work/dual_model/hmi/inference/CnnPreprocessor.cpp
@@ -101,6 +108,7 @@ CMakeFiles/battery_hmi.dir/main.cpp.o
  /home/legion/yg2lx-work/dual_model/hmi/data/DemoDataProvider.h
  /home/legion/yg2lx-work/dual_model/hmi/data/FileDataProvider.h
  /home/legion/yg2lx-work/dual_model/hmi/data/SpiDataProvider.h
+ /home/legion/yg2lx-work/dual_model/hmi/data/UartDataProvider.h
  /home/legion/yg2lx-work/dual_model/hmi/inference/InferenceEngine.h
  /home/legion/yg2lx-work/dual_model/hmi/inference/SohAccumulator.h
  /home/legion/yg2lx-work/dual_model/hmi/main.cpp

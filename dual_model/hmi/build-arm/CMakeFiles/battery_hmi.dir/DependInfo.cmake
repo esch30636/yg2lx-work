@@ -36,6 +36,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/legion/yg2lx-work/dual_model/hmi/data/DemoDataProvider.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/data/DemoDataProvider.cpp.o"
   "/home/legion/yg2lx-work/dual_model/hmi/data/FileDataProvider.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/data/FileDataProvider.cpp.o"
   "/home/legion/yg2lx-work/dual_model/hmi/data/SpiDataProvider.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/data/SpiDataProvider.cpp.o"
+  "/home/legion/yg2lx-work/dual_model/hmi/data/UartDataProvider.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o"
   "/home/legion/yg2lx-work/dual_model/hmi/inference/CnnPreprocessor.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/inference/CnnPreprocessor.cpp.o"
   "/home/legion/yg2lx-work/dual_model/hmi/inference/InferenceEngine.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/inference/InferenceEngine.cpp.o"
   "/home/legion/yg2lx-work/dual_model/hmi/main.cpp" "/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles/battery_hmi.dir/main.cpp.o"

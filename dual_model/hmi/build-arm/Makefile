@@ -330,6 +330,33 @@ data/SpiDataProvider.cpp.s:
 	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/data/SpiDataProvider.cpp.s
 .PHONY : data/SpiDataProvider.cpp.s
 
+data/UartDataProvider.o: data/UartDataProvider.cpp.o
+
+.PHONY : data/UartDataProvider.o
+
+# target to build an object file
+data/UartDataProvider.cpp.o:
+	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o
+.PHONY : data/UartDataProvider.cpp.o
+
+data/UartDataProvider.i: data/UartDataProvider.cpp.i
+
+.PHONY : data/UartDataProvider.i
+
+# target to preprocess a source file
+data/UartDataProvider.cpp.i:
+	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.i
+.PHONY : data/UartDataProvider.cpp.i
+
+data/UartDataProvider.s: data/UartDataProvider.cpp.s
+
+.PHONY : data/UartDataProvider.s
+
+# target to generate assembly for a file
+data/UartDataProvider.cpp.s:
+	$(MAKE) -f CMakeFiles/battery_hmi.dir/build.make CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.s
+.PHONY : data/UartDataProvider.cpp.s
+
 home/legion/yg2lx-work/dual_model/src/cnn_inference.o: home/legion/yg2lx-work/dual_model/src/cnn_inference.c.o
 
 .PHONY : home/legion/yg2lx-work/dual_model/src/cnn_inference.o
@@ -738,6 +765,9 @@ help:
 	@echo "... data/SpiDataProvider.o"
 	@echo "... data/SpiDataProvider.i"
 	@echo "... data/SpiDataProvider.s"
+	@echo "... data/UartDataProvider.o"
+	@echo "... data/UartDataProvider.i"
+	@echo "... data/UartDataProvider.s"
 	@echo "... home/legion/yg2lx-work/dual_model/src/cnn_inference.o"
 	@echo "... home/legion/yg2lx-work/dual_model/src/cnn_inference.i"
 	@echo "... home/legion/yg2lx-work/dual_model/src/cnn_inference.s"

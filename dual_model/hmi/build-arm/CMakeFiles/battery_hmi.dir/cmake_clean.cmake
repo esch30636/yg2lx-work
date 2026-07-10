@@ -7,6 +7,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/battery_hmi.dir/data/DemoDataProvider.cpp.o"
   "CMakeFiles/battery_hmi.dir/data/FileDataProvider.cpp.o"
   "CMakeFiles/battery_hmi.dir/data/SpiDataProvider.cpp.o"
+  "CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o"
   "CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/cnn_inference.c.o"
   "CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/pinn_inference.c.o"
   "CMakeFiles/battery_hmi.dir/inference/CnnPreprocessor.cpp.o"

@@ -48,6 +48,7 @@ set(HMI_SOURCES
     data/DemoDataProvider.cpp
     data/FileDataProvider.cpp
     data/SpiDataProvider.cpp
+    data/UartDataProvider.cpp
 
     # UI widgets
     ui/ChartWidget.cpp

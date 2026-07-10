@@ -157,9 +157,22 @@ CMakeFiles/battery_hmi.dir/data/SpiDataProvider.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/battery_hmi.dir/data/SpiDataProvider.cpp.s"
 	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/legion/yg2lx-work/dual_model/hmi/data/SpiDataProvider.cpp -o CMakeFiles/battery_hmi.dir/data/SpiDataProvider.cpp.s
 
+CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o: CMakeFiles/battery_hmi.dir/flags.make
+CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o: ../data/UartDataProvider.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o"
+	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o -c /home/legion/yg2lx-work/dual_model/hmi/data/UartDataProvider.cpp
+
+CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.i"
+	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/legion/yg2lx-work/dual_model/hmi/data/UartDataProvider.cpp > CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.i
+
+CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.s"
+	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/legion/yg2lx-work/dual_model/hmi/data/UartDataProvider.cpp -o CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.s
+
 CMakeFiles/battery_hmi.dir/ui/ChartWidget.cpp.o: CMakeFiles/battery_hmi.dir/flags.make
 CMakeFiles/battery_hmi.dir/ui/ChartWidget.cpp.o: ../ui/ChartWidget.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/battery_hmi.dir/ui/ChartWidget.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/battery_hmi.dir/ui/ChartWidget.cpp.o"
 	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/battery_hmi.dir/ui/ChartWidget.cpp.o -c /home/legion/yg2lx-work/dual_model/hmi/ui/ChartWidget.cpp
 
 CMakeFiles/battery_hmi.dir/ui/ChartWidget.cpp.i: cmake_force
@@ -172,7 +185,7 @@ CMakeFiles/battery_hmi.dir/ui/ChartWidget.cpp.s: cmake_force
 
 CMakeFiles/battery_hmi.dir/ui/StatusPanel.cpp.o: CMakeFiles/battery_hmi.dir/flags.make
 CMakeFiles/battery_hmi.dir/ui/StatusPanel.cpp.o: ../ui/StatusPanel.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/battery_hmi.dir/ui/StatusPanel.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/battery_hmi.dir/ui/StatusPanel.cpp.o"
 	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/battery_hmi.dir/ui/StatusPanel.cpp.o -c /home/legion/yg2lx-work/dual_model/hmi/ui/StatusPanel.cpp
 
 CMakeFiles/battery_hmi.dir/ui/StatusPanel.cpp.i: cmake_force
@@ -185,7 +198,7 @@ CMakeFiles/battery_hmi.dir/ui/StatusPanel.cpp.s: cmake_force
 
 CMakeFiles/battery_hmi.dir/ui/AlarmPopup.cpp.o: CMakeFiles/battery_hmi.dir/flags.make
 CMakeFiles/battery_hmi.dir/ui/AlarmPopup.cpp.o: ../ui/AlarmPopup.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/battery_hmi.dir/ui/AlarmPopup.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/battery_hmi.dir/ui/AlarmPopup.cpp.o"
 	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/battery_hmi.dir/ui/AlarmPopup.cpp.o -c /home/legion/yg2lx-work/dual_model/hmi/ui/AlarmPopup.cpp
 
 CMakeFiles/battery_hmi.dir/ui/AlarmPopup.cpp.i: cmake_force
@@ -198,7 +211,7 @@ CMakeFiles/battery_hmi.dir/ui/AlarmPopup.cpp.s: cmake_force
 
 CMakeFiles/battery_hmi.dir/ui/AlarmIndicator.cpp.o: CMakeFiles/battery_hmi.dir/flags.make
 CMakeFiles/battery_hmi.dir/ui/AlarmIndicator.cpp.o: ../ui/AlarmIndicator.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/battery_hmi.dir/ui/AlarmIndicator.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/battery_hmi.dir/ui/AlarmIndicator.cpp.o"
 	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/battery_hmi.dir/ui/AlarmIndicator.cpp.o -c /home/legion/yg2lx-work/dual_model/hmi/ui/AlarmIndicator.cpp
 
 CMakeFiles/battery_hmi.dir/ui/AlarmIndicator.cpp.i: cmake_force
@@ -211,7 +224,7 @@ CMakeFiles/battery_hmi.dir/ui/AlarmIndicator.cpp.s: cmake_force
 
 CMakeFiles/battery_hmi.dir/ui/MainWindow.cpp.o: CMakeFiles/battery_hmi.dir/flags.make
 CMakeFiles/battery_hmi.dir/ui/MainWindow.cpp.o: ../ui/MainWindow.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/battery_hmi.dir/ui/MainWindow.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/battery_hmi.dir/ui/MainWindow.cpp.o"
 	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/battery_hmi.dir/ui/MainWindow.cpp.o -c /home/legion/yg2lx-work/dual_model/hmi/ui/MainWindow.cpp
 
 CMakeFiles/battery_hmi.dir/ui/MainWindow.cpp.i: cmake_force
@@ -224,7 +237,7 @@ CMakeFiles/battery_hmi.dir/ui/MainWindow.cpp.s: cmake_force
 
 CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o: CMakeFiles/battery_hmi.dir/flags.make
 CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o: ../ui/screens/InitScreen.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o"
 	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o -c /home/legion/yg2lx-work/dual_model/hmi/ui/screens/InitScreen.cpp
 
 CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.i: cmake_force
@@ -237,7 +250,7 @@ CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.s: cmake_force
 
 CMakeFiles/battery_hmi.dir/ui/screens/ModelSelectScreen.cpp.o: CMakeFiles/battery_hmi.dir/flags.make
 CMakeFiles/battery_hmi.dir/ui/screens/ModelSelectScreen.cpp.o: ../ui/screens/ModelSelectScreen.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/battery_hmi.dir/ui/screens/ModelSelectScreen.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/battery_hmi.dir/ui/screens/ModelSelectScreen.cpp.o"
 	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/battery_hmi.dir/ui/screens/ModelSelectScreen.cpp.o -c /home/legion/yg2lx-work/dual_model/hmi/ui/screens/ModelSelectScreen.cpp
 
 CMakeFiles/battery_hmi.dir/ui/screens/ModelSelectScreen.cpp.i: cmake_force
@@ -250,7 +263,7 @@ CMakeFiles/battery_hmi.dir/ui/screens/ModelSelectScreen.cpp.s: cmake_force
 
 CMakeFiles/battery_hmi.dir/ui/screens/ResultScreen.cpp.o: CMakeFiles/battery_hmi.dir/flags.make
 CMakeFiles/battery_hmi.dir/ui/screens/ResultScreen.cpp.o: ../ui/screens/ResultScreen.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/battery_hmi.dir/ui/screens/ResultScreen.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/battery_hmi.dir/ui/screens/ResultScreen.cpp.o"
 	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/battery_hmi.dir/ui/screens/ResultScreen.cpp.o -c /home/legion/yg2lx-work/dual_model/hmi/ui/screens/ResultScreen.cpp
 
 CMakeFiles/battery_hmi.dir/ui/screens/ResultScreen.cpp.i: cmake_force
@@ -263,7 +276,7 @@ CMakeFiles/battery_hmi.dir/ui/screens/ResultScreen.cpp.s: cmake_force
 
 CMakeFiles/battery_hmi.dir/threads/InferenceWorker.cpp.o: CMakeFiles/battery_hmi.dir/flags.make
 CMakeFiles/battery_hmi.dir/threads/InferenceWorker.cpp.o: ../threads/InferenceWorker.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/battery_hmi.dir/threads/InferenceWorker.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/battery_hmi.dir/threads/InferenceWorker.cpp.o"
 	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/battery_hmi.dir/threads/InferenceWorker.cpp.o -c /home/legion/yg2lx-work/dual_model/hmi/threads/InferenceWorker.cpp
 
 CMakeFiles/battery_hmi.dir/threads/InferenceWorker.cpp.i: cmake_force
@@ -276,7 +289,7 @@ CMakeFiles/battery_hmi.dir/threads/InferenceWorker.cpp.s: cmake_force
 
 CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/pinn_inference.c.o: CMakeFiles/battery_hmi.dir/flags.make
 CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/pinn_inference.c.o: /home/legion/yg2lx-work/dual_model/src/pinn_inference.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/pinn_inference.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/pinn_inference.c.o"
 	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-gcc   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/pinn_inference.c.o   -c /home/legion/yg2lx-work/dual_model/src/pinn_inference.c
 
 CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/pinn_inference.c.i: cmake_force
@@ -289,7 +302,7 @@ CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/pinn_inference.
 
 CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/cnn_inference.c.o: CMakeFiles/battery_hmi.dir/flags.make
 CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/cnn_inference.c.o: /home/legion/yg2lx-work/dual_model/src/cnn_inference.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/cnn_inference.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/cnn_inference.c.o"
 	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-gcc   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/cnn_inference.c.o   -c /home/legion/yg2lx-work/dual_model/src/cnn_inference.c
 
 CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/cnn_inference.c.i: cmake_force
@@ -302,7 +315,7 @@ CMakeFiles/battery_hmi.dir/home/legion/yg2lx-work/dual_model/src/cnn_inference.c
 
 CMakeFiles/battery_hmi.dir/battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp.o: CMakeFiles/battery_hmi.dir/flags.make
 CMakeFiles/battery_hmi.dir/battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp.o: battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/battery_hmi.dir/battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/battery_hmi.dir/battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp.o"
 	/opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++   -mtune=cortex-a55 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux --sysroot=/opt/yg2lx-full/sysroots/aarch64-poky-linux  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/battery_hmi.dir/battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp.o -c /home/legion/yg2lx-work/dual_model/hmi/build-arm/battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp
 
 CMakeFiles/battery_hmi.dir/battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp.i: cmake_force
@@ -322,6 +335,7 @@ battery_hmi_OBJECTS = \
 "CMakeFiles/battery_hmi.dir/data/DemoDataProvider.cpp.o" \
 "CMakeFiles/battery_hmi.dir/data/FileDataProvider.cpp.o" \
 "CMakeFiles/battery_hmi.dir/data/SpiDataProvider.cpp.o" \
+"CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o" \
 "CMakeFiles/battery_hmi.dir/ui/ChartWidget.cpp.o" \
 "CMakeFiles/battery_hmi.dir/ui/StatusPanel.cpp.o" \
 "CMakeFiles/battery_hmi.dir/ui/AlarmPopup.cpp.o" \
@@ -345,6 +359,7 @@ battery_hmi: CMakeFiles/battery_hmi.dir/inference/CnnPreprocessor.cpp.o
 battery_hmi: CMakeFiles/battery_hmi.dir/data/DemoDataProvider.cpp.o
 battery_hmi: CMakeFiles/battery_hmi.dir/data/FileDataProvider.cpp.o
 battery_hmi: CMakeFiles/battery_hmi.dir/data/SpiDataProvider.cpp.o
+battery_hmi: CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o
 battery_hmi: CMakeFiles/battery_hmi.dir/ui/ChartWidget.cpp.o
 battery_hmi: CMakeFiles/battery_hmi.dir/ui/StatusPanel.cpp.o
 battery_hmi: CMakeFiles/battery_hmi.dir/ui/AlarmPopup.cpp.o
@@ -363,7 +378,7 @@ battery_hmi: /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/lib64/libQt5Widgets
 battery_hmi: /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/lib64/libQt5Gui.so.5.15.0
 battery_hmi: /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/lib64/libQt5Core.so.5.15.0
 battery_hmi: CMakeFiles/battery_hmi.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Linking CXX executable battery_hmi"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/legion/yg2lx-work/dual_model/hmi/build-arm/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Linking CXX executable battery_hmi"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/battery_hmi.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

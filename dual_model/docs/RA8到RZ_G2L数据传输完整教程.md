@@ -159,18 +159,23 @@ RA8 板                          MYD-YG2LX 开发板
 
 ### 在 MYD-YG2LX 上找 UART RX 引脚
 
-MYD-YG2LX 有多个串口，选一个空闲的。系统中常见：
+MYD-YG2LX 有 4 路 SCIF 串口（内核源码已验证）。空闲可用的是：
 
-| 串口 | Linux 设备名 | 通常用途 |
-|------|-------------|---------|
-| SCIF0 | `/dev/ttySC0` | 调试串口 (Linux 控制台) |
-| SCIF1 | `/dev/ttySC1` | 空闲可用 |
-| SCIF5 | `/dev/ttySC5` | **推荐用这个** |
-| UART0 | `/dev/ttyAMA0` | 空闲可用 |
+| 串口 | Linux 设备名 | GPIO (TXD, RXD) | 状态 |
+|------|-------------|------------------|:---:|
+| SCIF0 | `/dev/ttySC0` | P38_0, P38_1 | ❌ 调试控制台 (被电脑占用) |
+| SCIF1 | `/dev/ttySC1` | P40_0, P40_1 | ✅ 空闲 (无 MY-WiredCom 子板时) |
+| SCIF2 | `/dev/ttySC2` | P48_0, P48_1 | ✅ 空闲 (无 MY-WiredCom 子板时) |
+| **SCIF3** | **`/dev/ttySC3`** | **P0_0, P0_1** | **✅ 空闲，推荐使用** |
 
-> **建议用 `/dev/ttySC5`。** ttySC0 通常是系统的调试控制台，已经被 Linux 用了，不要抢占。
+> **推荐 `/dev/ttySC3` (UART3/SCIF3)。** 它是唯一纯 UART 接口（不像 SCIF1/2 被定义为 RS485/RS232），出厂内核已启用 (`status = "okay"`)，引脚 P0_0(TXD)/P0_1(RXD) 在 J20 排针上。
 
-具体引脚号请查阅 MYD-YG2LX 底板原理图中的扩展接口定义。
+**⚠ 设备名以板端实际查询为准。** 上板先跑：
+```bash
+ls /dev/ttySC* && dmesg | grep -Ei "tty|uart|serial|scif"
+```
+
+具体在 J20 排针上的物理位置需查 `MYC-YG2LX-Pin List` 文档（米尔开发者中心下载），或通过 GPIO sysfs 翻转 + 万用表定位。
 
 ---
 
@@ -346,28 +351,40 @@ void main_loop_1ms(void)
 
 ## 6. RZ/G2L 端怎么收数据
 
-### 第 1 步：确认串口设备存在
+### 第 1 步：确认串口设备存在（必须先做）
 
 在 RZ/G2L 的 Linux 终端执行：
 
 ```bash
-ls /dev/ttyS*
-ls /dev/ttySC*
-ls /dev/ttyAMA*
+# 列出所有串口设备
+ls /dev/ttySC* /dev/ttyS* /dev/ttyAMA* 2>/dev/null
+
+# 查看内核日志，确认各设备对应的 SCIF 通道
+dmesg | grep -Ei "tty|uart|serial|scif"
 ```
 
-看哪些串口设备存在。**记下一个存在的设备名**，后面会用到。
+根据输出确认你的目标串口设备名。以下为预期映射（内核源码已验证）：
+
+| 设备名 | TX GPIO | RX GPIO | 状态 |
+|--------|---------|---------|:---:|
+| `/dev/ttySC0` | P38_0, Func1 | P38_1, Func1 | 调试控制台，不可用 |
+| `/dev/ttySC1` | P40_0, Func1 | P40_1, Func1 | 空闲 |
+| `/dev/ttySC2` | P48_0, Func1 | P48_1, Func1 | 空闲 |
+| `/dev/ttySC3` | P0_0, Func5 | P0_1, Func5 | **空闲，推荐** |
+
+记下你选用的设备名，后续命令中的 `/dev/ttySC3` 都要替换为实际设备名。
 
 ### 第 2 步：直接用 cat 命令验证数据
 
 这是最快验证 RA8 是否在发数据的方法：
 
 ```bash
+# 把 /dev/ttySC3 换成你第 1 步查到的实际设备名
 # 配置串口参数
-stty -F /dev/ttySC5 115200 cs8 -cstopb -parenb -echo raw
+stty -F /dev/ttySC3 115200 cs8 -cstopb -parenb -echo raw
 
 # 读数据
-cat /dev/ttySC5
+cat /dev/ttySC3
 ```
 
 如果 RA8 在正常发送，你会看到：
@@ -392,7 +409,7 @@ RA8 UART TX ────物理线──→ RX 引脚
                             │
                      Linux 内核 UART 驱动
                             │
-                     /dev/ttySC5 (像文件一样读)
+                     /dev/ttySC3 (像文件一样读)
                             │
                      ┌──────┴──────┐
                      │              │
@@ -412,7 +429,7 @@ RA8 UART TX ────物理线──→ RX 引脚
                               HMI 屏幕显示
 ```
 
-`/dev/ttySC5` 在 Linux 里就像一个特殊的"文件"。读它就是在读串口收到的数据。
+`/dev/ttySC3` 在 Linux 里就像一个特殊的"文件"。读它就是在读串口收到的数据。
 
 ---
 
@@ -441,11 +458,11 @@ RA8 UART TX ────物理线──→ RX 引脚
   │
 步骤3: RZ/G2L 开发板 (Linux, Yocto)
   │    UART RX 引脚收到数据
-  │    Linux 串口驱动 → /dev/ttySC5
+  │    Linux 串口驱动 → /dev/ttySC3
   │
   ▼
 步骤4: UartDataProvider (C++ 程序)
-  │    ┌─ 每 100ms 读 /dev/ttySC5
+  │    ┌─ 每 100ms 读 /dev/ttySC3
   │    ├─ 解析 "3.652,1.234,25.6,1.201\n"
   │    │   → voltage=3.652, current=1.234, temp=25.6, pressure=1.201
   │    ├─ 累积历史数据 (电压、电流、容量随时间变化)
@@ -505,8 +522,8 @@ R_SCI_UART_Write(&g_uart0, (uint8_t *)test, strlen(test));
 
 ```bash
 # RZ/G2L 终端
-stty -F /dev/ttySC5 115200 cs8 -cstopb -parenb -echo raw
-cat /dev/ttySC5
+stty -F /dev/ttySC3 115200 cs8 -cstopb -parenb -echo raw
+cat /dev/ttySC3
 ```
 
 看到数据 → 成功。  
@@ -538,7 +555,7 @@ Saleae / DSLogic / 便宜的逻辑分析仪淘宝 30 块
 ```
 1. RA8 连接真实电池
 2. RA8 跑 ADC + PID + UART 发送
-3. RZ/G2L cat /dev/ttySC5 看到实时数据
+3. RZ/G2L cat /dev/ttySC3 看到实时数据
 4. RZ/G2L 运行 battery_hmi (未来 UartDataProvider 就绪后)
 5. 屏幕显示实时 SOH / RUL / 图表
 ```
@@ -547,7 +564,7 @@ Saleae / DSLogic / 便宜的逻辑分析仪淘宝 30 块
 
 ## 9. 常见问题
 
-### 问题 1：`cat /dev/ttySC5` 没有任何输出
+### 问题 1：`cat /dev/ttySC3` 没有任何输出
 
 可能原因（按优先级排列）：
 
@@ -555,7 +572,7 @@ Saleae / DSLogic / 便宜的逻辑分析仪淘宝 30 块
 2. **串口号不对。** 用 `ls /dev/tty*` 看有哪些串口，逐个试。
 3. **TX 和 RX 接反了。** RA8 的 TX 必须接 RZ/G2L 的 RX。
 4. **RA8 UART 初始化失败。** 检查 FSP 配置，确认 SCI UART 模块已启用。
-5. **该串口被其他程序占用。** 用 `fuser /dev/ttySC5` 查看。
+5. **该串口被其他程序占用。** 用 `fuser /dev/ttySC3` 查看。
 
 ### 问题 2：收到乱码
 
@@ -579,7 +596,7 @@ Saleae / DSLogic / 便宜的逻辑分析仪淘宝 30 块
 | 角色 | 要做什么 |
 |------|---------|
 | **RA8 程序员** | 在你现有的 1ms 主循环里加 7 行代码——每 100ms 用 `snprintf` 格式化 4 个数，用 `R_SCI_UART_Write` 发出去。用 2 根杜邦线连到 RZ/G2L 的 RX 和 GND。 |
-| **RZ/G2L 操作** | `cat /dev/ttySC5` 看到数据就说明通了。以后 HMI 程序会自动读这个串口。 |
+| **RZ/G2L 操作** | `cat /dev/ttySC3` 看到数据就说明通了。以后 HMI 程序会自动读这个串口。 |
 | **你（项目负责人）** | 确认 RA8 发的 4 个字段顺序是 电压,电流,温度,压力，波特率 115200，8N1。 |
 
 ## 附录 B：RA8 端完整代码模板

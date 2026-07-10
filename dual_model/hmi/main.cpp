@@ -83,6 +83,7 @@ static void crashHandler(int sig)
 #include "data/DemoDataProvider.h"
 #include "data/FileDataProvider.h"
 #include "data/SpiDataProvider.h"
+#include "data/UartDataProvider.h"
 #include "ui/MainWindow.h"
 
 /* ── Attempt to load CJK font for light theme (dark text on light bg) ── */
@@ -235,6 +236,9 @@ int main(int argc, char *argv[])
     QCommandLineOption spiMockOption("spi-mock", "SPI 模拟模式 (无硬件)");
     parser.addOption(spiMockOption);
 
+    QCommandLineOption uartOption("uart", "通过 UART 串口读取 RA8 实时数据", "device");
+    parser.addOption(uartOption);
+
     QCommandLineOption windowedOption("windowed", "窗口模式 (非全屏)");
     parser.addOption(windowedOption);
 
@@ -261,6 +265,13 @@ int main(int argc, char *argv[])
         provider = sp;
         printf("[HMI] SPI 模式: %s (%s)\n", qPrintable(cfg.device),
                sp->isOpen() ? "已连接" : "模拟回退");
+    } else if (parser.isSet(uartOption)) {
+        UartDataProvider::Config cfg;
+        cfg.device = parser.value(uartOption);
+        UartDataProvider *up = new UartDataProvider(cfg);
+        provider = up;
+        printf("[HMI] UART 模式: %s (%s)\n", qPrintable(cfg.device),
+               up->isOpen() ? "已连接" : "未连接");
     } else if (parser.isSet(fileOption)) {
         QString path = parser.value(fileOption);
         FileDataProvider *fp = new FileDataProvider(path);

@@ -86,6 +86,13 @@ CMakeFiles/battery_hmi.dir/data/SpiDataProvider.cpp.o: ../data/SpiDataProvider.h
 CMakeFiles/battery_hmi.dir/data/SpiDataProvider.cpp.o: /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/QString
 CMakeFiles/battery_hmi.dir/data/SpiDataProvider.cpp.o: /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qstring.h
 
+CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o: ../config/AppConfig.h
+CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o: ../data/DataProvider.h
+CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o: ../data/UartDataProvider.cpp
+CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o: ../data/UartDataProvider.h
+CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o: /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/QString
+CMakeFiles/battery_hmi.dir/data/UartDataProvider.cpp.o: /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qstring.h
+
 CMakeFiles/battery_hmi.dir/inference/CnnPreprocessor.cpp.o: ../../include/scalers.h
 CMakeFiles/battery_hmi.dir/inference/CnnPreprocessor.cpp.o: ../inference/CnnPreprocessor.cpp
 CMakeFiles/battery_hmi.dir/inference/CnnPreprocessor.cpp.o: ../inference/CnnPreprocessor.h
@@ -100,6 +107,7 @@ CMakeFiles/battery_hmi.dir/main.cpp.o: ../data/DataProvider.h
 CMakeFiles/battery_hmi.dir/main.cpp.o: ../data/DemoDataProvider.h
 CMakeFiles/battery_hmi.dir/main.cpp.o: ../data/FileDataProvider.h
 CMakeFiles/battery_hmi.dir/main.cpp.o: ../data/SpiDataProvider.h
+CMakeFiles/battery_hmi.dir/main.cpp.o: ../data/UartDataProvider.h
 CMakeFiles/battery_hmi.dir/main.cpp.o: ../inference/InferenceEngine.h
 CMakeFiles/battery_hmi.dir/main.cpp.o: ../inference/SohAccumulator.h
 CMakeFiles/battery_hmi.dir/main.cpp.o: ../main.cpp
