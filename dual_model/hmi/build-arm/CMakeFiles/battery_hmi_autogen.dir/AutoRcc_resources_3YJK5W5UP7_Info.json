@@ -7,6 +7,7 @@
 	"INCLUDE_DIR" : "/home/legion/yg2lx-work/dual_model/hmi/build-arm/battery_hmi_autogen/include",
 	"INPUTS" : 
 	[
+		"/home/legion/yg2lx-work/dual_model/hmi/resources/splash.jpg",
 		"/home/legion/yg2lx-work/dual_model/hmi/resources/style/industrial.qss",
 		"/home/legion/yg2lx-work/dual_model/hmi/translations/battery_hmi_zh_CN.qm"
 	],

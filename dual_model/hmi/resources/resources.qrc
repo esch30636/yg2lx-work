@@ -1,5 +1,8 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
+    <qresource prefix="/images">
+        <file>splash.jpg</file>
+    </qresource>
     <qresource prefix="/style">
         <file>style/industrial.qss</file>
     </qresource>

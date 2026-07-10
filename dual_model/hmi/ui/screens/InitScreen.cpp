@@ -4,9 +4,11 @@
 #include "InitScreen.h"
 #include "config/AppConfig.h"
 #include <QVBoxLayout>
+#include <QPixmap>
 
 InitScreen::InitScreen(QWidget *parent)
     : QWidget(parent)
+    , m_splashImage(nullptr)
     , m_titleLabel(nullptr)
     , m_progressBar(nullptr)
     , m_startButton(nullptr)
@@ -22,8 +24,23 @@ void InitScreen::setupUi()
     setStyleSheet(QString("background-color: %1;").arg(COLOR_BG_MAIN));
 
     QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(60, 80, 60, 80);
-    layout->setSpacing(24);
+    layout->setContentsMargins(60, 40, 60, 60);
+    layout->setSpacing(16);
+
+    /* ── Splash / branding image ── */
+    m_splashImage = new QLabel();
+    m_splashImage->setAlignment(Qt::AlignCenter);
+    QPixmap splash(":/images/splash.jpg");
+    if (!splash.isNull()) {
+        /* Scale to fit width while keeping aspect ratio.
+         * Target: ~45% of screen height (1080 * 0.45 ≈ 486px max) */
+        int maxH = WINDOW_HEIGHT / 2 - 100;  /* half screen minus header/margins */
+        QPixmap scaled = splash.scaledToHeight(maxH, Qt::SmoothTransformation);
+        m_splashImage->setPixmap(scaled);
+    }
+    layout->addWidget(m_splashImage);
+
+    layout->addSpacing(10);
 
     /* ── Title ── */
     m_titleLabel = new QLabel(tr("设备初始化中..."));

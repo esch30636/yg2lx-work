@@ -29,6 +29,7 @@ private slots:
 private:
     void setupUi();
 
+    QLabel       *m_splashImage;
     QLabel       *m_titleLabel;
     QProgressBar *m_progressBar;
     QPushButton  *m_startButton;

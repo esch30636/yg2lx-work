@@ -297,6 +297,8 @@ CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o: ../ui/screens/InitScreen
 CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o: ../ui/screens/InitScreen.h
 CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o: /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/QTimer
 CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o: /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qtimer.h
+CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o: /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui/QPixmap
+CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o: /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui/qpixmap.h
 CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o: /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QLabel
 CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o: /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QProgressBar
 CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o: /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QPushButton

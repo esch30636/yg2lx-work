@@ -298,6 +298,8 @@ CMakeFiles/battery_hmi.dir/ui/screens/InitScreen.cpp.o
  /home/legion/yg2lx-work/dual_model/hmi/ui/screens/InitScreen.h
  /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/QTimer
  /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtCore/qtimer.h
+ /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui/QPixmap
+ /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtGui/qpixmap.h
  /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QLabel
  /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QProgressBar
  /opt/yg2lx-full/sysroots/aarch64-poky-linux/usr/include/QtWidgets/QPushButton

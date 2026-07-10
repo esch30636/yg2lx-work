@@ -59,6 +59,7 @@ include CMakeFiles/battery_hmi.dir/flags.make
 
 battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp: ../resources/resources.qrc
 battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp: CMakeFiles/battery_hmi_autogen.dir/AutoRcc_resources_3YJK5W5UP7_Info.json
+battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp: ../resources/splash.jpg
 battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp: ../resources/style/industrial.qss
 battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp: ../translations/battery_hmi_zh_CN.qm
 battery_hmi_autogen/3YJK5W5UP7/qrc_resources.cpp: /opt/yg2lx-full/sysroots/x86_64-pokysdk-linux/usr/bin/rcc
