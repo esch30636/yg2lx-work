@@ -1,0 +1,29 @@
+[Unit]
+Description=Serial Trigger Listener — waits for START_HMI command then launches HMI
+After=splash-boot.service
+Wants=splash-boot.service
+
+# 与自动启动的 HMI 互斥 (同一时间只能有一个在跑)
+Conflicts=hmi-startup.service
+
+[Service]
+Type=simple
+
+# 阻塞等待串口触发命令
+ExecStart=/usr/local/bin/wait-for-trigger.sh
+
+# 环境设置 (与 hmi-startup.service 一致)
+Environment=HOME=/root
+
+# 标准输出到 journal + tty (方便调试)
+StandardOutput=journal+console
+StandardError=journal+console
+
+# 超时设为无限 (等待用户触发)
+TimeoutStartSec=0
+
+# 退出后不重启 (HMI 由 start_hmi.sh 接管)
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

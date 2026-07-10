@@ -1,0 +1,17 @@
+[Unit]
+Description=Splash Screen on Framebuffer (one-shot at boot)
+# 在串口触发服务之前运行，确保 splash 先显示
+Before=serial-trigger.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+
+# 显示开机图片到 framebuffer
+ExecStart=/usr/local/bin/show_splash.sh /opt/splash.jpg
+
+# 超时 (ffmpeg 应该几秒内完成)
+TimeoutStartSec=30
+
+[Install]
+WantedBy=multi-user.target
